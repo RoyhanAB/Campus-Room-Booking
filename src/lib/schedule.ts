@@ -3,7 +3,7 @@ import { Schedule as Scedule } from '../types/schedule';
 
 export const getSceduleByRoomId = async (roomId: string): Promise<Scedule[]> => {
   const { data: data, error: error } = await supabase
-    .from('schedule')
+    .from('schedules')
     .select('*')
     .eq('room_id', roomId)
     .order('tanggal_dimulai', { ascending: true });

@@ -1,0 +1,104 @@
+.container {
+  padding: 1.5rem;
+  background-color: #f3f4f6; 
+  min-height: 100vh;
+  padding-bottom: 100px;
+}
+
+/* Bagian Pencarian dan Filter */
+.actionRow {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.searchWrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border-radius: 9999px;
+  border: 1px solid #111827; 
+  outline: none;
+  font-size: 0.95rem;
+  background-color: #ffffff;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  color: #111827;
+}
+
+.filterButton {
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Layout Grid Ruangan */
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr; 
+  gap: 1rem;
+}
+
+/* Media Query untuk Desktop (1 baris 3 ruangan) */
+@media (min-width: 768px) {
+  .gridContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Komponen Card */
+.card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.roomImage {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #e5e7eb;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.roomTitle {
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+}
+
+.roomSubtitle {
+  color: #6b7280;
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+}

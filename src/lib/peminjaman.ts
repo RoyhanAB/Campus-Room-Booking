@@ -34,3 +34,17 @@ export const getRecentPeminjaman = async (limit = 30): Promise<Peminjaman[]> => 
 
   return (data ?? []) as Peminjaman[];
 };
+
+export const getAllPeminjaman = async (): Promise<Peminjaman[]> => {
+  const { data, error } = await supabase
+    .from('peminjaman')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching peminjaman:', error);
+    throw new Error(error.message);
+  }
+
+  return data as Peminjaman[];
+};

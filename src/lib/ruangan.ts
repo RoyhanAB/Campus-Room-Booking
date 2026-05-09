@@ -3,7 +3,7 @@ import { Room } from '../types/room';
 
 export const getRoomsLimit15 = async (): Promise<Room[]> => {
   const { data, error } = await supabase
-    .from('ruangan')
+    .from('rooms')
     .select('*')
     .limit(15);
   
@@ -17,7 +17,7 @@ export const getRoomsLimit15 = async (): Promise<Room[]> => {
 
 export const detailroom = async (roomId: string): Promise<Room> => {
   const { data: room, error: roomError } = await supabase
-    .from('ruangan')
+    .from('rooms')
     .select('*')
     .eq('room_id', roomId)
     .single();

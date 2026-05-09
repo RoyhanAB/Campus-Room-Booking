@@ -1,0 +1,102 @@
+/* =========================================
+   MOBILE FIRST (Default - Posisi di Bawah)
+   ========================================= */
+.sidebar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.75rem 0.5rem;
+  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 24px 24px 0 0;
+  z-index: 50;
+}
+
+.brand {
+  display: none; 
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none;
+  color: #9ca3af;
+  font-size: 0.7rem;
+  font-weight: 500;
+  width: 70px;
+}
+
+.navIcon {
+  margin-bottom: 2px;
+}
+
+.activeItem {
+  color: #facc15; 
+}
+
+/* =========================================
+   DESKTOP (Posisi Sidebar Kiri)
+   ========================================= */
+@media (min-width: 768px) {
+  .sidebar {
+    top: 0;
+    bottom: auto;
+    width: 260px;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 2rem 1.5rem;
+    border-radius: 0;
+    border-right: 1px solid #e5e7eb;
+    box-shadow: none;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+    padding-left: 0.5rem;
+  }
+
+  .logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brandTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+  }
+
+  .navItem {
+    flex-direction: row;
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .navItem:hover {
+    background-color: #f3f4f6;
+    color: #111827;
+  }
+
+  /* State aktif untuk Desktop */
+  .activeItem {
+    background-color: #facc15;
+    color: #111827;
+  }
+}
