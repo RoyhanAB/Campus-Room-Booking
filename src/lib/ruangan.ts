@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import { Ruangan as Room } from '../types/ruangan';
+import { Room } from '../types/room';
 
 export const getRoomsLimit15 = async (): Promise<Room[]> => {
   const { data, error } = await supabase

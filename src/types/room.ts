@@ -1,4 +1,4 @@
-export interface Ruangan {
+export interface Room {
   room_id: string;
   buiding_id: number;
   flor: number;

@@ -1,6 +1,6 @@
 export interface User {
   user_id: string;
+  password : string;
   user_name: string;
-  jurusan: string;
-  angkatan: number;
+  role: string;
 }

@@ -9,4 +9,5 @@ export interface Peminjaman {
   jumlah_peserta: number;
   dokumen: string;
   status: string;
+  created_at : string;
 }
