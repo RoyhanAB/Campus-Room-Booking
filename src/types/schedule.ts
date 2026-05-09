@@ -1,5 +1,5 @@
 export interface Schedule {
-    schesule_id: number;
+    schedule_id: number;
     room_id: string;
     user_id: string;
     schedule_name: string;
