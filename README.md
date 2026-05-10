@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Peminjaman Ruangan Kampus UNTIRTA 🏛️
 
-## Getting Started
+Aplikasi web untuk sistem manajemen peminjaman ruangan kampus. Memisahkan peran antara Mahasiswa (peminjam) dan Admin Fakultas (pengelola).
 
-First, run the development server:
+## Fitur Utama ✨
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Autentikasi & Role-Based Access Control**: Login memisahkan rute `/admin` dan `/` (user). Rute dilindungi menggunakan Middleware Next.js.
+- **User Dashboard**: Mahasiswa dapat melihat daftar ruangan, detail ruangan, serta mengajukan form peminjaman ruangan sesuai jadwal.
+- **Admin Panel**: Admin memiliki kontrol penuh (CRUD) untuk menambah, mengedit, menghapus ruangan, serta menyetujui (Approve) atau menolak (Reject) pengajuan dari mahasiswa.
+- **Optimistic UI**: Aksi seperti Approve/Reject pada tabel peminjaman terasa instan berkat React 19 `useOptimistic`.
+- **URL Search Persistence**: Pencarian ruangan dan histori tersimpan di URL (contoh: `?q=R002`), sehingga hasil pencarian tidak hilang saat *refresh*.
+- **Skeleton Loading**: Perpindahan antar rute terasa lebih *smooth* dengan *shimmer effect* (Skeleton Loading) saat data sedang diambil.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack 🛠️
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: [Next.js 15+](https://nextjs.org/) (App Router)
+- **Styling**: Vanilla CSS Modules (tanpa framework tambahan, sesuai *requirement*)
+- **Database & Storage**: [Supabase](https://supabase.com/) (PostgreSQL & Bucket untuk gambar ruangan)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Cara Menjalankan di Lokal 🚀
 
-## Learn More
+1. Pastikan Anda telah menginstal Node.js versi 18+.
+2. *Clone* repository ini.
+3. Install semua *dependencies*:
+   ```bash
+   npm install
+   ```
+4. Copy file `.env.example` menjadi `.env` lalu isi *credentials* Supabase Anda:
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=https://<PROJECT_ID>.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=<YOUR_ANON_KEY>
+   ```
+5. Jalankan *development server*:
+   ```bash
+   npm run dev
+   ```
+6. Buka [http://localhost:3000](http://localhost:3000) di browser Anda.
 
-To learn more about Next.js, take a look at the following resources:
+### Akun Testing (Seed Data)
+- **Admin**: `ADM001` (Password: `admin123`)
+- **Mahasiswa**: `USR001` (Password: `pass123`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment 🌐
+Aplikasi ini dioptimalkan untuk di-deploy di [Vercel](https://vercel.com). Pastikan Anda memasukkan *Environment Variables* Supabase di *dashboard* Vercel sebelum melakukan *build*.
