@@ -1,11 +1,16 @@
 import { ClientLayout } from "@/component/client-layout";
+import { getSession } from "@/lib/auth";
 
-export default function UserLayout({
+export default async function UserLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getSession();
+
   return (
-        <ClientLayout>{children}</ClientLayout>
+    <ClientLayout userName={session?.user_name}>
+      {children}
+    </ClientLayout>
   );
 }

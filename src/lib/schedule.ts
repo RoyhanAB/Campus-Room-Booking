@@ -1,8 +1,8 @@
 import { supabase } from './supabase';
-import { Schedule as Scedule } from '../types/schedule';
+import { Schedule } from '../types/schedule';
 
-export const getSceduleByRoomId = async (roomId: string): Promise<Scedule[]> => {
-  const { data: data, error: error } = await supabase
+export const getScheduleByRoomId = async (roomId: string): Promise<Schedule[]> => {
+  const { data, error } = await supabase
     .from('schedules')
     .select('*')
     .eq('room_id', roomId)
@@ -14,5 +14,5 @@ export const getSceduleByRoomId = async (roomId: string): Promise<Scedule[]> => 
     throw new Error(error.message);
   }
   
-  return data as Scedule[];
+  return data as Schedule[];
 };

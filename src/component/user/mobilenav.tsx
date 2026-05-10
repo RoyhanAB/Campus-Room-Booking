@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Calendar, ClipboardList, User } from 'lucide-react';
+import { Home, Calendar, ClipboardList, LogOut } from 'lucide-react';
+import { logoutAction } from '@/app/login/actions';
 import styles from './mobilenav.module.css';
 
 export default function Mobilenav() {
@@ -12,7 +13,6 @@ export default function Mobilenav() {
     { name: 'Home', path: '/', icon: Home },
     { name: 'Rooms', path: '/listruangan', icon: Calendar }, 
     { name: 'History', path: '/history', icon: ClipboardList },
-    { name: 'Profile', path: '/profile', icon: User },
   ];
 
   return (
@@ -32,6 +32,14 @@ export default function Mobilenav() {
           </Link>
         );
       })}
+
+      {/* Logout button */}
+      <form action={logoutAction}>
+        <button type="submit" className={styles.navItem}>
+          <LogOut size={24} strokeWidth={2} />
+          <span>Keluar</span>
+        </button>
+      </form>
     </nav>
   );
 }

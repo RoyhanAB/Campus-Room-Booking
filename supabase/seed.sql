@@ -66,16 +66,16 @@ INSERT INTO buildings (fakultas_id, building_name, floor) VALUES
 -- SEED DATA: rooms
 -- =====================================
 INSERT INTO rooms (room_id, building_id, floor, number, kapasitas, deskripsi, foto) VALUES
-('R001', 1, 1, 101, 40, 'Ruang kelas dasar teknik', 'room101.jpg'),
-('R002', 1, 2, 201, 35, 'Ruang seminar teknik', 'room201.jpg'),
-('R003', 2, 1, 102, 25, 'Lab praktikum mesin', 'lab102.jpg'),
-('R004', 3, 2, 202, 50, 'Lab komputer AI', 'lab202.jpg'),
-('R005', 3, 3, 301, 45, 'Lab jaringan komputer', 'lab301.jpg'),
-('R006', 4, 1, 103, 30, 'Lab coding dasar', 'lab103.jpg'),
-('R007', 5, 2, 204, 60, 'Ruang konferensi bisnis', 'biz204.jpg'),
-('R008', 6, 1, 105, 55, 'Ruang akuntansi', 'acc105.jpg'),
-('R009', 7, 3, 303, 70, 'Ruang sidang hukum', 'law303.jpg'),
-('R010', 8, 4, 401, 80, 'Ruang seminar kedokteran', 'med401.jpg');
+('R001', 1, 1, 101, 40, 'Ruang kelas dasar teknik', 'br1.jpg'),
+('R002', 1, 2, 201, 35, 'Ruang seminar teknik', 'br2.jpg'),
+('R003', 2, 1, 102, 25, 'Lab praktikum mesin', 'br2.jpg'),
+('R004', 3, 2, 202, 50, 'Lab komputer AI', 'br2.jpg'),
+('R005', 3, 3, 301, 45, 'Lab jaringan komputer', 'br2.jpg'),
+('R006', 4, 1, 103, 30, 'Lab coding dasar', 'coek.jpg'),
+('R007', 5, 2, 204, 60, 'Ruang konferensi bisnis', 'br2.jpg'),
+('R008', 6, 1, 105, 55, 'Ruang akuntansi', 'br2.jpg'),
+('R009', 7, 3, 303, 70, 'Ruang sidang hukum', 'br1.jpg'),
+('R010', 8, 4, 401, 80, 'Ruang seminar kedokteran', 'br1.jpg');
 
 -- =====================================
 -- SEED DATA: schedules
@@ -103,8 +103,8 @@ INSERT INTO peminjaman (
     dokumen,
     status
 ) VALUES
-('R001', 'USR001', 'Belajar Kelompok TI', '2026-05-15 08:00:00', '2026-05-15 11:00:00', 'Diskusi proyek basis data', 20, 'proposal_kelompok.pdf', 'approved'),
-('R004', 'USR002', 'Hackathon Kampus', '2026-05-16 08:00:00', '2026-05-16 18:00:00', 'Kompetisi coding mahasiswa', 45, 'hackathon.pdf', 'pending'),
-('R007', 'USR005', 'Seminar Startup', '2026-05-17 09:00:00', '2026-05-17 13:00:00', 'Pembahasan startup digital', 50, 'startup.docx', 'approved'),
-('R009', 'USR004', 'Simulasi Sidang', '2026-05-18 10:00:00', '2026-05-18 14:00:00', 'Latihan sidang mahasiswa hukum', 60, 'sidang.pdf', 'pending'),
-('R010', 'USR003', 'Penyuluhan Kesehatan', '2026-05-19 08:00:00', '2026-05-19 12:00:00', 'Kegiatan kesehatan masyarakat', 75, 'health.pdf', 'approved');
+('R001', 'USR001', 'Belajar Kelompok TI', '2026-05-15 08:00:00', '2026-05-15 11:00:00', 'Diskusi proyek basis data', 20, 'proposal_kelompok.pdf', 'disetujui'),
+('R004', 'USR002', 'Hackathon Kampus', '2026-05-16 08:00:00', '2026-05-16 18:00:00', 'Kompetisi coding mahasiswa', 45, 'hackathon.pdf', 'menunggu'),
+('R007', 'USR005', 'Seminar Startup', '2026-05-17 09:00:00', '2026-05-17 13:00:00', 'Pembahasan startup digital', 50, 'startup.docx', 'disetujui'),
+('R009', 'USR004', 'Simulasi Sidang', '2026-05-18 10:00:00', '2026-05-18 14:00:00', 'Latihan sidang mahasiswa hukum', 60, 'sidang.pdf', 'menunggu'),
+('R010', 'USR003', 'Penyuluhan Kesehatan', '2026-05-19 08:00:00', '2026-05-19 12:00:00', 'Kegiatan kesehatan masyarakat', 75, 'health.pdf', 'disetujui');

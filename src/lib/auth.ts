@@ -1,0 +1,91 @@
+import { cookies } from 'next/headers';
+import { supabase } from './supabase';
+import { User } from '../types/user';
+
+export interface SessionData {
+  user_id: string;
+  user_name: string;
+  role: string;
+}
+
+const SESSION_COOKIE_NAME = 'session';
+
+/**
+ * Login user — validasi credentials dari tabel users
+ */
+export async function login(userId: string, password: string): Promise<{ success: boolean; user?: User; error?: string }> {
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('user_id', userId)
+    .single();
+
+  if (error || !data) {
+    return { success: false, error: 'User ID tidak ditemukan.' };
+  }
+
+  if (data.password !== password) {
+    return { success: false, error: 'Password salah.' };
+  }
+
+  // Set session cookie
+  const session: SessionData = {
+    user_id: data.user_id,
+    user_name: data.user_name,
+    role: data.role,
+  };
+
+  const cookieStore = await cookies();
+  cookieStore.set(SESSION_COOKIE_NAME, JSON.stringify(session), {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 7, // 7 hari
+    path: '/',
+  });
+
+  return { success: true, user: data as User };
+}
+
+/**
+ * Logout — hapus session cookie
+ */
+export async function logout(): Promise<void> {
+  const cookieStore = await cookies();
+  cookieStore.delete(SESSION_COOKIE_NAME);
+}
+
+/**
+ * Ambil session dari cookie (server-side)
+ */
+export async function getSession(): Promise<SessionData | null> {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME);
+
+  if (!sessionCookie?.value) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(sessionCookie.value) as SessionData;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Ambil data user lengkap berdasarkan session
+ */
+export async function getCurrentUser(): Promise<User | null> {
+  const session = await getSession();
+  if (!session) return null;
+
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('user_id', session.user_id)
+    .single();
+
+  if (error || !data) return null;
+  return data as User;
+}

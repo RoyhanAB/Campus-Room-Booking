@@ -41,6 +41,27 @@
   color: #facc15; 
 }
 
+/* Mobile: hide footer section */
+.sidebarFooter {
+  display: none;
+}
+
+.logoutItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none;
+  color: #9ca3af;
+  font-size: 0.7rem;
+  font-weight: 500;
+  width: 70px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
 /* =========================================
    DESKTOP (Posisi Sidebar Kiri)
    ========================================= */
@@ -98,5 +119,61 @@
   .activeItem {
     background-color: #facc15;
     color: #111827;
+  }
+
+  /* Desktop: show footer at bottom */
+  .sidebarFooter {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    gap: 0.75rem;
+  }
+
+  .userInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .userAvatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #facc15, #f59e0b);
+    color: #111827;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .userNameText {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .logoutItem {
+    flex-direction: row;
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    color: #6b7280;
+    transition: all 0.2s ease;
+  }
+
+  .logoutItem:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
   }
 }

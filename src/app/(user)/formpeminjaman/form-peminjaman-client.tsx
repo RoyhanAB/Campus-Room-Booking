@@ -16,9 +16,16 @@ const defaultDateRange = (() => {
   };
 })();
 
-export function FormPeminjamanClient({ defaultRoomId }: { defaultRoomId: string }) {
+export function FormPeminjamanClient({
+  defaultRoomId,
+  userId,
+  userName,
+}: {
+  defaultRoomId: string;
+  userId: string;
+  userName: string;
+}) {
   const [roomId, setRoomId] = useState(defaultRoomId);
-  const [userId, setUserId] = useState('u001');
   const [namaKegiatan, setNamaKegiatan] = useState('');
   const [tanggalMulai, setTanggalMulai] = useState(defaultDateRange.start);
   const [tanggalSelesai, setTanggalSelesai] = useState(defaultDateRange.end);
@@ -31,9 +38,9 @@ export function FormPeminjamanClient({ defaultRoomId }: { defaultRoomId: string 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!roomId.trim() || !userId.trim()) {
+    if (!roomId.trim()) {
       setStatus('error');
-      setMessage('Room ID dan User ID wajib diisi.');
+      setMessage('Room ID wajib diisi.');
       return;
     }
 
@@ -49,7 +56,7 @@ export function FormPeminjamanClient({ defaultRoomId }: { defaultRoomId: string 
 
       await createPeminjaman({
         room_id: roomId.trim().toUpperCase(),
-        user_id: userId.trim(),
+        user_id: userId,
         nama_kegiatan: namaKegiatan.trim(),
         tanggal_dimulai: new Date(tanggalMulai).toISOString(),
         tanggal_selesai: new Date(tanggalSelesai).toISOString(),
@@ -74,6 +81,12 @@ export function FormPeminjamanClient({ defaultRoomId }: { defaultRoomId: string 
       <h1 className="mb-1 text-2xl font-bold text-zinc-900">Form Peminjaman Ruangan</h1>
       <p className="mb-6 text-sm text-zinc-600">Isi data berikut untuk mengajukan peminjaman ruangan.</p>
 
+      {/* Info pemohon */}
+      <div className="mb-5 rounded-xl bg-zinc-50 p-4 border border-zinc-100">
+        <p className="text-xs font-medium text-zinc-500 mb-1">Pemohon</p>
+        <p className="text-sm font-semibold text-zinc-900">{userName} <span className="font-normal text-zinc-500">({userId})</span></p>
+      </div>
+
       <form className="grid gap-4" onSubmit={handleSubmit}>
         <label className="grid gap-1 text-sm text-zinc-700">
           Room ID
@@ -81,18 +94,7 @@ export function FormPeminjamanClient({ defaultRoomId }: { defaultRoomId: string 
             value={roomId}
             onChange={(event) => setRoomId(event.target.value)}
             className="rounded-lg border border-zinc-300 px-3 py-2 outline-none focus:border-zinc-900"
-            placeholder="Contoh: A101"
-            required
-          />
-        </label>
-
-        <label className="grid gap-1 text-sm text-zinc-700">
-          User ID
-          <input
-            value={userId}
-            onChange={(event) => setUserId(event.target.value)}
-            className="rounded-lg border border-zinc-300 px-3 py-2 outline-none focus:border-zinc-900"
-            placeholder="Contoh: u001"
+            placeholder="Contoh: R001"
             required
           />
         </label>

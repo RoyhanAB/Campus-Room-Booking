@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Building, PlusSquare, ClipboardList } from 'lucide-react';
+import { Home, Building, PlusSquare, ClipboardList, LogOut } from 'lucide-react';
+import { logoutAction } from '@/app/login/actions';
 import styles from './AdminSidebar.module.css';
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ userName }: { userName?: string }) {
   const pathname = usePathname();
 
   const navItems = [
@@ -36,6 +37,22 @@ export default function AdminSidebar() {
           </Link>
         );
       })}
+
+      {/* Spacer + Logout di bagian bawah sidebar */}
+      <div className={styles.sidebarFooter}>
+        {userName && (
+          <div className={styles.userInfo}>
+            <div className={styles.userAvatar}>{userName.charAt(0).toUpperCase()}</div>
+            <span className={styles.userNameText}>{userName}</span>
+          </div>
+        )}
+        <form action={logoutAction}>
+          <button type="submit" className={styles.logoutItem}>
+            <LogOut size={22} strokeWidth={2} className={styles.navIcon} />
+            <span>Keluar</span>
+          </button>
+        </form>
+      </div>
     </aside>
   );
 }

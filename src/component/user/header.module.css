@@ -33,6 +33,7 @@
 .desktopNav {
   display: none;
   gap: 2rem;
+  align-items: center;
 }
 
 .navLink {
@@ -49,6 +50,46 @@
 
 .activeLink {
   color: #facc15; /* Warna kuning sesuai mockup */
+}
+
+/* User section di desktop */
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: 1rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid #e5e7eb;
+}
+
+.userName {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logoutBtn:hover {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
 }
 
 /* Tampilkan navigasi hanya di layar besar */

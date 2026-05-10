@@ -1,0 +1,23 @@
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+.shine {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1200px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 12px;
+}
+.detailContainer {
+  padding: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+.titleBlock   { height: 32px; width: 60%; margin-bottom: 0.5rem; }
+.subtitleBlock{ height: 18px; width: 30%; margin-bottom: 1.5rem; }
+.infoGrid     { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
+.infoCard     { height: 80px; border-radius: 16px; }
+.sectionBlock { height: 100px; margin-bottom: 1rem; }
+.actionRow    { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+.btnBlock     { flex: 1; height: 50px; border-radius: 14px; }

@@ -1,7 +1,7 @@
 export interface Room {
   room_id: string;
-  buiding_id: number;
-  flor: number;
+  building_id: number;
+  floor: number;
   number: number;
   foto: string;
   kapasitas: number;

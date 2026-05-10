@@ -1,11 +1,19 @@
 import Link from 'next/link';
+import { getSession } from '@/lib/auth';
 
-export default function Home() {
+export default async function Home() {
+  const session = await getSession();
+
   return (
     <section className="mx-auto w-full max-w-5xl px-6 py-10 pb-28">
       <div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
         <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-zinc-500">Portal Kampus</p>
-        <h1 className="mb-4 text-3xl font-bold text-zinc-900">Peminjaman Ruangan UNTIRTA</h1>
+        <h1 className="mb-2 text-3xl font-bold text-zinc-900">Peminjaman Ruangan UNTIRTA</h1>
+        {session?.user_name && (
+          <p className="mb-4 text-sm text-zinc-500">
+            Selamat datang, <span className="font-semibold text-zinc-700">{session.user_name}</span>
+          </p>
+        )}
         <p className="max-w-2xl text-sm leading-7 text-zinc-600">
           Kelola ketersediaan ruangan, cek jadwal, dan ajukan peminjaman dalam satu aplikasi.
         </p>

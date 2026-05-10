@@ -3,11 +3,11 @@
 import AdminSidebar from '@/component/admin/AdminSidebar';
 
 
-export function AdminLayout({ children }: { children: React.ReactNode }) {
+export function AdminLayout({ children, userName }: { children: React.ReactNode; userName?: string }) {
     return (
         <>
             <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f9fafb' }}>
-                <AdminSidebar />
+                <AdminSidebar userName={userName} />
                 <main
                     style={{
                         flex: 1,

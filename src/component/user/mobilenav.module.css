@@ -26,6 +26,10 @@
   font-size: 0.75rem;
   font-weight: 500;
   width: 60px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
 }
 
 .activeItem {

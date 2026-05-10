@@ -119,7 +119,7 @@ CREATE TABLE peminjaman (
     deskripsi TEXT,
     jumlah_peserta INT,
     dokumen TEXT,
-    status VARCHAR(50) DEFAULT 'pending',
+    status VARCHAR(50) DEFAULT 'menunggu',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
 
     CONSTRAINT fk_peminjaman_room

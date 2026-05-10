@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { MapPin, ArrowRight, Users, CalendarDays } from 'lucide-react';
 import styles from './roomdetail.module.css';
 import { detailroom } from '@/lib/ruangan';
-import { getSceduleByRoomId } from '@/lib/schedule';
+import { getScheduleByRoomId } from '@/lib/schedule';
+import RoomDetailActions from './RoomDetailActions';
 
 export const revalidate = 0;
 
@@ -13,12 +14,11 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
   const roomId = resolvedParams.id;
 
   const room = await detailroom(roomId);
-
-  const schedules = await getSceduleByRoomId(roomId);
+  const schedules = await getScheduleByRoomId(roomId);
 
   const getImageUrl = (fileName: string) => {
     if (!fileName) return '/placeholder.jpg';
-    const { data } = supabase.storage.from('foto').getPublicUrl(fileName);
+    const { data } = supabase.storage.from('Foto').getPublicUrl(fileName);
     return data.publicUrl;
   };
 
@@ -48,12 +48,12 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
           <div className={styles.statBox}>
             <MapPin size={20} color="#111827" />
             <span className={styles.statLabel}>Gedung</span>
-            <span className={styles.statValue}>AULA</span> 
+            <span className={styles.statValue}>Gedung {room.building_id}</span> 
           </div>
           <div className={styles.statBox}>
             <ArrowRight size={20} color="#111827" />
             <span className={styles.statLabel}>Lantai</span>
-            <span className={styles.statValue}>{room.flor}</span>
+            <span className={styles.statValue}>{room.floor}</span>
           </div>
           <div className={styles.statBox}>
             <Users size={20} color="#111827" />
@@ -75,17 +75,8 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
           <div className={styles.facilityItem}>Meja</div>
         </div>
 
-
-        <div className={styles.actionButtons}>
-          <Link href={`/admin/edit/${room.room_id}`} className={styles.btnEdit}>
-            Edit
-          </Link>
-          
-          <button className={styles.btnDelete}>
-            Hapus
-          </button>
-        </div>
-
+        {/* Functional Edit & Delete Buttons */}
+        <RoomDetailActions roomId={room.room_id} />
       </div>
 
       <div className={styles.card}>
