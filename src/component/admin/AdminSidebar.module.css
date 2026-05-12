@@ -1,0 +1,226 @@
+/* =========================================
+   MOBILE FIRST (Default - Posisi di Bawah)
+   ========================================= */
+.sidebar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 8px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+  border-top: 2px solid #f0f0f0;
+  z-index: 100;
+}
+
+.brand {
+  display: none; 
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 60px;
+  padding: 6px 4px;
+  transition: all 0.2s ease;
+}
+
+.navItem:active {
+  transform: scale(0.95);
+}
+
+.navIcon {
+  margin-bottom: 2px;
+}
+
+.activeItem {
+  color: #facc15; 
+}
+
+/* Mobile: show footer section in bottom nav */
+.sidebarFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.userInfo {
+  display: none;
+}
+
+.logoutItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 60px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  transition: all 0.2s ease;
+}
+
+.logoutItem:active {
+  transform: scale(0.95);
+}
+
+/* =========================================
+   DESKTOP (Posisi Sidebar Kiri)
+   ========================================= */
+@media (min-width: 768px) {
+  .sidebar {
+    top: 0;
+    bottom: auto;
+    width: 260px;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 2rem 1.5rem;
+    border-radius: 0;
+    border-right: 1px solid #e5e7eb;
+    box-shadow: none;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+    padding: 0.25rem 0.5rem 0;
+  }
+
+  .brandLogoWrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fef9c3, #fde68a);
+    box-shadow: 0 6px 16px -8px rgba(250, 204, 21, 0.55);
+    flex-shrink: 0;
+  }
+
+  .brandLogo {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+  }
+
+  .brandTextWrap {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .brandTitle {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #111827;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .brandSubtitle {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .navItem {
+    flex-direction: row;
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .navItem:hover {
+    background-color: #f3f4f6;
+    color: #111827;
+  }
+
+  /* State aktif untuk Desktop */
+  .activeItem {
+    background-color: #facc15;
+    color: #111827;
+  }
+
+  /* Desktop: show footer at bottom */
+  .sidebarFooter {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    gap: 0.75rem;
+  }
+
+  .userInfo {
+    display: flex !important;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .userAvatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #facc15, #f59e0b);
+    color: #111827;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .userNameText {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .logoutItem {
+    flex-direction: row;
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    color: #6b7280;
+    transition: all 0.2s ease;
+  }
+
+  .logoutItem:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+  }
+}

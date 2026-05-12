@@ -1,0 +1,156 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.logoWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #fef9c3, #fde68a);
+  box-shadow: 0 4px 12px -6px rgba(250, 204, 21, 0.5);
+  flex-shrink: 0;
+}
+
+.logo {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.titleWrap {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 16px 32px;
+  }
+
+  .logoWrap {
+    width: 44px;
+    height: 44px;
+  }
+
+  .logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .title {
+    font-size: 17px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+  }
+}
+
+/* Navigasi Desktop - Disembunyikan di Mobile */
+.desktopNav {
+  display: none;
+  gap: 2rem;
+  align-items: center;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: #111827;
+}
+
+.activeLink {
+  color: #facc15; /* Warna kuning sesuai mockup */
+}
+
+/* User section di desktop */
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: 1rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid #e5e7eb;
+}
+
+.userName {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logoutBtn:hover {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+/* Tampilkan navigasi hanya di layar besar */
+@media (min-width: 768px) {
+  .desktopNav {
+    display: flex;
+  }
+}
