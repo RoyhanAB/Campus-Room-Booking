@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Building, PlusSquare, ClipboardList, LogOut } from 'lucide-react';
@@ -19,7 +20,19 @@ export default function AdminSidebar({ userName }: { userName?: string }) {
   return (
     <aside className={styles.sidebar}>
       <div className={styles.brand}>
-        <h2 className={styles.brandTitle}>Admin Panel</h2>
+        <span className={styles.brandLogoWrap}>
+          <Image
+            src="/image/untr.png"
+            alt="Logo UNTIRTA"
+            width={26}
+            height={26}
+            className={styles.brandLogo}
+          />
+        </span>
+        <div className={styles.brandTextWrap}>
+          <span className={styles.brandTitle}>Admin Panel</span>
+          <span className={styles.brandSubtitle}>UNTIRTA</span>
+        </div>
       </div>
 
       {navItems.map((item) => {

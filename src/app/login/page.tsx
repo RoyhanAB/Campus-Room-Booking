@@ -3,6 +3,8 @@
 import { useActionState } from 'react';
 import { loginAction } from './actions';
 import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 import styles from './login.module.css';
 
 export default function LoginPage() {
@@ -10,6 +12,10 @@ export default function LoginPage() {
 
   return (
     <div className={styles.wrapper}>
+      <Link href="/landing" className={styles.backLink}>
+        <ArrowLeft size={14} />
+        Kembali ke beranda
+      </Link>
       <div className={styles.card}>
         {/* Logo & Branding */}
         <div className={styles.brandSection}>

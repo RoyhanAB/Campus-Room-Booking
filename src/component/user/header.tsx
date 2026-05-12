@@ -18,16 +18,22 @@ export default function Header({ userName }: { userName?: string }) {
 
   return (
     <header className={styles.header}>
-      <div className={styles.brand}>
-        {/* Logo kampus/institusi */}
-        <Image 
-        src="/image/untr.png" 
-        alt="Logo"
-        width={40} 
-        height={40}  
-        className={styles.logo} />
-        <h1 className={styles.title}>Peminjaman Ruangan</h1>
-      </div>
+      <Link href="/" className={styles.brand}>
+        <span className={styles.logoWrap}>
+          <Image
+            src="/image/untr.png"
+            alt="Logo UNTIRTA"
+            width={32}
+            height={32}
+            className={styles.logo}
+            priority
+          />
+        </span>
+        <span className={styles.titleWrap}>
+          <span className={styles.title}>Peminjaman Ruangan</span>
+          <span className={styles.subtitle}>UNTIRTA</span>
+        </span>
+      </Link>
 
       {/* Navigasi Desktop */}
       <nav className={styles.desktopNav}>

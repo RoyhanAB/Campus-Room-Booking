@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const SESSION_COOKIE_NAME = 'session';
 
 // Routes yang bisa diakses tanpa login
-const publicRoutes = ['/login'];
+const publicRoutes = ['/login', '/landing'];
 
 // Routes khusus admin
 const adminRoutes = ['/admin'];
@@ -36,10 +36,10 @@ export function middleware(request: NextRequest) {
   const isPublicRoute = publicRoutes.some((route) => pathname === route);
   const isAdminRoute = adminRoutes.some((route) => pathname.startsWith(route));
 
-  // 1. Belum login → redirect ke /login (kecuali sudah di /login)
+  // 1. Belum login → redirect ke /landing (kecuali sudah di route publik)
   if (!isLoggedIn && !isPublicRoute) {
-    const loginUrl = new URL('/login', request.url);
-    return NextResponse.redirect(loginUrl);
+    const landingUrl = new URL('/landing', request.url);
+    return NextResponse.redirect(landingUrl);
   }
 
   // 2. Sudah login tapi akses /login → redirect ke halaman sesuai role
