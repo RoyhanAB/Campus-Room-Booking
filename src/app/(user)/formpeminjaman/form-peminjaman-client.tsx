@@ -10,7 +10,7 @@ import styles from './formpeminjaman.module.css';
 
 interface Room {
   room_id: string;
-  building_id: string;
+  building_id: number;
   floor: number;
   kapasitas: number;
   deskripsi: string;
