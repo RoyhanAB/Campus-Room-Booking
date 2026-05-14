@@ -6,16 +6,16 @@ import {
   CalendarCheck,
   CheckCircle2,
   ClipboardList,
-  Clock,
   History,
   LayoutGrid,
   ShieldCheck,
-  Sparkles,
   Users,
   Mail,
   Phone,
   MapPin,
   Calendar,
+  Clock,
+  ChevronDown,
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import styles from './landing.module.css';
@@ -29,450 +29,338 @@ export const metadata: Metadata = {
 const features = [
   {
     icon: LayoutGrid,
-    title: 'Katalog Ruangan Lengkap',
-    description:
-      'Telusuri seluruh ruangan kampus beserta foto, kapasitas, lantai, dan fasilitas pendukungnya.',
+    title: 'Katalog Ruangan',
+    description: 'Telusuri seluruh ruangan kampus beserta foto, kapasitas, dan fasilitas pendukung.',
   },
   {
     icon: CalendarCheck,
     title: 'Jadwal Real-Time',
-    description:
-      'Cek jadwal pemakaian ruangan langsung dari halaman detail agar tidak bentrok dengan kegiatan lain.',
+    description: 'Cek jadwal pemakaian ruangan langsung agar tidak bentrok dengan kegiatan lain.',
   },
   {
     icon: ClipboardList,
-    title: 'Form Pengajuan Cepat',
-    description:
-      'Ajukan peminjaman cukup dengan mengisi data kegiatan, tanggal, dan jumlah peserta dalam hitungan menit.',
+    title: 'Pengajuan Cepat',
+    description: 'Ajukan peminjaman cukup dengan mengisi data kegiatan dalam hitungan menit.',
   },
   {
     icon: ShieldCheck,
     title: 'Approval Terstruktur',
-    description:
-      'Admin Fakultas dapat menyetujui atau menolak peminjaman dengan riwayat audit yang jelas.',
+    description: 'Admin fakultas menyetujui atau menolak dengan riwayat audit yang jelas.',
   },
   {
     icon: History,
     title: 'Riwayat Tersimpan',
-    description:
-      'Pantau status seluruh pengajuan: menunggu, disetujui, atau ditolak — semua dalam satu halaman riwayat.',
+    description: 'Pantau seluruh pengajuan: menunggu, disetujui, atau ditolak di satu halaman.',
   },
   {
-    icon: Sparkles,
-    title: 'Antarmuka Modern',
-    description:
-      'Tampilan responsif yang nyaman digunakan dari laptop maupun perangkat mobile mahasiswa.',
+    icon: Users,
+    title: 'Multi-Role Access',
+    description: 'Tampilan terpisah untuk mahasiswa dan admin fakultas sesuai kebutuhan.',
   },
 ];
 
 const steps = [
   {
     number: '01',
-    title: 'Masuk dengan akun kampus',
-    description:
-      'Gunakan User ID dan password yang telah diberikan oleh fakultas untuk masuk ke portal.',
+    title: 'Login ke Portal',
+    description: 'Gunakan User ID dan password yang telah diberikan oleh fakultas.',
     icon: ShieldCheck,
   },
   {
     number: '02',
-    title: 'Pilih ruangan & jadwal',
-    description:
-      'Telusuri katalog ruangan, lihat ketersediaan jadwal, dan pilih ruangan yang paling sesuai.',
+    title: 'Pilih Ruangan',
+    description: 'Telusuri katalog, lihat jadwal ketersediaan, dan pilih ruangan yang sesuai.',
     icon: Building2,
   },
   {
     number: '03',
-    title: 'Ajukan & pantau status',
-    description:
-      'Isi form peminjaman, lalu pantau status persetujuan di halaman riwayat secara real-time.',
+    title: 'Ajukan & Pantau',
+    description: 'Isi form peminjaman, lalu pantau status persetujuan secara real-time.',
     icon: CheckCircle2,
   },
-];
-
-const stats = [
-  { value: '24/7', label: 'Akses pengajuan online' },
-  { value: '100%', label: 'Riwayat tercatat rapi' },
-  { value: '< 5 mnt', label: 'Waktu pengajuan rata-rata' },
 ];
 
 export default function LandingPage() {
   return (
     <div className={styles.page}>
+      {/* Navbar */}
       <header className={styles.navbar}>
-        <Link href="/landing" className={styles.brand}>
-          <span className={styles.brandLogoWrap}>
-            <Image
-              src="/image/untr.png"
-              alt="Logo UNTIRTA"
-              width={36}
-              height={36}
-              className={styles.brandLogo}
-              priority
-            />
-          </span>
-          <span className={styles.brandText}>
-            <span className={styles.brandTitle}>Peminjaman Ruangan</span>
-            <span className={styles.brandSubtitle}>UNTIRTA</span>
-          </span>
-        </Link>
-        <nav className={styles.navLinks}>
-          <a href="#fitur" className={styles.navLink}>Fitur</a>
-          <a href="#cara-kerja" className={styles.navLink}>Cara Kerja</a>
-          <a href="#tentang" className={styles.navLink}>Tentang</a>
-          <a href="#kontak" className={styles.navLink}>Kontak</a>
-        </nav>
-        <Link href="/login" className={styles.navCta}>
-          Masuk
-          <ArrowRight size={16} />
-        </Link>
+        <div className={styles.navInner}>
+          <Link href="/landing" className={styles.brand}>
+            <span className={styles.brandLogoWrap}>
+              <Image src="/image/untr.png" alt="Logo UNTIRTA" width={36} height={36} className={styles.brandLogo} priority />
+            </span>
+            <span className={styles.brandText}>
+              <span className={styles.brandTitle}>Peminjaman Ruangan</span>
+              <span className={styles.brandSubtitle}>UNTIRTA</span>
+            </span>
+          </Link>
+          <nav className={styles.navLinks}>
+            <a href="#fitur" className={styles.navLink}>Fitur</a>
+            <a href="#cara-kerja" className={styles.navLink}>Cara Kerja</a>
+            <a href="#galeri" className={styles.navLink}>Galeri</a>
+            <a href="#kontak" className={styles.navLink}>Kontak</a>
+          </nav>
+          <Link href="/login" className={styles.navCta}>
+            Masuk <ArrowRight size={15} />
+          </Link>
+        </div>
       </header>
 
+      {/* Hero with Campus Background */}
       <section className={styles.hero}>
-        <div className={styles.heroBgOrb1} aria-hidden="true" />
-        <div className={styles.heroBgOrb2} aria-hidden="true" />
-        <div className={styles.heroGrid}>
+        <div className={styles.heroBg}>
+          <Image
+            src="/image/gedung rektorat.webp"
+            alt="Gedung Rektorat UNTIRTA"
+            fill
+            className={styles.heroBgImage}
+            priority
+            quality={85}
+          />
+          <div className={styles.heroOverlay} />
+        </div>
+        <div className={styles.heroInner}>
           <div className={styles.heroContent}>
-            <span className={styles.eyebrow}>
-              <Sparkles size={14} />
+            <div className={styles.heroBadge}>
+              <span className={styles.heroBadgeDot} />
               Portal Resmi Kampus UNTIRTA
-            </span>
+            </div>
             <h1 className={styles.heroTitle}>
-              Pinjam ruangan kampus jadi <span className={styles.heroAccent}>lebih cepat</span> &amp; tertata.
+              Peminjaman Ruangan Kampus,{' '}
+              <span className={styles.heroAccent}>Lebih Cepat & Tertata.</span>
             </h1>
             <p className={styles.heroSubtitle}>
-              Satu portal untuk mahasiswa dan admin fakultas: cek ketersediaan ruangan,
+              Satu portal untuk mahasiswa dan admin fakultas — cek ketersediaan ruangan,
               ajukan peminjaman, dan kelola persetujuan tanpa perlu surat manual.
             </p>
             <div className={styles.heroCtas}>
               <Link href="/login" className={styles.ctaPrimary}>
-                Mulai Sekarang
-                <ArrowRight size={18} />
+                Mulai Sekarang <ArrowRight size={17} />
               </Link>
               <a href="#fitur" className={styles.ctaSecondary}>
-                Pelajari Fitur
+                Pelajari Fitur <ChevronDown size={16} />
               </a>
             </div>
-
-            <div className={styles.heroStats}>
-              {stats.map((stat) => (
-                <div key={stat.label} className={styles.heroStat}>
-                  <span className={styles.heroStatValue}>{stat.value}</span>
-                  <span className={styles.heroStatLabel}>{stat.label}</span>
-                </div>
-              ))}
-            </div>
           </div>
 
-          <div className={styles.heroVisual} aria-hidden="true">
-            <div className={styles.previewCard}>
-              <div className={styles.previewHeader}>
-                <div className={styles.previewDot} />
-                <div className={styles.previewDot} />
-                <div className={styles.previewDot} />
-                <span className={styles.previewUrl}>untirta.app/listruangan</span>
-              </div>
-              <div className={styles.previewBody}>
-                <div className={styles.previewSearch}>
-                  <span className={styles.previewSearchIcon}>🔍</span>
-                  <span>Cari ruangan, gedung, atau fakultas...</span>
-                </div>
-                <div className={styles.previewList}>
-                  {[
-                    { name: 'Aula Utama', meta: 'Gedung Rektorat · Lt. 2', cap: '250', status: 'Tersedia' },
-                    { name: 'Ruang Seminar A', meta: 'FT · Lt. 3', cap: '60', status: 'Tersedia' },
-                    { name: 'Lab Komputer 4', meta: 'FT · Lt. 2', cap: '40', status: 'Terpakai' },
-                  ].map((room) => (
-                    <div key={room.name} className={styles.previewRoom}>
-                      <div className={styles.previewRoomThumb}>
-                        <Building2 size={20} />
-                      </div>
-                      <div className={styles.previewRoomInfo}>
-                        <span className={styles.previewRoomName}>{room.name}</span>
-                        <span className={styles.previewRoomMeta}>{room.meta}</span>
-                      </div>
-                      <div className={styles.previewRoomMetrics}>
-                        <span className={styles.previewRoomCap}>
-                          <Users size={12} /> {room.cap}
-                        </span>
-                        <span
-                          className={`${styles.previewRoomStatus} ${
-                            room.status === 'Tersedia' ? styles.statusOk : styles.statusBusy
-                          }`}
-                        >
-                          {room.status}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+          {/* Floating Stats Cards */}
+          <div className={styles.heroFloats}>
+            <div className={`${styles.floatCard} ${styles.floatCard1}`}>
+              <div className={styles.floatIconWrap}><CalendarCheck size={20} /></div>
+              <div>
+                <span className={styles.floatValue}>24/7</span>
+                <span className={styles.floatLabel}>Akses Online</span>
               </div>
             </div>
-
-            <div className={styles.floatingBadge}>
-              <CheckCircle2 size={18} />
+            <div className={`${styles.floatCard} ${styles.floatCard2}`}>
+              <div className={styles.floatIconWrap}><Clock size={20} /></div>
               <div>
-                <span className={styles.floatingBadgeTitle}>Disetujui</span>
-                <span className={styles.floatingBadgeText}>Aula Utama · 14:00</span>
+                <span className={styles.floatValue}>&lt; 5 mnt</span>
+                <span className={styles.floatLabel}>Waktu Pengajuan</span>
               </div>
             </div>
-
-            <div className={styles.floatingBadgeAlt}>
-              <Clock size={18} />
+            <div className={`${styles.floatCard} ${styles.floatCard3}`}>
+              <div className={styles.floatIconWrap}><CheckCircle2 size={20} /></div>
               <div>
-                <span className={styles.floatingBadgeTitle}>Menunggu</span>
-                <span className={styles.floatingBadgeText}>Ruang Seminar A</span>
+                <span className={styles.floatValue}>100%</span>
+                <span className={styles.floatLabel}>Riwayat Tercatat</span>
               </div>
             </div>
           </div>
         </div>
+        <a href="#fitur" className={styles.scrollIndicator}>
+          <ChevronDown size={20} />
+        </a>
       </section>
 
-      <section className={styles.bookingPreview}>
-        <div className={styles.sectionHead}>
-          <span className={styles.sectionTag}>Jadwal Terkini</span>
-          <h2 className={styles.sectionTitle}>Ruangan yang sedang dibooking hari ini</h2>
-          <p className={styles.sectionLead}>
-            Lihat jadwal peminjaman ruangan yang telah disetujui untuk memastikan tidak ada bentrok waktu.
-          </p>
-        </div>
-
-        <div className={styles.bookingGrid}>
-          <div className={styles.bookingCard}>
-            <div className={styles.bookingHeader}>
-              <Calendar size={20} className={styles.bookingIcon} />
-              <span className={styles.bookingDate}>Senin, 12 Mei 2026</span>
-            </div>
-            <div className={styles.bookingList}>
-              <div className={styles.bookingItem}>
-                <div className={styles.bookingTime}>08:00 - 10:00</div>
-                <div className={styles.bookingInfo}>
-                  <span className={styles.bookingRoom}>Aula Utama</span>
-                  <span className={styles.bookingEvent}>Seminar Nasional Teknologi</span>
-                </div>
-                <span className={styles.bookingBadge}>Disetujui</span>
-              </div>
-              <div className={styles.bookingItem}>
-                <div className={styles.bookingTime}>13:00 - 15:00</div>
-                <div className={styles.bookingInfo}>
-                  <span className={styles.bookingRoom}>Ruang Seminar A</span>
-                  <span className={styles.bookingEvent}>Workshop Desain Grafis</span>
-                </div>
-                <span className={styles.bookingBadge}>Disetujui</span>
-              </div>
-              <div className={styles.bookingItem}>
-                <div className={styles.bookingTime}>15:30 - 17:00</div>
-                <div className={styles.bookingInfo}>
-                  <span className={styles.bookingRoom}>Lab Komputer 4</span>
-                  <span className={styles.bookingEvent}>Praktikum Pemrograman Web</span>
-                </div>
-                <span className={styles.bookingBadge}>Disetujui</span>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.calendarNote}>
-            <div className={styles.calendarNoteIcon}>
-              <CalendarCheck size={32} />
-            </div>
-            <h3 className={styles.calendarNoteTitle}>Cek Jadwal Lengkap</h3>
-            <p className={styles.calendarNoteText}>
-              Masuk ke portal untuk melihat jadwal lengkap semua ruangan dan ketersediaannya secara real-time.
-            </p>
-            <Link href="/login" className={styles.calendarNoteBtn}>
-              Lihat Jadwal Lengkap
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
+      {/* Features */}
       <section id="fitur" className={styles.features}>
-        <div className={styles.sectionHead}>
-          <span className={styles.sectionTag}>Fitur</span>
-          <h2 className={styles.sectionTitle}>Semua yang dibutuhkan kampus, dalam satu portal.</h2>
-          <p className={styles.sectionLead}>
-            Dirancang khusus untuk alur peminjaman ruangan di lingkungan UNTIRTA — sederhana
-            untuk mahasiswa, terkontrol untuk admin fakultas.
-          </p>
-        </div>
-
-        <div className={styles.featureGrid}>
-          {features.map((feature) => {
-            const Icon = feature.icon;
-            return (
-              <article key={feature.title} className={styles.featureCard}>
-                <span className={styles.featureIconWrap}>
-                  <Icon size={22} />
-                </span>
-                <h3 className={styles.featureTitle}>{feature.title}</h3>
-                <p className={styles.featureDesc}>{feature.description}</p>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
-      <section id="cara-kerja" className={styles.steps}>
-        <div className={styles.sectionHead}>
-          <span className={styles.sectionTag}>Cara Kerja</span>
-          <h2 className={styles.sectionTitle}>Tiga langkah, ruangan siap dipakai.</h2>
-          <p className={styles.sectionLead}>
-            Tidak perlu antre di sekretariat fakultas. Cukup ikuti tiga langkah sederhana berikut.
-          </p>
-        </div>
-
-        <div className={styles.stepGrid}>
-          {steps.map((step) => {
-            const Icon = step.icon;
-            return (
-              <div key={step.number} className={styles.stepCard}>
-                <div className={styles.stepNumber}>{step.number}</div>
-                <span className={styles.stepIconWrap}>
-                  <Icon size={20} />
-                </span>
-                <h3 className={styles.stepTitle}>{step.title}</h3>
-                <p className={styles.stepDesc}>{step.description}</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      <section id="tentang" className={styles.about}>
-        <div className={styles.aboutCard}>
-          <div className={styles.aboutContent}>
-            <span className={styles.sectionTag}>Tentang</span>
-            <h2 className={styles.aboutTitle}>
-              Dibangun untuk mendukung kegiatan akademik &amp; kemahasiswaan UNTIRTA.
+        <div className={styles.sectionInner}>
+          <div className={styles.sectionHead}>
+            <span className={styles.sectionTag}>Fitur Unggulan</span>
+            <h2 className={styles.sectionTitle}>
+              Semua yang dibutuhkan kampus,<br className={styles.brDesktop} /> dalam satu portal.
             </h2>
-            <p className={styles.aboutText}>
-              Aplikasi ini menjadi jembatan antara mahasiswa peminjam dan admin fakultas
-              sebagai pengelola ruangan. Setiap peminjaman dicatat, dapat dilacak, dan tidak
-              lagi bergantung pada surat fisik atau pesan singkat yang mudah hilang.
+            <p className={styles.sectionLead}>
+              Dirancang khusus untuk alur peminjaman ruangan di lingkungan UNTIRTA.
             </p>
-            <ul className={styles.aboutList}>
-              <li>
-                <CheckCircle2 size={18} /> Role terpisah untuk Mahasiswa &amp; Admin Fakultas.
-              </li>
-              <li>
-                <CheckCircle2 size={18} /> Data ruangan, jadwal, dan peminjaman tersentralisasi.
-              </li>
-              <li>
-                <CheckCircle2 size={18} /> Riwayat &amp; status peminjaman selalu transparan.
-              </li>
-            </ul>
           </div>
-
-          <div className={styles.aboutVisual} aria-hidden="true">
-            <div className={styles.aboutLogoWrap}>
-              <Image
-                src="/image/untr.png"
-                alt="Logo UNTIRTA"
-                width={120}
-                height={120}
-                className={styles.aboutLogo}
-              />
-            </div>
-            <p className={styles.aboutSig}>Universitas Sultan Ageng Tirtayasa</p>
+          <div className={styles.featureGrid}>
+            {features.map((feature, i) => {
+              const Icon = feature.icon;
+              return (
+                <article key={feature.title} className={styles.featureCard} style={{ animationDelay: `${i * 100}ms` }}>
+                  <div className={styles.featureIconWrap}>
+                    <Icon size={22} strokeWidth={1.8} />
+                  </div>
+                  <h3 className={styles.featureTitle}>{feature.title}</h3>
+                  <p className={styles.featureDesc}>{feature.description}</p>
+                  <div className={styles.featureShine} />
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
 
+      {/* Steps */}
+      <section id="cara-kerja" className={styles.steps}>
+        <div className={styles.sectionInner}>
+          <div className={styles.sectionHead}>
+            <span className={styles.sectionTag}>Cara Kerja</span>
+            <h2 className={styles.sectionTitle}>Tiga langkah mudah, ruangan siap dipakai.</h2>
+            <p className={styles.sectionLead}>
+              Tidak perlu antre di sekretariat. Cukup ikuti langkah berikut.
+            </p>
+          </div>
+          <div className={styles.stepGrid}>
+            {steps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <div key={step.number} className={styles.stepCard} style={{ animationDelay: `${i * 120}ms` }}>
+                  <div className={styles.stepNumberBig}>{step.number}</div>
+                  <div className={styles.stepIconWrap}>
+                    <Icon size={22} strokeWidth={1.8} />
+                  </div>
+                  <h3 className={styles.stepTitle}>{step.title}</h3>
+                  <p className={styles.stepDesc}>{step.description}</p>
+                </div>
+              );
+            })}
+            <div className={styles.stepConnectorLine} />
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery / Campus Section */}
+      <section id="galeri" className={styles.gallery}>
+        <div className={styles.sectionInner}>
+          <div className={styles.sectionHead}>
+            <span className={styles.sectionTag}>Kampus Kami</span>
+            <h2 className={styles.sectionTitle}>Fasilitas Kampus UNTIRTA</h2>
+            <p className={styles.sectionLead}>
+              Berbagai gedung dan ruangan yang tersedia untuk kegiatan akademik & kemahasiswaan.
+            </p>
+          </div>
+          <div className={styles.galleryGrid}>
+            <div className={`${styles.galleryItem} ${styles.galleryMain}`}>
+              <Image src="/image/gedung rektorat.webp" alt="Gedung Rektorat UNTIRTA" fill className={styles.galleryImage} quality={80} />
+              <div className={styles.galleryOverlay}>
+                <span className={styles.galleryLabel}>Gedung Rektorat</span>
+                <span className={styles.galleryCaption}>Pusat administrasi kampus</span>
+              </div>
+            </div>
+            <div className={styles.galleryItem}>
+              <Image src="/image/ft.jpg" alt="Fakultas Teknik UNTIRTA" fill className={styles.galleryImage} quality={80} />
+              <div className={styles.galleryOverlay}>
+                <span className={styles.galleryLabel}>Fakultas Teknik</span>
+                <span className={styles.galleryCaption}>Gedung perkuliahan & lab</span>
+              </div>
+            </div>
+            <div className={styles.galleryItem}>
+              <Image src="/image/untirta.webp" alt="Kampus UNTIRTA" fill className={styles.galleryImage} quality={80} />
+              <div className={styles.galleryOverlay}>
+                <span className={styles.galleryLabel}>Area Kampus</span>
+                <span className={styles.galleryCaption}>Lingkungan kampus yang asri</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About */}
+      <section className={styles.about}>
+        <div className={styles.sectionInner}>
+          <div className={styles.aboutGrid}>
+            <div className={styles.aboutContent}>
+              <span className={styles.sectionTag}>Tentang</span>
+              <h2 className={styles.aboutTitle}>
+                Mendukung kegiatan akademik & kemahasiswaan UNTIRTA.
+              </h2>
+              <p className={styles.aboutText}>
+                Aplikasi ini menjadi jembatan antara mahasiswa peminjam dan admin fakultas
+                sebagai pengelola ruangan. Setiap peminjaman dicatat, dapat dilacak, dan tidak
+                lagi bergantung pada surat fisik.
+              </p>
+              <ul className={styles.aboutList}>
+                <li><CheckCircle2 size={16} strokeWidth={2.5} /><span>Role terpisah untuk Mahasiswa & Admin Fakultas</span></li>
+                <li><CheckCircle2 size={16} strokeWidth={2.5} /><span>Data ruangan, jadwal, dan peminjaman tersentralisasi</span></li>
+                <li><CheckCircle2 size={16} strokeWidth={2.5} /><span>Riwayat & status peminjaman selalu transparan</span></li>
+              </ul>
+              <Link href="/login" className={styles.aboutCta}>
+                Masuk ke Portal <ArrowRight size={16} />
+              </Link>
+            </div>
+            <div className={styles.aboutVisual}>
+              <div className={styles.aboutImageWrap}>
+                <Image src="/image/untirta.webp" alt="Kampus UNTIRTA" fill className={styles.aboutImage} quality={80} />
+              </div>
+              <div className={styles.aboutLogoFloat}>
+                <Image src="/image/untr.png" alt="Logo UNTIRTA" width={48} height={48} />
+                <span>Universitas Sultan Ageng Tirtayasa</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact */}
       <section id="kontak" className={styles.contact}>
-        <div className={styles.contactCard}>
-          <div className={styles.contactHeader}>
+        <div className={styles.sectionInner}>
+          <div className={styles.sectionHead}>
             <span className={styles.sectionTag}>Kontak</span>
-            <h2 className={styles.contactTitle}>Butuh bantuan? Hubungi kami</h2>
-            <p className={styles.contactSubtitle}>
-              Tim admin siap membantu Anda dengan pertanyaan seputar peminjaman ruangan kampus.
-            </p>
+            <h2 className={styles.sectionTitle}>Butuh bantuan?</h2>
+            <p className={styles.sectionLead}>Tim admin siap membantu dengan pertanyaan seputar peminjaman ruangan.</p>
           </div>
-
           <div className={styles.contactGrid}>
-            <div className={styles.contactItem}>
-              <div className={styles.contactIconWrap}>
-                <Mail size={24} />
-              </div>
-              <div className={styles.contactInfo}>
-                <span className={styles.contactLabel}>Email</span>
-                <a href="mailto:3337230021@untirta.ac.id" className={styles.contactValue}>
-                  3337230021@untirta.ac.id
-                </a>
-              </div>
-            </div>
-
-            <div className={styles.contactItem}>
-              <div className={styles.contactIconWrap}>
-                <Phone size={24} />
-              </div>
-              <div className={styles.contactInfo}>
-                <span className={styles.contactLabel}>WhatsApp</span>
-                <a 
-                  href="https://wa.me/6287862741301" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className={styles.contactValue}
-                >
-                  087862741301
-                </a>
-              </div>
-            </div>
-
-            <div className={styles.contactItem}>
-              <div className={styles.contactIconWrap}>
-                <MapPin size={24} />
-              </div>
-              <div className={styles.contactInfo}>
-                <span className={styles.contactLabel}>Alamat</span>
-                <a 
-                  href="https://maps.google.com/?q=Jl.+Nasional+III+No.3,+Kotabumi,+Kec.+Purwakarta,+Kota+Cilegon,+Banten+42434"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.contactValue}
-                >
-                  Jl. Nasional III No.3, Kotabumi, Kec. Purwakarta, Kota Cilegon, Banten 42434
-                </a>
-              </div>
-            </div>
+            <a href="mailto:3337230021@untirta.ac.id" className={styles.contactCard}>
+              <div className={styles.contactIconWrap}><Mail size={22} /></div>
+              <span className={styles.contactLabel}>Email</span>
+              <span className={styles.contactValue}>3337230021@untirta.ac.id</span>
+            </a>
+            <a href="https://wa.me/6287862741301" target="_blank" rel="noopener noreferrer" className={styles.contactCard}>
+              <div className={styles.contactIconWrap}><Phone size={22} /></div>
+              <span className={styles.contactLabel}>WhatsApp</span>
+              <span className={styles.contactValue}>087862741301</span>
+            </a>
+            <a href="https://maps.google.com/?q=Jl.+Nasional+III+No.3,+Kotabumi,+Kec.+Purwakarta,+Kota+Cilegon,+Banten+42434" target="_blank" rel="noopener noreferrer" className={styles.contactCard}>
+              <div className={styles.contactIconWrap}><MapPin size={22} /></div>
+              <span className={styles.contactLabel}>Alamat</span>
+              <span className={styles.contactValue}>Jl. Nasional III No.3, Cilegon</span>
+            </a>
           </div>
         </div>
       </section>
 
+      {/* CTA */}
       <section className={styles.ctaSection}>
-        <div className={styles.ctaCard}>
-          <h2 className={styles.ctaTitle}>Siap meminjam ruangan kampus?</h2>
-          <p className={styles.ctaText}>
-            Masuk dengan akun yang telah terdaftar untuk mulai mengajukan peminjaman atau
-            mengelola persetujuan.
+        <div className={styles.ctaSectionBg}>
+          <Image src="/image/ft.jpg" alt="Kampus UNTIRTA" fill className={styles.ctaSectionBgImg} quality={75} />
+          <div className={styles.ctaSectionOverlay} />
+        </div>
+        <div className={styles.ctaSectionContent}>
+          <h2 className={styles.ctaSectionTitle}>Siap meminjam ruangan kampus?</h2>
+          <p className={styles.ctaSectionText}>
+            Masuk dengan akun yang telah terdaftar untuk mulai mengajukan peminjaman.
           </p>
           <Link href="/login" className={styles.ctaPrimary}>
-            Masuk ke Portal
-            <ArrowRight size={18} />
+            Masuk ke Portal <ArrowRight size={17} />
           </Link>
         </div>
       </section>
 
+      {/* Footer */}
       <footer className={styles.footer}>
         <div className={styles.footerInner}>
           <div className={styles.footerBrand}>
-            <Image
-              src="/image/untr.png"
-              alt="Logo UNTIRTA"
-              width={32}
-              height={32}
-              className={styles.footerLogo}
-            />
+            <Image src="/image/untr.png" alt="Logo UNTIRTA" width={28} height={28} className={styles.footerLogo} />
             <div>
               <span className={styles.footerTitle}>Peminjaman Ruangan UNTIRTA</span>
-              <span className={styles.footerSubtitle}>
-                Universitas Sultan Ageng Tirtayasa
-              </span>
+              <span className={styles.footerSubtitle}>Universitas Sultan Ageng Tirtayasa</span>
             </div>
           </div>
-          <p className={styles.footerNote}>
-            © {new Date().getFullYear()} UNTIRTA. Portal internal kampus untuk pengelolaan
-            peminjaman ruangan.
-          </p>
+          <p className={styles.footerNote}>© {new Date().getFullYear()} UNTIRTA. Portal internal kampus.</p>
         </div>
       </footer>
     </div>

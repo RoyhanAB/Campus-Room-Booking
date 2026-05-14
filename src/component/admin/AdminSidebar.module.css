@@ -1,39 +1,44 @@
-/* =========================================
-   MOBILE FIRST (Default - Posisi di Bawah)
-   ========================================= */
+/* =============================================
+   ADMIN SIDEBAR — Mobile Bottom Nav + Desktop Sidebar
+   ============================================= */
+
+/* ---- Mobile (Bottom Nav) ---- */
 .sidebar {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #ffffff;
+  background: #ffffff;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 12px 8px;
-  padding-bottom: calc(12px + env(safe-area-inset-bottom));
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 0;
-  border-top: 2px solid #f0f0f0;
+  padding: 10px 8px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
   z-index: 100;
 }
 
 .brand {
-  display: none; 
+  display: none;
+}
+
+.navList {
+  display: contents;
 }
 
 .navItem {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   text-decoration: none;
-  color: #9ca3af;
-  font-size: 11px;
+  color: var(--ink-faint);
+  font-size: 10px;
   font-weight: 600;
-  min-width: 60px;
+  min-width: 56px;
   padding: 6px 4px;
-  transition: all 0.2s ease;
+  transition: color 0.2s;
+  border-radius: var(--radius-sm);
 }
 
 .navItem:active {
@@ -41,19 +46,19 @@
 }
 
 .navIcon {
-  margin-bottom: 2px;
+  transition: color 0.2s;
 }
 
 .activeItem {
-  color: #facc15; 
+  color: var(--amber-600);
 }
 
-/* Mobile: show footer section in bottom nav */
+/* Mobile footer */
 .sidebarFooter {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .userInfo {
@@ -64,136 +69,142 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   text-decoration: none;
-  color: #9ca3af;
-  font-size: 11px;
+  color: var(--ink-faint);
+  font-size: 10px;
   font-weight: 600;
-  min-width: 60px;
+  min-width: 56px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 6px 4px;
-  transition: all 0.2s ease;
+  font-family: inherit;
+  transition: color 0.2s;
 }
 
 .logoutItem:active {
   transform: scale(0.95);
 }
 
-/* =========================================
-   DESKTOP (Posisi Sidebar Kiri)
-   ========================================= */
+/* ---- Desktop (Left Sidebar) ---- */
 @media (min-width: 768px) {
   .sidebar {
     top: 0;
     bottom: auto;
-    width: 260px;
+    width: 240px;
     height: 100vh;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start;
-    padding: 2rem 1.5rem;
-    border-radius: 0;
-    border-right: 1px solid #e5e7eb;
+    align-items: stretch;
+    padding: 24px 16px;
+    border-top: none;
+    border-right: 1px solid var(--border);
     box-shadow: none;
   }
 
   .brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 2.5rem;
-    padding: 0.25rem 0.5rem 0;
+    gap: 10px;
+    margin-bottom: 28px;
+    padding: 0 8px;
   }
 
   .brandLogoWrap {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #fef9c3, #fde68a);
-    box-shadow: 0 6px 16px -8px rgba(250, 204, 21, 0.55);
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--amber-100);
     flex-shrink: 0;
   }
 
   .brandLogo {
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     object-fit: contain;
   }
 
   .brandTextWrap {
     display: flex;
     flex-direction: column;
-    line-height: 1.15;
   }
 
   .brandTitle {
-    font-size: 1rem;
+    font-size: 14px;
     font-weight: 800;
-    color: #111827;
-    margin: 0;
+    color: var(--ink);
     letter-spacing: -0.01em;
   }
 
   .brandSubtitle {
-    font-size: 0.7rem;
+    font-size: 10px;
     font-weight: 600;
-    color: #64748b;
+    color: var(--ink-faint);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
+  }
+
+  .navList {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
   .navItem {
     flex-direction: row;
+    gap: 10px;
     width: 100%;
-    padding: 0.875rem 1rem;
-    font-size: 0.95rem;
-    border-radius: 12px;
-    margin-bottom: 0.5rem;
-    transition: all 0.2s ease;
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: var(--radius-sm);
+    min-width: auto;
   }
 
   .navItem:hover {
-    background-color: #f3f4f6;
-    color: #111827;
+    background: var(--surface-hover);
+    color: var(--ink);
   }
 
-  /* State aktif untuk Desktop */
   .activeItem {
-    background-color: #facc15;
-    color: #111827;
+    background: var(--amber-50);
+    color: var(--amber-700);
+    font-weight: 700;
   }
 
-  /* Desktop: show footer at bottom */
+  .activeItem:hover {
+    background: var(--amber-100);
+  }
+
+  /* Footer */
   .sidebarFooter {
-    display: flex;
     flex-direction: column;
     width: 100%;
     margin-top: auto;
-    padding-top: 1.5rem;
-    border-top: 1px solid #e5e7eb;
-    gap: 0.75rem;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    gap: 8px;
+    align-items: stretch;
   }
 
   .userInfo {
     display: flex !important;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem;
+    gap: 10px;
+    padding: 6px 8px;
   }
 
   .userAvatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #facc15, #f59e0b);
-    color: #111827;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--amber-500);
+    color: var(--ink);
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -201,9 +212,9 @@
   }
 
   .userNameText {
-    font-size: 0.85rem;
+    font-size: 13px;
     font-weight: 600;
-    color: #374151;
+    color: var(--ink-light);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -211,16 +222,18 @@
 
   .logoutItem {
     flex-direction: row;
+    gap: 10px;
     width: 100%;
-    padding: 0.875rem 1rem;
-    font-size: 0.95rem;
-    border-radius: 12px;
-    color: #6b7280;
-    transition: all 0.2s ease;
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: var(--radius-sm);
+    color: var(--ink-muted);
+    min-width: auto;
+    text-align: left;
   }
 
   .logoutItem:hover {
-    background-color: #fef2f2;
-    color: #dc2626;
+    background: var(--red-50);
+    color: var(--red-600);
   }
 }

@@ -1,16 +1,20 @@
+/* =============================================
+   USER HEADER — Desktop Top Nav + Mobile Bottom Nav
+   ============================================= */
+
+/* ---- Desktop Header ---- */
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid #e5e7eb;
   position: sticky;
   top: 0;
-  z-index: 90;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: 56px;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .brand {
@@ -22,135 +26,158 @@
 }
 
 .logoWrap {
-  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--amber-100);
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #fef9c3, #fde68a);
-  box-shadow: 0 4px 12px -6px rgba(250, 204, 21, 0.5);
+  padding: 3px;
   flex-shrink: 0;
 }
 
 .logo {
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
 }
 
 .titleWrap {
   display: flex;
   flex-direction: column;
-  line-height: 1.1;
 }
 
 .title {
-  font-size: 15px;
-  font-weight: 800;
-  color: #111827;
-  margin: 0;
-  letter-spacing: -0.01em;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
 }
 
 .subtitle {
   font-size: 10px;
+  color: var(--ink-faint);
   font-weight: 600;
-  color: #64748b;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 
-@media (min-width: 768px) {
-  .header {
-    padding: 16px 32px;
-  }
-
-  .logoWrap {
-    width: 44px;
-    height: 44px;
-  }
-
-  .logo {
-    width: 30px;
-    height: 30px;
-  }
-
-  .title {
-    font-size: 17px;
-  }
-
-  .subtitle {
-    font-size: 11px;
-  }
-}
-
-/* Navigasi Desktop - Disembunyikan di Mobile */
 .desktopNav {
-  display: none;
-  gap: 2rem;
+  display: flex;
   align-items: center;
+  gap: 6px;
 }
 
 .navLink {
-  text-decoration: none;
-  color: #6b7280;
+  padding: 6px 14px;
+  font-size: 13px;
   font-weight: 600;
-  font-size: 0.95rem;
-  transition: color 0.2s;
+  color: var(--ink-muted);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s, background 0.2s;
 }
 
 .navLink:hover {
-  color: #111827;
+  color: var(--ink);
+  background: var(--surface-hover);
 }
 
 .activeLink {
-  color: #facc15; /* Warna kuning sesuai mockup */
+  color: var(--amber-700);
+  background: var(--amber-50);
 }
 
-/* User section di desktop */
 .userSection {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-left: 1rem;
-  padding-left: 1.5rem;
-  border-left: 1px solid #e5e7eb;
+  gap: 10px;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid var(--border);
 }
 
 .userName {
-  font-size: 0.85rem;
+  font-size: 13px;
   font-weight: 600;
-  color: #374151;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: var(--ink-light);
 }
 
 .logoutBtn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  background-color: #ffffff;
-  color: #6b7280;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--ink-muted);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
 }
 
 .logoutBtn:hover {
-  background-color: #fef2f2;
+  background: var(--red-50);
+  color: var(--red-600);
   border-color: #fecaca;
-  color: #dc2626;
 }
 
-/* Tampilkan navigasi hanya di layar besar */
+/* ---- Mobile Bottom Nav ---- */
+.mobileNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 8px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+}
+
+.mobileNavItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+  color: var(--ink-faint);
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 56px;
+  padding: 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.2s;
+}
+
+.mobileNavItem:active {
+  transform: scale(0.95);
+}
+
+.mobileNavActive {
+  color: var(--amber-600);
+}
+
+.mobileLogoutForm {
+  display: contents;
+}
+
+/* ---- Desktop Show/Hide ---- */
 @media (min-width: 768px) {
-  .desktopNav {
+  .header {
     display: flex;
+    padding: 0 32px;
+  }
+
+  .mobileNav {
+    display: none;
   }
 }

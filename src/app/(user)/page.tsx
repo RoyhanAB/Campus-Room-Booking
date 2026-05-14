@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   ArrowRight,
   Building,
@@ -7,9 +8,7 @@ import {
   Clock,
   FileText,
   History,
-  MapPin,
-  Sparkles,
-  TrendingUp,
+  Zap,
 } from 'lucide-react';
 import { getSession } from '@/lib/auth';
 import styles from './home.module.css';
@@ -28,14 +27,17 @@ export default async function Home() {
 
   return (
     <section className={styles.page}>
-      {/* Hero dengan desain lebih dinamis */}
+      {/* Hero with campus BG */}
       <div className={styles.hero}>
-        <div className={styles.heroPattern}></div>
+        <div className={styles.heroBg}>
+          <Image src="/image/gedung rektorat.webp" alt="Kampus UNTIRTA" fill className={styles.heroBgImg} quality={75} />
+          <div className={styles.heroBgOverlay} />
+        </div>
         <div className={styles.heroContent}>
           <div className={styles.heroText}>
             {userName && (
               <p className={styles.greeting}>
-                {greeting}, <span className={styles.userName}>{userName}</span>
+                {greeting}, <span className={styles.userName}>{userName}</span> 👋
               </p>
             )}
             <h1 className={styles.title}>
@@ -43,43 +45,24 @@ export default async function Home() {
               <span className={styles.titleAccent}>Jadi Lebih Mudah</span>
             </h1>
             <p className={styles.subtitle}>
-              Sistem peminjaman ruangan kampus yang praktis. Cek jadwal real-time, 
-              ajukan booking, dan pantau status persetujuan dalam satu platform.
+              Cek jadwal real-time, ajukan booking, dan pantau status 
+              persetujuan dalam satu platform.
             </p>
             <div className={styles.ctaGroup}>
               <Link href="/listruangan" className={styles.btnPrimary}>
-                <Building size={18} />
+                <Building size={16} />
                 Cari Ruangan
               </Link>
               <Link href="/formpeminjaman" className={styles.btnSecondary}>
                 Ajukan Booking
-                <ArrowRight size={16} />
+                <ArrowRight size={15} />
               </Link>
-            </div>
-          </div>
-          
-          <div className={styles.heroVisual}>
-            <div className={styles.floatingCard}>
-              <div className={styles.cardHeader}>
-                <MapPin size={16} />
-                <span>Ruang Seminar A</span>
-              </div>
-              <div className={styles.cardBody}>
-                <div className={styles.cardStat}>
-                  <Clock size={14} />
-                  <span>Tersedia</span>
-                </div>
-                <div className={styles.cardStat}>
-                  <TrendingUp size={14} />
-                  <span>Kapasitas 60</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Quick Actions dengan layout baru */}
+      {/* Quick Actions */}
       <div className={styles.actionsSection}>
         <Link href="/listruangan" className={styles.actionCard}>
           <div className={styles.actionIcon}>
@@ -89,58 +72,58 @@ export default async function Home() {
             <h3>Daftar Ruangan</h3>
             <p>Lihat semua ruangan yang tersedia beserta fasilitasnya</p>
           </div>
-          <ArrowRight className={styles.actionArrow} size={20} />
+          <ArrowRight className={styles.actionArrow} size={18} />
         </Link>
 
         <Link href="/formpeminjaman" className={styles.actionCard}>
-          <div className={styles.actionIcon}>
+          <div className={`${styles.actionIcon} ${styles.actionIconBlue}`}>
             <FileText size={24} />
           </div>
           <div className={styles.actionContent}>
             <h3>Buat Pengajuan</h3>
             <p>Ajukan peminjaman ruangan untuk kegiatan Anda</p>
           </div>
-          <ArrowRight className={styles.actionArrow} size={20} />
+          <ArrowRight className={styles.actionArrow} size={18} />
         </Link>
 
         <Link href="/history" className={styles.actionCard}>
-          <div className={styles.actionIcon}>
+          <div className={`${styles.actionIcon} ${styles.actionIconGreen}`}>
             <History size={24} />
           </div>
           <div className={styles.actionContent}>
             <h3>Riwayat Booking</h3>
             <p>Pantau status pengajuan peminjaman Anda</p>
           </div>
-          <ArrowRight className={styles.actionArrow} size={20} />
+          <ArrowRight className={styles.actionArrow} size={18} />
         </Link>
       </div>
 
-      {/* Info Section dengan desain card yang lebih menarik */}
+      {/* Info Section */}
       <div className={styles.infoSection}>
         <div className={styles.infoCard}>
           <div className={styles.infoHeader}>
-            <Sparkles size={20} />
+            <div className={styles.infoIconWrap}><Zap size={18} /></div>
             <h3>Tips Booking</h3>
           </div>
           <ul className={styles.tipsList}>
             <li>
-              <CheckCircle size={16} />
+              <span className={styles.tipNumber}>1</span>
               <span>Cek jadwal ruangan sebelum mengajukan untuk menghindari bentrok</span>
             </li>
             <li>
-              <CheckCircle size={16} />
+              <span className={styles.tipNumber}>2</span>
               <span>Pastikan jumlah peserta sesuai dengan kapasitas ruangan</span>
             </li>
             <li>
-              <CheckCircle size={16} />
-              <span>Siapkan dokumen pendukung seperti surat permohonan atau proposal</span>
+              <span className={styles.tipNumber}>3</span>
+              <span>Siapkan dokumen pendukung seperti surat permohonan</span>
             </li>
           </ul>
         </div>
 
         <div className={styles.infoCard}>
           <div className={styles.infoHeader}>
-            <Calendar size={20} />
+            <div className={styles.infoIconWrap}><Calendar size={18} /></div>
             <h3>Proses Persetujuan</h3>
           </div>
           <div className={styles.processSteps}>
@@ -151,13 +134,15 @@ export default async function Home() {
                 <p>Isi form dan kirim pengajuan peminjaman</p>
               </div>
             </div>
+            <div className={styles.stepConnector} />
             <div className={styles.step}>
               <div className={styles.stepNumber}>2</div>
               <div className={styles.stepContent}>
                 <h4>Review Admin</h4>
-                <p>Admin fakultas akan meninjau pengajuan Anda</p>
+                <p>Admin fakultas akan meninjau pengajuan</p>
               </div>
             </div>
+            <div className={styles.stepConnector} />
             <div className={styles.step}>
               <div className={styles.stepNumber}>3</div>
               <div className={styles.stepContent}>

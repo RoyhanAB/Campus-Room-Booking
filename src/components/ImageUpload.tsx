@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { Upload, X, Image as ImageIcon } from 'lucide-react';
+import { X, Image as ImageIcon, Loader2 } from 'lucide-react';
 import Image from 'next/image';
-import { supabase } from '@/lib/supabase';
 import styles from './ImageUpload.module.css';
 
 interface ImageUploadProps {
@@ -44,27 +43,27 @@ export default function ImageUpload({
     setUploading(true);
 
     try {
-      // Create unique filename
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-      const filePath = `${fileName}`;
+      // Upload via API route (server-side, bypasses RLS)
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', folder);
 
-      // Upload to Supabase Storage
-      const { error: uploadError } = await supabase.storage
-        .from(folder)
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
 
-      if (uploadError) throw uploadError;
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Gagal upload gambar');
+      }
 
       // Set preview
-      const { data } = supabase.storage.from(folder).getPublicUrl(filePath);
-      setPreview(data.publicUrl);
+      setPreview(result.publicUrl);
       
       // Notify parent component
-      onImageChange(fileName);
+      onImageChange(result.fileName);
     } catch (err) {
       console.error('Upload error:', err);
       setError(err instanceof Error ? err.message : 'Gagal upload gambar');
@@ -117,9 +116,9 @@ export default function ImageUpload({
         <label htmlFor="image-upload" className={styles.uploadArea}>
           <div className={styles.uploadIcon}>
             {uploading ? (
-              <div className={styles.spinner} />
+              <Loader2 size={28} className={styles.spinner} />
             ) : (
-              <ImageIcon size={32} />
+              <ImageIcon size={28} />
             )}
           </div>
           <div className={styles.uploadText}>

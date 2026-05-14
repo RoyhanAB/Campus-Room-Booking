@@ -7,8 +7,6 @@ import {
   ClipboardList,
   Clock,
   PlusSquare,
-  Sparkles,
-  TrendingUp,
   XCircle,
 } from 'lucide-react';
 import styles from './HomeAdmin.module.css';
@@ -79,29 +77,25 @@ export default async function AdminHomePage() {
       label: 'Total Ruangan',
       value: totalRooms,
       icon: Building,
-      iconClass: styles.statIconYellow,
-      trend: '+2 bulan ini',
+      iconClass: styles.statIconAmber,
     },
     {
-      label: 'Menunggu Persetujuan',
+      label: 'Menunggu',
       value: pendingCount,
       icon: Clock,
       iconClass: styles.statIconBlue,
-      trend: 'Perlu ditinjau',
     },
     {
       label: 'Disetujui',
       value: approvedCount,
       icon: CheckCircle2,
       iconClass: styles.statIconGreen,
-      trend: 'Bulan ini',
     },
     {
       label: 'Ditolak',
       value: rejectedCount,
       icon: XCircle,
       iconClass: styles.statIconRed,
-      trend: 'Bulan ini',
     },
   ];
 
@@ -109,21 +103,21 @@ export default async function AdminHomePage() {
     {
       href: '/admin/listpeminjaman',
       title: 'Kelola Peminjaman',
-      description: 'Tinjau dan setujui pengajuan dari mahasiswa.',
+      description: 'Tinjau dan setujui pengajuan mahasiswa.',
       icon: ClipboardList,
       badge: pendingCount > 0 ? `${pendingCount} baru` : null,
     },
     {
       href: '/admin/tambahruangan',
-      title: 'Tambah Ruangan Baru',
-      description: 'Daftarkan ruangan baru beserta fasilitasnya.',
+      title: 'Tambah Ruangan',
+      description: 'Daftarkan ruangan baru ke sistem.',
       icon: PlusSquare,
       badge: null,
     },
     {
       href: '/admin/listruangan',
-      title: 'Atur Daftar Ruangan',
-      description: 'Edit atau hapus ruangan yang sudah terdaftar.',
+      title: 'Daftar Ruangan',
+      description: 'Edit atau hapus ruangan terdaftar.',
       icon: Building,
       badge: null,
     },
@@ -131,31 +125,29 @@ export default async function AdminHomePage() {
 
   return (
     <section className={styles.page}>
-      <div className={styles.hero}>
-        <div className={styles.heroInner}>
-          <span className={styles.heroEyebrow}>
-            <Sparkles size={14} />
-            Admin Fakultas UNTIRTA
-          </span>
-          <p className={styles.welcomeText}>
+      {/* Welcome */}
+      <div className={styles.welcome}>
+        <div className={styles.welcomeText}>
+          <p className={styles.greeting}>
             Selamat datang, <strong>{userName}</strong>
           </p>
           <h1 className={styles.facultyName}>{facultyName}</h1>
-          <p className={styles.heroSubtitle}>
-            Kelola katalog ruangan dan setujui peminjaman dari mahasiswa pada satu dashboard.
+          <p className={styles.welcomeSub}>
+            Kelola ruangan dan persetujuan peminjaman dari dashboard ini.
           </p>
-          <div className={styles.heroCtas}>
-            <Link href="/admin/listpeminjaman" className={styles.ctaPrimary}>
-              Lihat Peminjaman
-              <ArrowRight size={16} />
-            </Link>
-            <Link href="/admin/tambahruangan" className={styles.ctaSecondary}>
-              Tambah Ruangan
-            </Link>
-          </div>
+        </div>
+        <div className={styles.welcomeActions}>
+          <Link href="/admin/listpeminjaman" className={styles.btnPrimary}>
+            Lihat Peminjaman
+            <ArrowRight size={15} />
+          </Link>
+          <Link href="/admin/tambahruangan" className={styles.btnSecondary}>
+            Tambah Ruangan
+          </Link>
         </div>
       </div>
 
+      {/* Stats */}
       <div className={styles.statsGrid}>
         {stats.map((stat) => {
           const Icon = stat.icon;
@@ -163,33 +155,31 @@ export default async function AdminHomePage() {
             <div key={stat.label} className={styles.statCard}>
               <div className={styles.statHeader}>
                 <span className={`${styles.statIcon} ${stat.iconClass}`}>
-                  <Icon size={20} />
+                  <Icon size={18} strokeWidth={2} />
                 </span>
-                <TrendingUp size={14} className={styles.trendIcon} />
+                <span className={styles.statLabel}>{stat.label}</span>
               </div>
               <span className={styles.statValue}>{stat.value}</span>
-              <span className={styles.statLabel}>{stat.label}</span>
-              <span className={styles.statTrend}>{stat.trend}</span>
             </div>
           );
         })}
       </div>
 
+      {/* Panels */}
       <div className={styles.panelGrid}>
+        {/* Recent */}
         <div className={styles.panel}>
           <div className={styles.panelHeader}>
-            <h2 className={styles.panelTitle}>
-              <ClipboardList size={18} /> Peminjaman Terbaru
-            </h2>
+            <h2 className={styles.panelTitle}>Peminjaman Terbaru</h2>
             <Link href="/admin/listpeminjaman" className={styles.panelLink}>
-              Lihat semua <ChevronRight size={14} />
+              Semua <ChevronRight size={14} />
             </Link>
           </div>
 
           {recent.length === 0 ? (
             <div className={styles.emptyState}>
               <ClipboardList size={20} />
-              Belum ada pengajuan peminjaman.
+              <span>Belum ada pengajuan peminjaman.</span>
             </div>
           ) : (
             <div className={styles.recentList}>
@@ -201,9 +191,6 @@ export default async function AdminHomePage() {
                     href={`/admin/listpeminjaman/${item.peminjaman_id}`}
                     className={styles.recentItem}
                   >
-                    <span className={styles.recentIcon}>
-                      <ClipboardList size={18} />
-                    </span>
                     <div className={styles.recentInfo}>
                       <span className={styles.recentName}>
                         {item.nama_kegiatan || 'Tanpa nama kegiatan'}
@@ -222,11 +209,10 @@ export default async function AdminHomePage() {
           )}
         </div>
 
+        {/* Quick Actions */}
         <div className={styles.panel}>
           <div className={styles.panelHeader}>
-            <h2 className={styles.panelTitle}>
-              <Sparkles size={18} /> Aksi Cepat
-            </h2>
+            <h2 className={styles.panelTitle}>Aksi Cepat</h2>
           </div>
           <div className={styles.actionList}>
             {quickActions.map((action) => {
@@ -234,7 +220,7 @@ export default async function AdminHomePage() {
               return (
                 <Link key={action.href} href={action.href} className={styles.actionItem}>
                   <span className={styles.actionIcon}>
-                    <Icon size={20} />
+                    <Icon size={18} strokeWidth={2} />
                   </span>
                   <div className={styles.actionInfo}>
                     <div className={styles.actionTitleRow}>
@@ -245,7 +231,7 @@ export default async function AdminHomePage() {
                     </div>
                     <p className={styles.actionDesc}>{action.description}</p>
                   </div>
-                  <ChevronRight size={18} className={styles.actionArrow} />
+                  <ChevronRight size={16} className={styles.actionArrow} />
                 </Link>
               );
             })}

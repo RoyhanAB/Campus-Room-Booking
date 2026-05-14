@@ -19,13 +19,14 @@ export default function AdminSidebar({ userName }: { userName?: string }) {
 
   return (
     <aside className={styles.sidebar}>
+      {/* Brand */}
       <div className={styles.brand}>
         <span className={styles.brandLogoWrap}>
           <Image
             src="/image/untr.png"
             alt="Logo UNTIRTA"
-            width={26}
-            height={26}
+            width={24}
+            height={24}
             className={styles.brandLogo}
           />
         </span>
@@ -35,23 +36,26 @@ export default function AdminSidebar({ userName }: { userName?: string }) {
         </div>
       </div>
 
-      {navItems.map((item) => {
-        const Icon = item.icon;
-        const isActive = pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path));
+      {/* Nav */}
+      <nav className={styles.navList}>
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path));
 
-        return (
-          <Link
-            key={item.name}
-            href={item.path}
-            className={`${styles.navItem} ${isActive ? styles.activeItem : ''}`}
-          >
-            <Icon size={22} strokeWidth={isActive ? 2.5 : 2} className={styles.navIcon} />
-            <span>{item.name}</span>
-          </Link>
-        );
-      })}
+          return (
+            <Link
+              key={item.name}
+              href={item.path}
+              className={`${styles.navItem} ${isActive ? styles.activeItem : ''}`}
+            >
+              <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className={styles.navIcon} />
+              <span>{item.name}</span>
+            </Link>
+          );
+        })}
+      </nav>
 
-      {/* Spacer + Logout di bagian bawah sidebar */}
+      {/* Footer */}
       <div className={styles.sidebarFooter}>
         {userName && (
           <div className={styles.userInfo}>
@@ -61,7 +65,7 @@ export default function AdminSidebar({ userName }: { userName?: string }) {
         )}
         <form action={logoutAction}>
           <button type="submit" className={styles.logoutItem}>
-            <LogOut size={22} strokeWidth={2} className={styles.navIcon} />
+            <LogOut size={20} strokeWidth={2} className={styles.navIcon} />
             <span>Keluar</span>
           </button>
         </form>

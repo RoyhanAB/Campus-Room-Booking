@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { supabaseAdmin } from './supabaseAdmin';
 import { Room } from '../types/room';
 import { Building } from '../types/building';
 
@@ -58,7 +59,8 @@ export const createRoom = async (payload: {
   deskripsi?: string;
   foto?: string;
 }): Promise<Room> => {
-  const { data, error } = await supabase
+  // Menggunakan admin client untuk bypass RLS
+  const { data, error } = await supabaseAdmin
     .from('rooms')
     .insert({
       room_id: payload.room_id,
@@ -93,7 +95,8 @@ export const updateRoom = async (
     foto?: string;
   }
 ): Promise<Room> => {
-  const { data, error } = await supabase
+  // Menggunakan admin client untuk bypass RLS
+  const { data, error } = await supabaseAdmin
     .from('rooms')
     .update(payload)
     .eq('room_id', roomId)
@@ -111,7 +114,8 @@ export const updateRoom = async (
 // ===================== DELETE =====================
 
 export const deleteRoomById = async (roomId: string): Promise<void> => {
-  const { error } = await supabase
+  // Menggunakan admin client untuk bypass RLS
+  const { error } = await supabaseAdmin
     .from('rooms')
     .delete()
     .eq('room_id', roomId);

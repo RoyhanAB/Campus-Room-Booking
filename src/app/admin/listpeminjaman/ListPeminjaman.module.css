@@ -1,266 +1,147 @@
+/* =============================================
+   LIST PEMINJAMAN — Admin View — Rich Design
+   ============================================= */
+
 .container {
-  padding: 1.5rem;
+  padding: 20px 20px 100px;
+  max-width: 1100px;
+  margin: 0 auto;
+  animation: slideUp 0.4s ease both;
 }
 
-/* Header Section (Title & Search) */
+/* Header */
 .headerRow {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 16px;
+  margin-bottom: 24px;
 }
-
 .pageTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #111827;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ink);
   margin: 0;
+  letter-spacing: -0.02em;
 }
-
 .actionArea {
   display: flex;
-  gap: 0.75rem;
+  gap: 10px;
   align-items: center;
 }
-
 .searchWrapper {
   flex: 1;
   position: relative;
-  display: flex;
-  align-items: center;
 }
-
 .searchInput {
   width: 100%;
-  padding: 0.6rem 1rem 0.6rem 2.5rem;
-  border-radius: 9999px;
-  border: 1px solid #d1d5db;
+  padding: 11px 16px 11px 44px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border);
   outline: none;
-  font-size: 0.9rem;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-
-.searchIcon {
-  position: absolute;
-  left: 0.75rem;
-  color: #6b7280;
+.searchInput:focus {
+  border-color: var(--amber-500);
+  box-shadow: 0 0 0 4px rgba(245,158,11,0.1);
 }
-
+.searchInput::placeholder { color: var(--ink-faint); font-size: 13px; }
+.searchIcon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--ink-faint); }
 .filterButton {
-  background-color: #111827;
-  color: #ffffff;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-/* Table Section - Desktop Only */
-.tableCard {
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-  display: none; /* Hidden on mobile by default */
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.table th {
-  text-align: left;
-  padding: 1rem;
-  font-size: 0.85rem;
-  color: #6b7280;
-  font-weight: 600;
-  border-bottom: 2px solid #f3f4f6;
-  white-space: nowrap;
-}
-
-.table td {
-  padding: 1rem;
-  font-size: 0.9rem;
-  color: #111827;
-  border-bottom: 1px solid #f3f4f6;
-  vertical-align: middle;
-}
-
-.table tbody tr:hover {
-  background-color: #f9fafb;
-}
-
-/* Mobile Card View */
-.mobileCards {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.card {
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-.cardTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #111827;
-  margin: 0;
-  flex: 1;
-  line-height: 1.4;
-}
-
-.cardBody {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.cardRow {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.cardLabel {
-  color: #6b7280;
-  font-weight: 500;
-  flex-shrink: 0;
-}
-
-.cardValue {
-  color: #111827;
-  text-align: right;
-  word-break: break-word;
-}
-
-.cardFooter {
-  padding-top: 0.75rem;
-  border-top: 1px solid #f3f4f6;
-}
-
-.btnDetailMobile {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.625rem 1rem;
-  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
+  background: var(--navy-900); color: #fff;
+  border: none; border-radius: var(--radius-md);
+  width: 44px; height: 44px; display: flex; align-items: center;
+  justify-content: center; cursor: pointer; flex-shrink: 0;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+.filterButton:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(15,23,42,0.2); }
 
-.btnDetailMobile:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+/* Desktop Table */
+.tableCard {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 0;
+  overflow: hidden; display: none;
+  box-shadow: var(--shadow-sm);
 }
-
-.btnDetailMobile:active {
-  transform: translateY(0);
+.table { width: 100%; border-collapse: collapse; }
+.table th {
+  text-align: left; padding: 14px 18px; font-size: 12px;
+  color: var(--ink-muted); font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; background: var(--surface-raised);
+  border-bottom: 1px solid var(--border);
 }
-
-.emptyState {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: #6b7280;
-  font-size: 0.9rem;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
+.table td {
+  padding: 14px 18px; font-size: 14px; color: var(--ink);
+  border-bottom: 1px solid var(--border-light); vertical-align: middle;
 }
+.table tbody tr {
+  transition: background 0.15s;
+}
+.table tbody tr:hover { background: var(--amber-50); }
+.table tbody tr:last-child td { border-bottom: none; }
 
 /* Status Badge */
 .statusBadge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
+  padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; text-transform: capitalize;
+  display: inline-block;
 }
 
 /* Action Buttons */
-.actionCell {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
+.actionCell { display: flex; gap: 6px; align-items: center; }
 .btnAction {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  cursor: pointer;
-  color: white;
-  transition: transform 0.1s;
+  width: 34px; height: 34px; border-radius: var(--radius-sm);
+  display: flex; justify-content: center; align-items: center;
+  border: none; cursor: pointer; color: white;
+  transition: transform 0.2s, box-shadow 0.2s; text-decoration: none;
+}
+.btnAction:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.btnDetail { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+
+/* Mobile Card View */
+.mobileCards { display: flex; flex-direction: column; gap: 12px; }
+.card {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 20px;
+  transition: border-color 0.2s, box-shadow 0.3s;
+  animation: slideUp 0.4s ease both;
+}
+.card:hover { border-color: var(--amber-400); box-shadow: var(--shadow-md); }
+.cardHeader {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 12px; margin-bottom: 14px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-light);
+}
+.cardTitle { font-size: 15px; font-weight: 700; color: var(--ink); margin: 0; flex: 1; line-height: 1.4; }
+.cardBody { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.cardRow { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.cardLabel { color: var(--ink-muted); font-weight: 500; flex-shrink: 0; }
+.cardValue { color: var(--ink); font-weight: 600; text-align: right; word-break: break-word; }
+.cardFooter { padding-top: 14px; border-top: 1px solid var(--border-light); }
+.btnDetailMobile {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; width: 100%; padding: 11px; font-family: inherit;
+  background: linear-gradient(135deg, var(--amber-400), var(--amber-500));
+  color: var(--ink); border: none; border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(245,158,11,0.25);
+}
+.btnDetailMobile:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(245,158,11,0.35); }
+
+.emptyState {
+  text-align: center; padding: 48px 20px; color: var(--ink-faint);
+  font-size: 14px; background: #fff; border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
 }
 
-.btnAction:active {
-  transform: scale(0.95);
-}
-
-.btnAcc {
-  background-color: #22c55e; /* Hijau */
-}
-
-.btnReject {
-  background-color: #ef4444; /* Merah */
-}
-
-.btnDetail {
-  background-color: #3b82f6; /* Biru */
-}
-
-/* Responsive Desktop */
 @media (min-width: 768px) {
-  .headerRow {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .actionArea {
-    width: 400px;
-  }
-  
-  /* Show table on desktop */
-  .tableCard {
-    display: block;
-  }
-  
-  /* Hide mobile cards on desktop */
-  .mobileCards {
-    display: none;
-  }
+  .container { padding: 28px 28px 48px; }
+  .headerRow { flex-direction: row; justify-content: space-between; align-items: center; }
+  .actionArea { width: 420px; }
+  .tableCard { display: block; }
+  .mobileCards { display: none; }
 }
