@@ -57,14 +57,21 @@
 .submitBtn {
   width: 100%; padding: 14px;
   border: none; border-radius: var(--radius-md);
-  font-size: 15px; font-weight: 700; font-family: inherit;
-  color: var(--ink);
-  background: linear-gradient(135deg, var(--amber-400), var(--amber-500));
-  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 20px rgba(245,158,11,0.3); margin-top: 8px;
+  font-size: 14px; font-weight: 600; font-family: inherit;
+  color: #fff;
+  background: var(--amber-500);
+  cursor: pointer; transition: background 0.2s;
+  margin-top: 8px;
 }
-.submitBtn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,158,11,0.4); }
+.submitBtn:hover:not(:disabled) { background: var(--amber-600); }
 .submitBtn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+.helperText {
+  font-size: 11px;
+  color: var(--ink-faint);
+  font-weight: 500;
+  margin-top: -2px;
+}
 
 @media (min-width: 640px) {
   .container { padding: 28px 28px 48px; }

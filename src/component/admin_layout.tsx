@@ -3,11 +3,11 @@
 import AdminSidebar from '@/component/admin/AdminSidebar';
 
 
-export function AdminLayout({ children, userName }: { children: React.ReactNode; userName?: string }) {
+export function AdminLayout({ children, userName, role }: { children: React.ReactNode; userName?: string; role?: string }) {
     return (
         <>
             <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f9fafb' }}>
-                <AdminSidebar userName={userName} />
+                <AdminSidebar userName={userName} role={role} />
                 <main
                     style={{
                         flex: 1,
@@ -22,7 +22,7 @@ export function AdminLayout({ children, userName }: { children: React.ReactNode;
                 <style>{`
                     @media (min-width: 768px) {
                     .admin-content-wrapper {
-                        margin-left: 260px; /* Offset selebar sidebar */
+                        margin-left: 240px;
                         padding-bottom: 0 !important;
                     }
                     }

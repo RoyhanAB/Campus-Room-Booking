@@ -9,7 +9,7 @@ export default async function Admin({
   const session = await getSession();
 
   return (
-    <AdminLayout userName={session?.user_name}>
+    <AdminLayout userName={session?.user_name} role={session?.role}>
       {children}
     </AdminLayout>
   );

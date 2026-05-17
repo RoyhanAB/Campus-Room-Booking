@@ -1,224 +1,282 @@
-.container {
-  padding: 1.5rem;
-  background-color: #f3f4f6;
+/* =============================================
+   ADMIN ROOM DETAIL — Unified Clean Style
+   ============================================= */
+
+.page {
   min-height: 100vh;
-  padding-bottom: 100px;
+  background: var(--surface-raised);
+  padding: 0 0 100px 0;
 }
 
-.pageTitle {
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 1.5rem;
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 13px;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+.backButton:hover {
+  border-color: var(--amber-400);
+}
+
+/* Hero Section */
+.heroSection {
+  background: #fff;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
 }
 
 .imageWrapper {
-  width: 100%;
-  height: 200px;
   position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-bottom: 1.5rem;
+  width: 100%;
+  height: 240px;
+  background: var(--surface-raised);
 }
-
 .heroImage {
   object-fit: cover;
 }
-
-/* Card Section Umum */
-.card {
-  background-color: #ffffff;
-  border-radius: 24px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+.imageBadge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Stats (Lokasi, Lantai, Kapasitas) */
-.statsRow {
+.heroContent {
+  padding: 24px;
+}
+.roomTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
+}
+.roomSubtitle {
+  font-size: 14px;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.statCard {
   display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: var(--surface-raised);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
 }
-
-.statBox {
-  flex: 1;
-  background-color: #f9fafb;
-  border-radius: 16px;
-  padding: 1rem 0.5rem;
+.statIcon {
+  color: var(--amber-500);
+  flex-shrink: 0;
+}
+.statInfo {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
+  gap: 1px;
+  min-width: 0;
 }
-
 .statLabel {
-  font-size: 0.75rem;
-  color: #6b7280;
+  font-size: 11px;
+  color: var(--ink-faint);
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
-
 .statValue {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #111827;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Tipografi Konten */
-.sectionTitle {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 0.75rem;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 0.5rem;
+/* Schedule Section */
+.scheduleSection {
+  background: #fff;
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
 }
-
-.description {
-  font-size: 0.85rem;
-  color: #4b5563;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  text-align: justify;
-}
-
-/* Fasilitas */
-.facilitiesGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
-}
-
-.facilityItem {
-  background-color: #f9fafb;
-  padding: 0.75rem;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  color: #4b5563;
-  text-align: center;
-  font-weight: 500;
-}
-
-/* Tombol Pinjam */
-.btnPinjam {
-  display: block; 
-  text-align: center; 
-  text-decoration: none; 
-  box-sizing: border-box; 
-  width: 100%;
-  background-color: #facc15; 
-  color: #111827;
-  border: 2px solid #111827; 
-  border-radius: 9999px;
-  padding: 0.875rem;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: transform 0.1s;
-}
-
-.btnPinjam:active {
-  transform: scale(0.98);
-}
-
-/* Jadwal Section */
 .scheduleHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-light);
 }
-
-.scheduleDate {
-  font-size: 0.9rem;
+.scheduleTitle {
+  font-size: 16px;
   font-weight: 700;
-  color: #111827;
+  color: var(--ink);
+  margin: 0 0 2px 0;
 }
-
-.calendarIconWrapper {
-  background-color: #111827;
-  color: #ffffff;
-  padding: 0.5rem;
-  border-radius: 50%;
+.scheduleSubtitle {
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin: 0;
+}
+.scheduleIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--amber-50);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--amber-600);
+  flex-shrink: 0;
 }
 
-.scheduleItem {
-  background-color: #f9fafb;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 0.75rem;
+/* Schedule List */
+.scheduleList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-
-.scheduleTitle {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 0.25rem 0;
+.scheduleCard {
+  padding: 12px 16px;
+  background: var(--surface-raised);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--amber-400);
+  transition: background 0.2s;
 }
-
+.scheduleCard:hover {
+  background: var(--amber-50);
+}
 .scheduleTime {
-  font-size: 0.75rem;
-  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-muted);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.scheduleTime svg {
+  color: var(--ink-faint);
+}
+.scheduleEventName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
   margin: 0;
 }
 
-/* ==========================
-   Action Buttons (Admin)
-   ========================== */
-.actionButtons {
+/* Empty Schedule */
+.emptySchedule {
   display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--ink-faint);
+}
+.emptySchedule svg {
+  margin-bottom: 12px;
+  opacity: 0.4;
+}
+.emptySchedule p {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-muted);
+  margin: 0;
 }
 
-/* Tombol Edit - Warna Kuning */
+/* Action Buttons */
+.actionButtons {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
 .btnEdit {
-  flex: 1; /* Membuat tombol membagi lebar sama rata */
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  background-color: #facc15; 
-  color: #111827;
-  border: 2px solid #111827; 
-  border-radius: 9999px;
-  padding: 0.875rem;
-  font-weight: 700;
-  font-size: 1rem;
+  background: var(--amber-500);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: background 0.2s;
+  font-family: inherit;
 }
-
-.btnEdit:active {
-  transform: scale(0.98);
+.btnEdit:hover {
+  background: var(--amber-600);
 }
-
-/* Tombol Hapus - Warna Merah */
 .btnDelete {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  background-color: #ef4444; /* Merah */
-  color: #ffffff; /* Teks Putih */
-  border: 2px solid #b91c1c; /* Border Merah Gelap */
-  border-radius: 9999px;
-  padding: 0.875rem;
-  font-weight: 700;
-  font-size: 1rem;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+.btnDelete:hover {
+  background: #dc2626;
 }
 
-.btnDelete:active {
-  transform: scale(0.98);
+/* Responsive */
+@media (max-width: 640px) {
+  .heroContent {
+    padding: 20px;
+  }
+  .roomTitle {
+    font-size: 18px;
+  }
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  .scheduleSection {
+    padding: 20px;
+  }
 }

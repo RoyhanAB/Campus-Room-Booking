@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Search, SlidersHorizontal, Eye } from 'lucide-react';
+import { Search, Eye, Download } from 'lucide-react';
 import styles from './ListPeminjaman.module.css';
 import { Peminjaman } from '@/types/peminjaman';
 
@@ -17,68 +17,122 @@ const formatDate = (isoString: string) => {
 
 const getStatusColor = (status: string) => {
   switch (status?.toLowerCase()) {
-    case 'disetujui': return { bg: '#dcfce7', text: '#166534' };
-    case 'ditolak':   return { bg: '#fee2e2', text: '#991b1b' };
+    case 'disetujui': return { bg: 'var(--green-50)', text: 'var(--green-700)' };
+    case 'ditolak':   return { bg: 'var(--red-50)', text: 'var(--red-600)' };
+    case 'dibatalkan': return { bg: '#f3f4f6', text: '#6b7280' };
     case 'menunggu':
-    default:          return { bg: '#fef9c3', text: '#854d0e' };
+    default:          return { bg: 'var(--amber-50)', text: 'var(--amber-700)' };
   }
 };
+
+type StatusFilter = 'semua' | 'menunggu' | 'disetujui' | 'ditolak' | 'dibatalkan';
 
 export default function ListPeminjamanClient({ initialData }: { initialData: Peminjaman[] }) {
   const router    = useRouter();
   const pathname  = usePathname();
   const searchParams = useSearchParams();
 
-  // --- DoD #3: URL-persisted search ---
   const initialQ = searchParams.get('q') ?? '';
+  const initialStatus = (searchParams.get('status') ?? 'semua') as StatusFilter;
   const [searchTerm, setSearchTerm] = useState(initialQ);
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>(initialStatus);
 
-  const updateSearch = useCallback(
-    (value: string) => {
-      setSearchTerm(value);
-      const params = new URLSearchParams(searchParams.toString());
-      if (value) {
-        params.set('q', value);
-      } else {
-        params.delete('q');
-      }
+  const updateURL = useCallback(
+    (search: string, status: StatusFilter) => {
+      const params = new URLSearchParams();
+      if (search) params.set('q', search);
+      if (status !== 'semua') params.set('status', status);
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     },
-    [router, pathname, searchParams],
+    [router, pathname],
   );
 
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    updateURL(value, statusFilter);
+  };
+
+  const handleStatusChange = (status: StatusFilter) => {
+    setStatusFilter(status);
+    updateURL(searchTerm, status);
+  };
+
   const filteredList = initialData.filter((item) => {
-    if (!searchTerm) return true;
-    const q = searchTerm.toLowerCase();
-    return (
-      item.nama_kegiatan.toLowerCase().includes(q) ||
-      item.user_id.toLowerCase().includes(q) ||
-      item.room_id.toLowerCase().includes(q)
-    );
+    // Filter by status
+    if (statusFilter !== 'semua') {
+      if ((item.status || 'menunggu').toLowerCase() !== statusFilter) return false;
+    }
+
+    // Filter by search
+    if (searchTerm) {
+      const q = searchTerm.toLowerCase();
+      return (
+        item.nama_kegiatan.toLowerCase().includes(q) ||
+        item.user_id.toLowerCase().includes(q) ||
+        item.room_id.toLowerCase().includes(q)
+      );
+    }
+
+    return true;
   });
 
-
+  const statusFilters: { key: StatusFilter; label: string; count: number }[] = [
+    { key: 'semua', label: 'Semua', count: initialData.length },
+    { key: 'menunggu', label: 'Menunggu', count: initialData.filter(i => (i.status || 'menunggu').toLowerCase() === 'menunggu').length },
+    { key: 'disetujui', label: 'Disetujui', count: initialData.filter(i => i.status?.toLowerCase() === 'disetujui').length },
+    { key: 'ditolak', label: 'Ditolak', count: initialData.filter(i => i.status?.toLowerCase() === 'ditolak').length },
+    { key: 'dibatalkan', label: 'Dibatalkan', count: initialData.filter(i => i.status?.toLowerCase() === 'dibatalkan').length },
+  ];
 
   return (
     <div className={styles.container}>
       {/* Header & Search */}
       <div className={styles.headerRow}>
-        <h1 className={styles.pageTitle}>List Pengajuan</h1>
+        <h1 className={styles.pageTitle}>Pengajuan Peminjaman</h1>
         <div className={styles.actionArea}>
           <div className={styles.searchWrapper}>
-            <Search className={styles.searchIcon} size={18} />
+            <Search className={styles.searchIcon} size={16} />
             <input
               type="text"
-              placeholder="Cari kegiatan, ruangan, atau peminjam..."
+              placeholder="Cari kegiatan, ruangan..."
               className={styles.searchInput}
               value={searchTerm}
-              onChange={(e) => updateSearch(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
             />
           </div>
-          <button className={styles.filterButton} aria-label="Filter">
-            <SlidersHorizontal size={18} />
-          </button>
         </div>
+      </div>
+
+      {/* Export + Status Filter */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+
+      {/* Status Filter Pills */}
+      <div className={styles.filterPills}>
+        {statusFilters.map((f) => (
+          <button
+            key={f.key}
+            className={`${styles.filterPill} ${statusFilter === f.key ? styles.filterPillActive : ''}`}
+            onClick={() => handleStatusChange(f.key)}
+          >
+            {f.label}
+            <span className={styles.filterPillCount}>{f.count}</span>
+          </button>
+        ))}
+      </div>
+
+        <a
+          href="/api/export-csv"
+          download
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600,
+            background: 'var(--green-50)', color: 'var(--green-700)',
+            border: '1px solid var(--green-100)', textDecoration: 'none',
+            transition: 'background 0.2s', flexShrink: 0,
+          }}
+        >
+          <Download size={14} /> Export CSV
+        </a>
       </div>
 
       {/* Desktop Table View */}
@@ -128,8 +182,8 @@ export default function ListPeminjamanClient({ initialData }: { initialData: Pem
               })
             ) : (
               <tr>
-                <td colSpan={6} style={{ textAlign: 'center', padding: '2rem', color: '#6b7280' }}>
-                  {searchTerm ? 'Tidak ada data yang cocok.' : 'Belum ada data pengajuan peminjaman.'}
+                <td colSpan={6} style={{ textAlign: 'center', padding: '2rem', color: 'var(--ink-muted)' }}>
+                  {searchTerm || statusFilter !== 'semua' ? 'Tidak ada data yang cocok.' : 'Belum ada data pengajuan peminjaman.'}
                 </td>
               </tr>
             )}
@@ -183,7 +237,7 @@ export default function ListPeminjamanClient({ initialData }: { initialData: Pem
           })
         ) : (
           <div className={styles.emptyState}>
-            {searchTerm ? 'Tidak ada data yang cocok.' : 'Belum ada data pengajuan peminjaman.'}
+            {searchTerm || statusFilter !== 'semua' ? 'Tidak ada data yang cocok.' : 'Belum ada data pengajuan peminjaman.'}
           </div>
         )}
       </div>

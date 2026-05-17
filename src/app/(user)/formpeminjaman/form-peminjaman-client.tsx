@@ -30,6 +30,9 @@ const defaultDateRange = (() => {
   };
 })();
 
+// Min date: sekarang (tidak boleh booking masa lalu)
+const minDateTime = toDatetimeLocal(new Date());
+
 export function FormPeminjamanClient({
   defaultRoomId,
   userId,
@@ -85,10 +88,38 @@ export function FormPeminjamanClient({
       return;
     }
 
+    if (room.kapasitas && pesertaNum > room.kapasitas) {
+      setStatus('error');
+      setMessage(`Jumlah peserta (${pesertaNum}) melebihi kapasitas ruangan (${room.kapasitas} orang).`);
+      return;
+    }
+
     if (new Date(tanggalSelesai) <= new Date(tanggalMulai)) {
       setStatus('error');
       setMessage('Tanggal selesai harus lebih besar dari tanggal mulai.');
       return;
+    }
+
+    // Validasi: tidak boleh booking di masa lalu
+    if (new Date(tanggalMulai) < new Date()) {
+      setStatus('error');
+      setMessage('Tidak dapat membuat booking untuk waktu yang sudah lewat.');
+      return;
+    }
+
+    // Cek jadwal conflict sebelum submit
+    try {
+      setStatus('loading');
+      setMessage('Memeriksa ketersediaan jadwal...');
+      const res = await fetch(`/api/check-conflict?room_id=${roomId.trim().toUpperCase()}&start=${new Date(tanggalMulai).toISOString()}&end=${new Date(tanggalSelesai).toISOString()}`);
+      const conflictData = await res.json();
+      if (conflictData.hasConflict) {
+        setStatus('error');
+        setMessage(`Jadwal bentrok dengan: ${conflictData.names}. Silakan pilih waktu lain.`);
+        return;
+      }
+    } catch {
+      // Lanjutkan jika conflict check gagal
     }
 
     try {
@@ -148,7 +179,7 @@ export function FormPeminjamanClient({
 
           <div className={styles.roomInfo}>
             <h1 className={styles.roomTitle}>{buildingName}</h1>
-            <p className={styles.roomDesc}>{room.deskripsi || 'Ruang kelas dasar teknik'}</p>
+            <p className={styles.roomDesc}>{room.deskripsi || 'Ruangan kampus'}</p>
 
             <div className={styles.infoCards}>
               <div className={styles.infoCard}>
@@ -229,6 +260,7 @@ export function FormPeminjamanClient({
                   id="tanggalMulai"
                   type="datetime-local"
                   value={tanggalMulai}
+                  min={minDateTime}
                   onChange={(event) => handleTanggalMulaiChange(event.target.value)}
                   className={styles.input}
                   required
@@ -244,7 +276,7 @@ export function FormPeminjamanClient({
                   id="tanggalSelesai"
                   type="datetime-local"
                   value={tanggalSelesai}
-                  min={tanggalMulai}
+                  min={tanggalMulai || minDateTime}
                   onChange={(event) => setTanggalSelesai(event.target.value)}
                   className={styles.input}
                   required
@@ -272,7 +304,9 @@ export function FormPeminjamanClient({
                 placeholder="Masukkan jumlah peserta"
                 required
               />
-              <span className={styles.helperText}>Masukkan angka saja (contoh: 25)</span>
+              <span className={styles.helperText}>
+                Maksimal {room.kapasitas} orang (kapasitas ruangan)
+              </span>
             </div>
 
             {/* Deskripsi */}

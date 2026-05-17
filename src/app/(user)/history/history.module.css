@@ -1,117 +1,161 @@
 /* =============================================
-   HISTORY PAGE — Rich Card Design
+   HISTORY PAGE — Clean Corporate
    ============================================= */
 
 .page {
   min-height: 100vh;
   background: var(--surface-raised);
-  padding: 24px 16px 120px;
+  padding: 20px 16px 120px;
 }
 
 .header {
-  max-width: 1000px; margin: 0 auto 28px;
+  max-width: 1000px; margin: 0 auto 24px;
   display: flex; flex-wrap: wrap; justify-content: space-between;
-  align-items: flex-start; gap: 20px;
-  animation: slideUp 0.4s ease both;
+  align-items: flex-start; gap: 16px;
+  animation: slideUp 0.3s ease both;
 }
 .title {
-  font-size: 28px; font-weight: 800; color: var(--ink);
-  margin: 0 0 6px; letter-spacing: -0.025em;
+  font-size: 22px; font-weight: 700; color: var(--ink);
+  margin: 0 0 4px; letter-spacing: -0.01em;
 }
-.subtitle { font-size: 15px; color: var(--ink-muted); margin: 0; }
+.subtitle { font-size: 13px; color: var(--ink-muted); margin: 0; }
 
-.stats { display: flex; gap: 12px; }
+.stats { display: flex; gap: 10px; }
 .statItem {
   display: flex; flex-direction: column; align-items: center;
-  padding: 14px 22px; background: #fff; border-radius: var(--radius-md);
+  padding: 12px 18px; background: #fff; border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s;
 }
-.statItem:hover { border-color: var(--amber-400); box-shadow: var(--shadow-sm); }
-.statValue { font-size: 26px; font-weight: 800; color: var(--ink); line-height: 1; }
-.statLabel { font-size: 11px; color: var(--ink-faint); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.statItem:hover { border-color: var(--amber-400); }
+.statValue { font-size: 22px; font-weight: 700; color: var(--ink); line-height: 1; }
+.statLabel { font-size: 10px; color: var(--ink-faint); margin-top: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
 
 /* Empty State */
-.emptyState { max-width: 400px; margin: 80px auto; text-align: center; padding: 48px 24px; }
+.emptyState { max-width: 380px; margin: 60px auto; text-align: center; padding: 40px 20px; }
 .emptyIcon {
-  width: 80px; height: 80px; margin: 0 auto 20px;
-  border-radius: var(--radius-xl);
-  background: linear-gradient(135deg, var(--amber-50), var(--amber-100));
-  border: 1px solid var(--amber-200);
+  width: 64px; height: 64px; margin: 0 auto 16px;
+  border-radius: var(--radius-lg);
+  background: var(--amber-50);
+  border: 1px solid var(--amber-100);
   display: flex; align-items: center; justify-content: center; color: var(--amber-600);
 }
-.emptyState h3 { font-size: 20px; font-weight: 800; color: var(--ink); margin: 0 0 8px; }
-.emptyState p { font-size: 14px; color: var(--ink-muted); margin: 0; }
+.emptyState h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin: 0 0 6px; }
+.emptyState p { font-size: 13px; color: var(--ink-muted); margin: 0; }
 
 /* List Container */
-.listContainer { max-width: 1000px; margin: 0 auto; display: grid; gap: 14px; }
+.listContainer { max-width: 1000px; margin: 0 auto; display: grid; gap: 10px; }
 
 /* Booking Card */
 .bookingCard {
   background: #fff; border-radius: var(--radius-lg);
   border: 1px solid var(--border); overflow: hidden;
-  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-  animation: slideUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  transition: border-color 0.2s;
+  animation: slideUp 0.3s ease both;
 }
 .bookingCard:hover {
-  transform: translateY(-4px); border-color: var(--amber-400);
-  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  border-color: var(--amber-400);
 }
 
 .cardHeader {
-  padding: 20px 24px 16px; display: flex;
-  justify-content: space-between; align-items: center; gap: 16px;
+  padding: 16px 20px 12px; display: flex;
+  justify-content: space-between; align-items: center; gap: 12px;
   border-bottom: 1px solid var(--border-light);
 }
 .eventName {
-  font-size: 17px; font-weight: 700; color: var(--ink);
+  font-size: 15px; font-weight: 600; color: var(--ink);
   margin: 0; flex: 1; line-height: 1.4;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .statusBadge {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 16px; border-radius: 999px;
-  font-size: 12px; font-weight: 700; flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 12px; border-radius: 999px;
+  font-size: 11px; font-weight: 600; flex-shrink: 0;
 }
-.statusIcon { font-size: 13px; line-height: 1; }
-.statusPending { background: var(--amber-50); color: var(--amber-700); border: 1px solid var(--amber-200); }
-.statusApproved { background: var(--green-50); color: var(--green-700); border: 1px solid #bbf7d0; }
-.statusRejected { background: var(--red-50); color: var(--red-600); border: 1px solid var(--red-100); }
+.statusIcon { font-size: 12px; line-height: 1; }
+.statusPending { background: var(--amber-50); color: var(--amber-700); }
+.statusApproved { background: var(--green-50); color: var(--green-700); }
+.statusRejected { background: var(--red-50); color: var(--red-600); }
+.statusCancelled { background: #f3f4f6; color: #6b7280; }
 
-.cardBody { padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; }
-.infoRow { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+.cardBody { padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; }
+.infoRow { display: flex; align-items: center; gap: 8px; font-size: 13px; }
 .infoRow svg { color: var(--amber-500); flex-shrink: 0; }
 .infoLabel { color: var(--ink-muted); font-weight: 500; }
 .infoValue { color: var(--ink); font-weight: 600; }
 .participantsBadge {
-  display: inline-flex; align-items: center; padding: 8px 18px;
-  background: linear-gradient(135deg, var(--navy-800), var(--navy-900));
+  display: inline-flex; align-items: center; padding: 6px 14px;
+  background: var(--navy-900);
   color: #fff; border-radius: var(--radius-md);
-  font-size: 13px; font-weight: 700; margin-top: 4px;
-  box-shadow: 0 2px 8px rgba(15,23,42,0.2);
+  font-size: 12px; font-weight: 600; margin-top: 4px;
 }
+
+/* Filter Bar */
+.filterBar {
+  max-width: 1000px; margin: 0 auto 16px;
+  display: flex; gap: 6px; flex-wrap: wrap;
+  animation: slideUp 0.3s ease 0.1s both;
+}
+.filterPill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 14px; border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+  background: #fff; color: var(--ink-muted);
+  border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.2s;
+}
+.filterPill:hover { border-color: var(--amber-300); color: var(--ink); }
+.filterPillActive {
+  background: var(--amber-500); color: #fff;
+  border-color: var(--amber-500);
+}
+.filterCount {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; border-radius: 999px;
+  background: rgba(0,0,0,0.08); font-size: 10px; font-weight: 700;
+  padding: 0 4px;
+}
+.filterPillActive .filterCount {
+  background: rgba(255,255,255,0.3); color: #fff;
+}
+
+/* Cancel Button */
+.cancelButton {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 8px 14px; border-radius: var(--radius-md);
+  font-size: 12px; font-weight: 600;
+  background: var(--red-50); color: var(--red-600);
+  border: 1px solid var(--red-100);
+  cursor: pointer; transition: all 0.2s; margin-top: 8px;
+  align-self: flex-start;
+}
+.cancelButton:hover { background: var(--red-100); border-color: var(--red-300); }
+.cancelButton:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* Rejection */
 .rejectionReason {
-  margin-top: 12px; padding: 16px 18px;
+  margin-top: 8px; padding: 12px 16px;
   background: var(--red-50); border-radius: var(--radius-md);
-  border-left: 4px solid var(--red-600);
+  border-left: 3px solid var(--red-600);
 }
 .rejectionLabel {
-  display: block; font-size: 11px; font-weight: 700;
+  display: block; font-size: 10px; font-weight: 600;
   color: var(--red-600); text-transform: uppercase;
-  letter-spacing: 0.05em; margin-bottom: 6px;
+  letter-spacing: 0.05em; margin-bottom: 4px;
 }
-.rejectionText { font-size: 14px; color: #7f1d1d; line-height: 1.6; margin: 0; font-weight: 500; }
+.rejectionText { font-size: 13px; color: #7f1d1d; line-height: 1.6; margin: 0; font-weight: 500; }
 
 /* Responsive */
 @media (max-width: 640px) {
-  .page { padding: 20px 12px 120px; }
+  .page { padding: 16px 12px 120px; }
   .header { flex-direction: column; }
-  .title { font-size: 24px; }
+  .title { font-size: 20px; }
   .stats { width: 100%; justify-content: space-around; }
-  .cardHeader { padding: 16px 20px 12px; flex-wrap: wrap; }
-  .eventName { font-size: 15px; max-width: calc(100% - 100px); }
-  .statusBadge { font-size: 11px; padding: 5px 12px; }
-  .cardBody { padding: 16px 20px; }
+  .filterBar { gap: 4px; }
+  .filterPill { padding: 5px 10px; font-size: 11px; }
+  .cardHeader { padding: 14px 16px 10px; flex-wrap: wrap; }
+  .eventName { font-size: 14px; max-width: calc(100% - 90px); }
+  .statusBadge { font-size: 10px; padding: 4px 10px; }
+  .cardBody { padding: 14px 16px; }
 }
+

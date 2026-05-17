@@ -12,8 +12,7 @@ import {
 import styles from './HomeAdmin.module.css';
 import { getAdminInfo } from '@/lib/admin_fakultas';
 import { getSession } from '@/lib/auth';
-import { getRecentPeminjaman } from '@/lib/peminjaman';
-import { supabase } from '@/lib/supabase';
+import { getRecentPeminjamanByFakultas, getRecentPeminjaman, countPeminjamanByStatus, countRoomsByFakultas } from '@/lib/peminjaman';
 import type { Peminjaman } from '@/types/peminjaman';
 
 export const revalidate = 0;
@@ -37,40 +36,27 @@ const statusLookup = (status: string | null | undefined) => {
   return { label: 'Menunggu', className: styles.recentStatusWait };
 };
 
-async function safeCountFrom(table: string, filter?: { column: string; value: string }) {
-  try {
-    let query = supabase.from(table).select('*', { count: 'exact', head: true });
-    if (filter) query = query.eq(filter.column, filter.value);
-    const { count } = await query;
-    return count ?? 0;
-  } catch {
-    return 0;
-  }
-}
-
-async function safeRecentPeminjaman(): Promise<Peminjaman[]> {
-  try {
-    return await getRecentPeminjaman(5);
-  } catch {
-    return [];
-  }
-}
-
 export default async function AdminHomePage() {
   const session = await getSession();
   const currentUserId = session?.user_id || '';
+  const isSuperAdmin = session?.role === 'super_admin';
 
-  const [adminInfo, totalRooms, pendingCount, approvedCount, rejectedCount, recent] = await Promise.all([
-    getAdminInfo(currentUserId),
-    safeCountFrom('rooms'),
-    safeCountFrom('peminjaman', { column: 'status', value: 'menunggu' }),
-    safeCountFrom('peminjaman', { column: 'status', value: 'disetujui' }),
-    safeCountFrom('peminjaman', { column: 'status', value: 'ditolak' }),
-    safeRecentPeminjaman(),
+  const adminInfo = await getAdminInfo(currentUserId);
+  const fakultasId = isSuperAdmin ? undefined : adminInfo?.fakultas_id;
+
+  const userName = isSuperAdmin ? 'Super Admin' : (adminInfo?.user?.user_name || session?.user_name || 'Admin');
+  const facultyName = isSuperAdmin ? 'Semua Fakultas' : (adminInfo?.fakultas?.fakultas_name || 'Fakultas Tidak Diketahui');
+
+  // Super admin: semua data. Admin biasa: filter per fakultas
+  const [totalRooms, pendingCount, approvedCount, rejectedCount, recent] = await Promise.all([
+    countRoomsByFakultas(fakultasId),
+    countPeminjamanByStatus('menunggu', fakultasId),
+    countPeminjamanByStatus('disetujui', fakultasId),
+    countPeminjamanByStatus('ditolak', fakultasId),
+    fakultasId
+      ? getRecentPeminjamanByFakultas(fakultasId, 5)
+      : getRecentPeminjaman(5),
   ]);
-
-  const userName = adminInfo?.user?.user_name || session?.user_name || 'Admin';
-  const facultyName = adminInfo?.fakultas?.fakultas_name || 'Fakultas Tidak Diketahui';
 
   const stats = [
     {
@@ -155,7 +141,7 @@ export default async function AdminHomePage() {
             <div key={stat.label} className={styles.statCard}>
               <div className={styles.statHeader}>
                 <span className={`${styles.statIcon} ${stat.iconClass}`}>
-                  <Icon size={18} strokeWidth={2} />
+                  <Icon size={16} strokeWidth={2} />
                 </span>
                 <span className={styles.statLabel}>{stat.label}</span>
               </div>
@@ -220,7 +206,7 @@ export default async function AdminHomePage() {
               return (
                 <Link key={action.href} href={action.href} className={styles.actionItem}>
                   <span className={styles.actionIcon}>
-                    <Icon size={18} strokeWidth={2} />
+                    <Icon size={16} strokeWidth={2} />
                   </span>
                   <div className={styles.actionInfo}>
                     <div className={styles.actionTitleRow}>
@@ -238,6 +224,57 @@ export default async function AdminHomePage() {
           </div>
         </div>
       </div>
+
+      {/* Analytics Mini Chart */}
+      <div className={styles.panel} style={{ maxWidth: 1000, margin: '16px auto 0' }}>
+        <div className={styles.panelHeader}>
+          <h2 className={styles.panelTitle}>Statistik Peminjaman</h2>
+        </div>
+        <div style={{ padding: '16px 20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+            <ChartBar label="Menunggu" count={pendingCount} total={pendingCount + approvedCount + rejectedCount} color="var(--amber-500)" />
+            <ChartBar label="Disetujui" count={approvedCount} total={pendingCount + approvedCount + rejectedCount} color="var(--green-500)" />
+            <ChartBar label="Ditolak" count={rejectedCount} total={pendingCount + approvedCount + rejectedCount} color="var(--red-500)" />
+          </div>
+          <div style={{ marginTop: 16, padding: '12px 16px', background: 'var(--surface-raised)', borderRadius: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--ink-muted)' }}>
+              <span>Approval Rate</span>
+              <span style={{ fontWeight: 700, color: 'var(--green-700)' }}>
+                {(pendingCount + approvedCount + rejectedCount) > 0
+                  ? Math.round((approvedCount / (pendingCount + approvedCount + rejectedCount)) * 100)
+                  : 0}%
+              </span>
+            </div>
+            <div style={{ marginTop: 6, height: 6, background: '#e5e7eb', borderRadius: 999, overflow: 'hidden' }}>
+              <div style={{
+                height: '100%', borderRadius: 999,
+                background: 'linear-gradient(90deg, var(--green-400), var(--green-600))',
+                width: `${(pendingCount + approvedCount + rejectedCount) > 0 ? Math.round((approvedCount / (pendingCount + approvedCount + rejectedCount)) * 100) : 0}%`,
+                transition: 'width 0.5s ease',
+              }} />
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
+  );
+}
+
+function ChartBar({ label, count, total, color }: { label: string; count: number; total: number; color: string }) {
+  const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ height: 80, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: 8 }}>
+        <div style={{
+          width: 32, borderRadius: '4px 4px 0 0',
+          height: `${Math.max(pct, 8)}%`,
+          background: color,
+          transition: 'height 0.5s ease',
+        }} />
+      </div>
+      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--ink)' }}>{count}</div>
+      <div style={{ fontSize: 11, color: 'var(--ink-muted)', fontWeight: 600 }}>{label}</div>
+      <div style={{ fontSize: 10, color: 'var(--ink-faint)' }}>{pct}%</div>
+    </div>
   );
 }

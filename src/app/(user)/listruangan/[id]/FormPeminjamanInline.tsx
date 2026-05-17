@@ -19,14 +19,18 @@ const defaultDateRange = (() => {
   };
 })();
 
+const minDateTime = toDatetimeLocal(new Date());
+
 export function FormPeminjamanInline({
   roomId,
   userId,
   userName,
+  kapasitas,
 }: {
   roomId: string;
   userId: string;
   userName: string;
+  kapasitas: number;
 }) {
   const router = useRouter();
   const [namaKegiatan, setNamaKegiatan] = useState('');
@@ -62,10 +66,38 @@ export function FormPeminjamanInline({
       return;
     }
 
+    if (kapasitas && pesertaNum > kapasitas) {
+      setStatus('error');
+      setMessage(`Jumlah peserta (${pesertaNum}) melebihi kapasitas ruangan (${kapasitas} orang).`);
+      return;
+    }
+
     if (new Date(tanggalSelesai) <= new Date(tanggalMulai)) {
       setStatus('error');
       setMessage('Tanggal selesai harus lebih besar dari tanggal mulai.');
       return;
+    }
+
+    // Validasi: tidak boleh booking di masa lalu
+    if (new Date(tanggalMulai) < new Date()) {
+      setStatus('error');
+      setMessage('Tidak dapat membuat booking untuk waktu yang sudah lewat.');
+      return;
+    }
+
+    // Cek jadwal conflict sebelum submit
+    try {
+      setStatus('loading');
+      setMessage('Memeriksa ketersediaan jadwal...');
+      const res = await fetch(`/api/check-conflict?room_id=${roomId.trim().toUpperCase()}&start=${new Date(tanggalMulai).toISOString()}&end=${new Date(tanggalSelesai).toISOString()}`);
+      const conflictData = await res.json();
+      if (conflictData.hasConflict) {
+        setStatus('error');
+        setMessage(`Jadwal bentrok dengan: ${conflictData.names}. Silakan pilih waktu lain.`);
+        return;
+      }
+    } catch {
+      // Lanjutkan jika conflict check gagal
     }
 
     try {
@@ -140,6 +172,7 @@ export function FormPeminjamanInline({
               id="tanggalMulai"
               type="datetime-local"
               value={tanggalMulai}
+              min={minDateTime}
               onChange={(event) => handleTanggalMulaiChange(event.target.value)}
               className={styles.input}
               required
@@ -155,7 +188,7 @@ export function FormPeminjamanInline({
               id="tanggalSelesai"
               type="datetime-local"
               value={tanggalSelesai}
-              min={tanggalMulai}
+              min={tanggalMulai || minDateTime}
               onChange={(event) => setTanggalSelesai(event.target.value)}
               className={styles.input}
               required
@@ -183,7 +216,7 @@ export function FormPeminjamanInline({
             placeholder="Masukkan jumlah peserta"
             required
           />
-          <span className={styles.helperText}>Masukkan angka saja (contoh: 25)</span>
+          <span className={styles.helperText}>Maksimal {kapasitas} orang (kapasitas ruangan)</span>
         </div>
 
         {/* Deskripsi */}

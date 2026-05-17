@@ -11,6 +11,10 @@ import styles from './TambahRuangan.module.css';
 export default function TambahRuanganForm({ buildings }: { buildings: Building[] }) {
   const [state, formAction, isPending] = useActionState(createRoomAction, null);
   const [foto, setFoto] = useState('');
+  const [selectedBuildingId, setSelectedBuildingId] = useState('');
+
+  const selectedBuilding = buildings.find(b => b.building_id.toString() === selectedBuildingId);
+  const maxFloor = selectedBuilding?.floor || 99;
 
   return (
     <div className={styles.container}>
@@ -54,6 +58,8 @@ export default function TambahRuanganForm({ buildings }: { buildings: Building[]
                 name="building_id"
                 className={styles.input}
                 required
+                value={selectedBuildingId}
+                onChange={(e) => setSelectedBuildingId(e.target.value)}
               >
                 <option value="">Pilih Gedung</option>
                 {buildings.map((b) => (
@@ -73,10 +79,16 @@ export default function TambahRuanganForm({ buildings }: { buildings: Building[]
                 name="floor"
                 type="number"
                 min={1}
+                max={maxFloor}
                 placeholder="1"
                 className={styles.input}
                 required
               />
+              {selectedBuilding && (
+                <span className={styles.helperText}>
+                  Maks. lantai {maxFloor} ({selectedBuilding.building_name})
+                </span>
+              )}
             </div>
             <div className={styles.fieldGroup}>
               <label htmlFor="number" className={styles.label}>Nomor Ruangan</label>

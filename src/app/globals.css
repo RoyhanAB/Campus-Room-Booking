@@ -2,6 +2,7 @@
 
 /* =============================================
    DESIGN SYSTEM — Campus Room Booking UNTIRTA
+   Clean, Corporate University Style
    ============================================= */
 
 * {
@@ -18,18 +19,20 @@ html {
 }
 
 :root {
-  /* Colors */
-  --ink: #111827;
-  --ink-light: #374151;
-  --ink-muted: #6b7280;
-  --ink-faint: #9ca3af;
+  /* Ink */
+  --ink: #1e293b;
+  --ink-light: #334155;
+  --ink-muted: #64748b;
+  --ink-faint: #94a3b8;
+
+  /* Surfaces */
   --surface: #ffffff;
-  --surface-raised: #f9fafb;
-  --surface-hover: #f3f4f6;
-  --border: #e5e7eb;
-  --border-light: #f3f4f6;
-  
-  /* Brand */
+  --surface-raised: #f8fafc;
+  --surface-hover: #f1f5f9;
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+
+  /* Brand — UNTIRTA warm amber, but muted */
   --amber-50: #fffbeb;
   --amber-100: #fef3c7;
   --amber-200: #fde68a;
@@ -37,13 +40,13 @@ html {
   --amber-500: #f59e0b;
   --amber-600: #d97706;
   --amber-700: #b45309;
-  
-  /* Accent */
+
+  /* Navy / Dark */
   --navy-700: #334155;
   --navy-800: #1e293b;
   --navy-900: #0f172a;
   --navy-950: #020617;
-  
+
   /* Status */
   --green-50: #f0fdf4;
   --green-100: #dcfce7;
@@ -55,21 +58,20 @@ html {
   --blue-50: #eff6ff;
   --blue-100: #dbeafe;
   --blue-600: #2563eb;
-  
-  /* Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-2xl: 24px;
-  
-  /* Shadow */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-  --shadow-glow: 0 0 40px rgba(251, 191, 36, 0.15);
+
+  /* Radius — more conservative */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
+
+  /* Shadow — subtle */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
 }
 
 @theme inline {
@@ -86,7 +88,7 @@ body {
   width: 100%;
   min-height: 100vh;
   line-height: 1.6;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 img {
@@ -95,7 +97,7 @@ img {
 }
 
 /* =============================================
-   RICH ANIMATIONS
+   ANIMATIONS — Minimal & Functional
    ============================================= */
 
 @keyframes fadeIn {
@@ -104,27 +106,27 @@ img {
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-12px); }
+  from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-24px); }
+  from { opacity: 0; transform: translateX(-12px); }
   to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(24px); }
+  from { opacity: 0; transform: translateX(12px); }
   to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.92); }
+  from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
 
@@ -141,36 +143,3 @@ img {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes kenBurns {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.08); }
-}
-
-@keyframes gradientMove {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes countUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes borderGlow {
-  0%, 100% { border-color: rgba(251, 191, 36, 0.2); }
-  50% { border-color: rgba(251, 191, 36, 0.5); }
-}
-
-/* Stagger delays for lists */
-.stagger-1 { animation-delay: 50ms !important; }
-.stagger-2 { animation-delay: 100ms !important; }
-.stagger-3 { animation-delay: 150ms !important; }
-.stagger-4 { animation-delay: 200ms !important; }
-.stagger-5 { animation-delay: 250ms !important; }
-.stagger-6 { animation-delay: 300ms !important; }

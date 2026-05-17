@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Calendar, ClipboardList, LogOut } from 'lucide-react';
+import { Home, Calendar, ClipboardList, User, LogOut } from 'lucide-react';
 import { logoutAction } from '@/app/login/actions';
 import styles from './mobilenav.module.css';
 
@@ -13,6 +13,7 @@ export default function Mobilenav() {
     { name: 'Home', path: '/', icon: Home },
     { name: 'Rooms', path: '/listruangan', icon: Calendar }, 
     { name: 'History', path: '/history', icon: ClipboardList },
+    { name: 'Profil', path: '/profile', icon: User },
   ];
 
   return (

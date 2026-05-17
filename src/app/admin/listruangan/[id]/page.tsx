@@ -1,9 +1,9 @@
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link'; 
-import { MapPin, ArrowRight, Users, CalendarDays } from 'lucide-react';
+import { MapPin, Users, CalendarDays, Clock, Building2, Layers, ArrowLeft } from 'lucide-react';
 import styles from './roomdetail.module.css';
-import { detailroom } from '@/lib/ruangan';
+import { detailroom, getAllBuildings } from '@/lib/ruangan';
 import { getScheduleByRoomId } from '@/lib/schedule';
 import RoomDetailActions from './RoomDetailActions';
 
@@ -13,8 +13,13 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
   const resolvedParams = await params;
   const roomId = resolvedParams.id;
 
-  const room = await detailroom(roomId);
-  const schedules = await getScheduleByRoomId(roomId);
+  const [room, schedules, buildings] = await Promise.all([
+    detailroom(roomId),
+    getScheduleByRoomId(roomId),
+    getAllBuildings(),
+  ]);
+
+  const building = buildings.find(b => b.building_id === room.building_id);
 
   const getImageUrl = (fileName: string) => {
     if (!fileName) return '/placeholder.jpg';
@@ -29,78 +34,110 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
     });
   };
 
+  const formatDate = (isoString: string) => {
+    return new Date(isoString).toLocaleDateString('id-ID', {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    });
+  };
+
   return (
-    <div className={styles.container}>
-      <h1 className={styles.pageTitle}>{room.room_id}</h1>
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <Link href="/admin/listruangan" className={styles.backButton}>
+          <ArrowLeft size={18} />
+          <span>Kembali</span>
+        </Link>
 
-      <div className={styles.imageWrapper}>
-        <Image
-          src={getImageUrl(room.foto)}
-          alt={`Foto ${room.room_id}`}
-          fill
-          className={styles.heroImage}
-          priority
-        />
-      </div>
-
-      <div className={styles.card}>
-        <div className={styles.statsRow}>
-          <div className={styles.statBox}>
-            <MapPin size={20} color="#111827" />
-            <span className={styles.statLabel}>Gedung</span>
-            <span className={styles.statValue}>Gedung {room.building_id}</span> 
+        {/* Hero Section */}
+        <div className={styles.heroSection}>
+          <div className={styles.imageWrapper}>
+            <Image
+              src={getImageUrl(room.foto)}
+              alt={`Foto ${room.room_id}`}
+              fill
+              className={styles.heroImage}
+              priority
+              sizes="(max-width: 768px) 100vw, 800px"
+            />
+            <div className={styles.imageBadge}>{room.room_id}</div>
           </div>
-          <div className={styles.statBox}>
-            <ArrowRight size={20} color="#111827" />
-            <span className={styles.statLabel}>Lantai</span>
-            <span className={styles.statValue}>{room.floor}</span>
-          </div>
-          <div className={styles.statBox}>
-            <Users size={20} color="#111827" />
-            <span className={styles.statLabel}>Kapasitas</span>
-            <span className={styles.statValue}>{room.kapasitas}</span>
-          </div>
-        </div>
 
-        <h2 className={styles.sectionTitle}>Deskripsi</h2>
-        <p className={styles.description}>
-          {room.deskripsi || 'Belum ada deskripsi untuk ruangan ini.'}
-        </p>
+          <div className={styles.heroContent}>
+            <h1 className={styles.roomTitle}>
+              {building?.building_name || 'Ruangan'}
+            </h1>
+            <p className={styles.roomSubtitle}>
+              {room.deskripsi || 'Ruangan untuk berbagai kegiatan kampus'}
+            </p>
 
-        <h2 className={styles.sectionTitle}>Fasilitas</h2>
-        <div className={styles.facilitiesGrid}>
-          <div className={styles.facilityItem}>AC Sentral</div>
-          <div className={styles.facilityItem}>Proyektor & Layar</div>
-          <div className={styles.facilityItem}>Sound System</div>
-          <div className={styles.facilityItem}>Meja</div>
-        </div>
+            <div className={styles.statsGrid}>
+              <div className={styles.statCard}>
+                <Building2 size={20} className={styles.statIcon} />
+                <div className={styles.statInfo}>
+                  <span className={styles.statLabel}>Gedung</span>
+                  <span className={styles.statValue}>
+                    {building?.building_name || '-'}
+                  </span>
+                </div>
+              </div>
 
-        {/* Functional Edit & Delete Buttons */}
-        <RoomDetailActions roomId={room.room_id} />
-      </div>
+              <div className={styles.statCard}>
+                <Layers size={20} className={styles.statIcon} />
+                <div className={styles.statInfo}>
+                  <span className={styles.statLabel}>Lantai</span>
+                  <span className={styles.statValue}>{room.floor}</span>
+                </div>
+              </div>
 
-      <div className={styles.card}>
-        <div className={styles.scheduleHeader}>
-          <span className={styles.scheduleDate}>Jadwal Ruangan</span>
-          <div className={styles.calendarIconWrapper}>
-            <CalendarDays size={20} />
-          </div>
-        </div>
-
-        {schedules && schedules.length > 0 ? (
-          schedules.map((schedule, index) => (
-            <div key={schedule.schedule_id || index} className={styles.scheduleItem}>
-              <h3 className={styles.scheduleTitle}>{schedule.schedule_name}</h3>
-              <p className={styles.scheduleTime}>
-                {formatTime(schedule.tanggal_dimulai)} - {formatTime(schedule.tanggal_selesai)}
-              </p>
+              <div className={styles.statCard}>
+                <Users size={20} className={styles.statIcon} />
+                <div className={styles.statInfo}>
+                  <span className={styles.statLabel}>Kapasitas</span>
+                  <span className={styles.statValue}>{room.kapasitas} orang</span>
+                </div>
+              </div>
             </div>
-          ))
-        ) : (
-          <p style={{ textAlign: 'center', fontSize: '0.85rem', color: '#6b7280' }}>
-            Belum ada jadwal untuk ruangan ini.
-          </p>
-        )}
+          </div>
+        </div>
+
+        {/* Schedule Section */}
+        <div className={styles.scheduleSection}>
+          <div className={styles.scheduleHeader}>
+            <div>
+              <h2 className={styles.scheduleTitle}>Jadwal Ruangan</h2>
+              <p className={styles.scheduleSubtitle}>Semua jadwal yang terdaftar</p>
+            </div>
+            <div className={styles.scheduleIcon}>
+              <Clock size={20} />
+            </div>
+          </div>
+
+          <div className={styles.scheduleList}>
+            {schedules && schedules.length > 0 ? (
+              schedules.map((schedule, index) => (
+                <div key={schedule.schedule_id || index} className={styles.scheduleCard}>
+                  <div className={styles.scheduleTime}>
+                    <Clock size={14} />
+                    <span>
+                      {formatDate(schedule.tanggal_dimulai)} · {formatTime(schedule.tanggal_dimulai)} - {formatTime(schedule.tanggal_selesai)}
+                    </span>
+                  </div>
+                  <h3 className={styles.scheduleEventName}>{schedule.schedule_name}</h3>
+                </div>
+              ))
+            ) : (
+              <div className={styles.emptySchedule}>
+                <CalendarDays size={36} />
+                <p>Belum ada jadwal untuk ruangan ini</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <RoomDetailActions roomId={room.room_id} />
       </div>
     </div>
   );

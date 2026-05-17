@@ -3,19 +3,34 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Building, PlusSquare, ClipboardList, LogOut } from 'lucide-react';
+import { Home, Building, PlusSquare, ClipboardList, LogOut, GraduationCap, Users, Shield, Settings, Activity } from 'lucide-react';
 import { logoutAction } from '@/app/login/actions';
 import styles from './AdminSidebar.module.css';
 
-export default function AdminSidebar({ userName }: { userName?: string }) {
+export default function AdminSidebar({ userName, role }: { userName?: string; role?: string }) {
   const pathname = usePathname();
+  const isSuperAdmin = role === 'super_admin';
 
-  const navItems = [
+  const baseNavItems = [
     { name: 'Home', path: '/admin', icon: Home },
-    { name: 'List Ruangan', path: '/admin/listruangan', icon: Building },
+    { name: 'Ruangan', path: '/admin/listruangan', icon: Building },
     { name: 'Tambah Ruangan', path: '/admin/tambahruangan', icon: PlusSquare },
-    { name: 'List Peminjaman', path: '/admin/listpeminjaman', icon: ClipboardList },
+    { name: 'Peminjaman', path: '/admin/listpeminjaman', icon: ClipboardList },
   ];
+
+  const superAdminNavItems = [
+    { name: 'Home', path: '/admin', icon: Home },
+    { name: 'Ruangan', path: '/admin/listruangan', icon: Building },
+    { name: 'Peminjaman', path: '/admin/listpeminjaman', icon: ClipboardList },
+    { name: 'Gedung', path: '/admin/kelola-gedung', icon: Building },
+    { name: 'Fakultas', path: '/admin/kelola-fakultas', icon: GraduationCap },
+    { name: 'Admin', path: '/admin/kelola-admin', icon: Shield },
+    { name: 'User', path: '/admin/kelola-user', icon: Users },
+    { name: 'Audit Log', path: '/admin/audit-log', icon: Activity },
+    { name: 'Settings', path: '/admin/settings', icon: Settings },
+  ];
+
+  const navItems = isSuperAdmin ? superAdminNavItems : baseNavItems;
 
   return (
     <aside className={styles.sidebar}>
@@ -31,7 +46,9 @@ export default function AdminSidebar({ userName }: { userName?: string }) {
           />
         </span>
         <div className={styles.brandTextWrap}>
-          <span className={styles.brandTitle}>Admin Panel</span>
+          <span className={styles.brandTitle}>
+            {isSuperAdmin ? 'Super Admin' : 'Admin Panel'}
+          </span>
           <span className={styles.brandSubtitle}>UNTIRTA</span>
         </div>
       </div>
@@ -44,7 +61,7 @@ export default function AdminSidebar({ userName }: { userName?: string }) {
 
           return (
             <Link
-              key={item.name}
+              key={item.path}
               href={item.path}
               className={`${styles.navItem} ${isActive ? styles.activeItem : ''}`}
             >
@@ -59,7 +76,9 @@ export default function AdminSidebar({ userName }: { userName?: string }) {
       <div className={styles.sidebarFooter}>
         {userName && (
           <div className={styles.userInfo}>
-            <div className={styles.userAvatar}>{userName.charAt(0).toUpperCase()}</div>
+            <div className={styles.userAvatar}>
+              {isSuperAdmin ? <Shield size={14} /> : userName.charAt(0).toUpperCase()}
+            </div>
             <span className={styles.userNameText}>{userName}</span>
           </div>
         )}

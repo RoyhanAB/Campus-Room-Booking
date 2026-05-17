@@ -155,6 +155,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
           roomId={room.room_id}
           userId={session?.user_id || ''}
           userName={session?.user_name || ''}
+          kapasitas={room.kapasitas}
         />
       </div>
     </div>

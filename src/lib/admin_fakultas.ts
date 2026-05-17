@@ -11,10 +11,13 @@ export const getAdminInfo = async (userId: string): Promise<AdminFakultasJoined 
       fakultas:fakultas_id (fakultas_name)
     `)
     .eq('user_id', userId)
-    .single();
+    .maybeSingle();
 
   if (error) {
-    console.error(`Error fetching admin info for user ${userId}:`, error.message);
+    // Only log for real errors, not "no rows found"
+    if (!error.message.includes('coerce')) {
+      console.error(`Error fetching admin info for user ${userId}:`, error.message);
+    }
     return null; 
   }
 

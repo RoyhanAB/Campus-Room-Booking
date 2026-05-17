@@ -1,5 +1,6 @@
 /* =============================================
    ADMIN SIDEBAR — Mobile Bottom Nav + Desktop Sidebar
+   Clean Corporate Style
    ============================================= */
 
 /* ---- Mobile (Bottom Nav) ---- */
@@ -11,11 +12,12 @@
   background: #ffffff;
   display: flex;
   justify-content: space-around;
-  align-items: center;
-  padding: 10px 8px;
-  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  align-items: stretch;
+  padding: 6px 4px;
+  padding-bottom: calc(6px + env(safe-area-inset-bottom));
   border-top: 1px solid var(--border);
   z-index: 100;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .brand {
@@ -30,19 +32,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  justify-content: center;
+  gap: 2px;
   text-decoration: none;
   color: var(--ink-faint);
   font-size: 10px;
-  font-weight: 600;
-  min-width: 56px;
-  padding: 6px 4px;
+  font-weight: 500;
+  min-width: 0;
+  flex: 1;
+  padding: 6px 2px;
   transition: color 0.2s;
   border-radius: var(--radius-sm);
 }
 
 .navItem:active {
-  transform: scale(0.95);
+  background: var(--surface-raised);
 }
 
 .navIcon {
@@ -51,6 +55,7 @@
 
 .activeItem {
   color: var(--amber-600);
+  font-weight: 600;
 }
 
 /* Mobile footer */
@@ -58,7 +63,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  flex: 1;
+  min-width: 0;
 }
 
 .userInfo {
@@ -69,22 +75,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  justify-content: center;
+  gap: 2px;
   text-decoration: none;
   color: var(--ink-faint);
   font-size: 10px;
-  font-weight: 600;
-  min-width: 56px;
+  font-weight: 500;
+  min-width: 0;
+  width: 100%;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 6px 4px;
+  padding: 6px 2px;
   font-family: inherit;
   transition: color 0.2s;
 }
 
 .logoutItem:active {
-  transform: scale(0.95);
+  color: var(--red-600);
 }
 
 /* ---- Desktop (Left Sidebar) ---- */
@@ -97,7 +105,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    padding: 24px 16px;
+    padding: 20px 14px;
     border-top: none;
     border-right: 1px solid var(--border);
     box-shadow: none;
@@ -107,7 +115,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     padding: 0 8px;
   }
 
@@ -115,16 +123,16 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: var(--amber-100);
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--amber-50);
     flex-shrink: 0;
   }
 
   .brandLogo {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     object-fit: contain;
   }
 
@@ -134,34 +142,36 @@
   }
 
   .brandTitle {
-    font-size: 14px;
-    font-weight: 800;
+    font-size: 13px;
+    font-weight: 700;
     color: var(--ink);
     letter-spacing: -0.01em;
   }
 
   .brandSubtitle {
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--ink-faint);
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
   }
 
   .navList {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
   }
 
   .navItem {
     flex-direction: row;
     gap: 10px;
     width: 100%;
-    padding: 10px 12px;
+    padding: 9px 12px;
     font-size: 13px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     min-width: auto;
+    flex: none;
+    justify-content: flex-start;
   }
 
   .navItem:hover {
@@ -172,7 +182,7 @@
   .activeItem {
     background: var(--amber-50);
     color: var(--amber-700);
-    font-weight: 700;
+    font-weight: 600;
   }
 
   .activeItem:hover {
@@ -184,10 +194,11 @@
     flex-direction: column;
     width: 100%;
     margin-top: auto;
-    padding-top: 16px;
+    padding-top: 14px;
     border-top: 1px solid var(--border);
-    gap: 8px;
+    gap: 6px;
     align-items: stretch;
+    flex: none;
   }
 
   .userInfo {
@@ -198,13 +209,13 @@
   }
 
   .userAvatar {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     border-radius: 8px;
     background: var(--amber-500);
-    color: var(--ink);
-    font-weight: 700;
-    font-size: 14px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -213,7 +224,7 @@
 
   .userNameText {
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--ink-light);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -224,12 +235,13 @@
     flex-direction: row;
     gap: 10px;
     width: 100%;
-    padding: 10px 12px;
+    padding: 9px 12px;
     font-size: 13px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     color: var(--ink-muted);
     min-width: auto;
     text-align: left;
+    justify-content: flex-start;
   }
 
   .logoutItem:hover {

@@ -97,9 +97,9 @@ export default function ListRuanganClient({
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.titleSection}>
-          <h1 className={styles.title}>Daftar Ruangan</h1>
+          <h1 className={styles.title}>Ruangan Tersedia</h1>
           <p className={styles.subtitle}>
-            Temukan ruangan yang sesuai untuk kegiatan Anda
+            Pilih ruangan yang sesuai untuk kegiatan Anda
           </p>
         </div>
 

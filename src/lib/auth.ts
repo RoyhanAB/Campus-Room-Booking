@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { supabase } from './supabase';
 import { User } from '../types/user';
+import bcrypt from 'bcryptjs';
 
 export interface SessionData {
   user_id: string;
@@ -12,6 +13,7 @@ const SESSION_COOKIE_NAME = 'session';
 
 /**
  * Login user — validasi credentials dari tabel users
+ * Supports both bcrypt-hashed and plain-text passwords (migration period)
  */
 export async function login(userId: string, password: string): Promise<{ success: boolean; user?: User; error?: string }> {
   const { data, error } = await supabase
@@ -24,7 +26,17 @@ export async function login(userId: string, password: string): Promise<{ success
     return { success: false, error: 'User ID tidak ditemukan.' };
   }
 
-  if (data.password !== password) {
+  // Support both hashed and plain-text passwords (for migration)
+  let passwordValid = false;
+  if (data.password.startsWith('$2a$') || data.password.startsWith('$2b$')) {
+    // Bcrypt hashed password
+    passwordValid = await bcrypt.compare(password, data.password);
+  } else {
+    // Plain text (legacy) — compare directly
+    passwordValid = data.password === password;
+  }
+
+  if (!passwordValid) {
     return { success: false, error: 'Password salah.' };
   }
 
@@ -88,4 +100,11 @@ export async function getCurrentUser(): Promise<User | null> {
 
   if (error || !data) return null;
   return data as User;
+}
+
+/**
+ * Hash password menggunakan bcrypt
+ */
+export async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 10);
 }

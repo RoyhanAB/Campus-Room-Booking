@@ -28,6 +28,7 @@ export default function DetailPeminjamanActions({
   const [selectedAlasan, setSelectedAlasan] = useState('');
   const [customAlasan, setCustomAlasan] = useState('');
   const [mounted, setMounted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -35,14 +36,18 @@ export default function DetailPeminjamanActions({
   }, []);
 
   const handleApprove = () => {
+    setErrorMessage('');
     startTransition(async () => {
-      await approvePeminjamanAction(peminjamanId);
-      router.refresh();
+      const result = await approvePeminjamanAction(peminjamanId);
+      if (!result.success && result.error) {
+        setErrorMessage(result.error);
+      } else {
+        router.refresh();
+      }
     });
   };
 
   const handleRejectClick = () => {
-    console.log('Reject button clicked, showing modal');
     setShowRejectModal(true);
   };
 
@@ -84,7 +89,6 @@ export default function DetailPeminjamanActions({
                 value={alasan}
                 checked={selectedAlasan === alasan}
                 onChange={(e) => {
-                  console.log('Selected alasan:', e.target.value);
                   setSelectedAlasan(e.target.value);
                 }}
                 className={styles.alasanRadio}
@@ -132,7 +136,7 @@ export default function DetailPeminjamanActions({
           onClick={handleApprove}
           disabled={isPending || currentStatus === 'disetujui'}
         >
-          <Check size={18} strokeWidth={3} />
+          <Check size={18} strokeWidth={2.5} />
           {isPending ? 'Memproses...' : 'Setujui'}
         </button>
         <button
@@ -140,10 +144,17 @@ export default function DetailPeminjamanActions({
           onClick={handleRejectClick}
           disabled={isPending || currentStatus === 'ditolak'}
         >
-          <X size={18} strokeWidth={3} />
+          <X size={18} strokeWidth={2.5} />
           Tolak
         </button>
       </div>
+
+      {/* Error Message — Schedule Conflict */}
+      {errorMessage && (
+        <div className={styles.errorMessage}>
+          {errorMessage}
+        </div>
+      )}
 
       {/* Modal Alasan Penolakan - Rendered via Portal */}
       {mounted && modalContent && createPortal(modalContent, document.body)}

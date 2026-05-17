@@ -1,4 +1,4 @@
-export type PeminjamanStatus = 'menunggu' | 'disetujui' | 'ditolak';
+export type PeminjamanStatus = 'menunggu' | 'disetujui' | 'ditolak' | 'dibatalkan';
 
 export interface Peminjaman {
   peminjaman_id: number;
@@ -13,6 +13,10 @@ export interface Peminjaman {
   status: string;
   alasan_penolakan?: string | null;
   created_at : string;
+  // Joined fields (optional, dari relasi)
+  user_name?: string;
+  room_kapasitas?: number;
+  approved_by?: string | null;
 }
 
 export interface PeminjamanInput {

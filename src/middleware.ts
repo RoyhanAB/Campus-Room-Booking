@@ -8,6 +8,9 @@ const publicRoutes = ['/login', '/landing'];
 // Routes khusus admin
 const adminRoutes = ['/admin'];
 
+// Roles yang bisa akses admin panel
+const adminRoles = ['admin_fakultas', 'super_admin'];
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -35,6 +38,7 @@ export function middleware(request: NextRequest) {
   const isLoggedIn = !!session;
   const isPublicRoute = publicRoutes.some((route) => pathname === route);
   const isAdminRoute = adminRoutes.some((route) => pathname.startsWith(route));
+  const isAdminRole = session?.role ? adminRoles.includes(session.role) : false;
 
   // 1. Belum login → redirect ke /landing (kecuali sudah di route publik)
   if (!isLoggedIn && !isPublicRoute) {
@@ -44,7 +48,7 @@ export function middleware(request: NextRequest) {
 
   // 2. Sudah login tapi akses /login → redirect ke halaman sesuai role
   if (isLoggedIn && isPublicRoute) {
-    if (session!.role === 'admin_fakultas') {
+    if (isAdminRole) {
       return NextResponse.redirect(new URL('/admin', request.url));
     } else {
       return NextResponse.redirect(new URL('/', request.url));
@@ -52,12 +56,12 @@ export function middleware(request: NextRequest) {
   }
 
   // 3. User biasa coba akses /admin → redirect ke /
-  if (isLoggedIn && isAdminRoute && session!.role !== 'admin_fakultas') {
+  if (isLoggedIn && isAdminRoute && !isAdminRole) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
   // 4. Admin coba akses halaman user → redirect ke /admin
-  if (isLoggedIn && !isAdminRoute && !isPublicRoute && session!.role === 'admin_fakultas') {
+  if (isLoggedIn && !isAdminRoute && !isPublicRoute && isAdminRole) {
     return NextResponse.redirect(new URL('/admin', request.url));
   }
 

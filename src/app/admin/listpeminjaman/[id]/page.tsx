@@ -1,6 +1,6 @@
 import { getPeminjamanById } from '@/lib/peminjaman';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, Users, FileText, MapPin } from 'lucide-react';
+import { ArrowLeft, Calendar, Users, FileText, MapPin, ExternalLink, User } from 'lucide-react';
 import styles from './DetailPeminjaman.module.css';
 import DetailPeminjamanActions from './DetailPeminjamanActions';
 
@@ -46,6 +46,16 @@ export default async function DetailPeminjamanPage({ params }: { params: Promise
 
   const statusStyle = getStatusStyle(peminjaman.status);
 
+  // Check if dokumen is a valid URL
+  const isDocumentUrl = peminjaman.dokumen && (
+    peminjaman.dokumen.startsWith('http://') || 
+    peminjaman.dokumen.startsWith('https://')
+  );
+
+  // Check capacity warning
+  const isOverCapacity = peminjaman.room_kapasitas && 
+    peminjaman.jumlah_peserta > peminjaman.room_kapasitas;
+
   return (
     <div className={styles.container}>
       {/* Header */}
@@ -67,28 +77,40 @@ export default async function DetailPeminjamanPage({ params }: { params: Promise
       {/* Info Cards */}
       <div className={styles.infoGrid}>
         <div className={styles.infoCard}>
-          <MapPin size={20} className={styles.infoIcon} />
+          <MapPin size={18} className={styles.infoIcon} />
           <div>
             <span className={styles.infoLabel}>Ruangan</span>
             <span className={styles.infoValue}>{peminjaman.room_id}</span>
           </div>
         </div>
         <div className={styles.infoCard}>
-          <Users size={20} className={styles.infoIcon} />
+          <User size={18} className={styles.infoIcon} />
           <div>
             <span className={styles.infoLabel}>Pemohon</span>
-            <span className={styles.infoValue}>{peminjaman.user_id}</span>
+            <span className={styles.infoValue}>
+              {peminjaman.user_name || peminjaman.user_id}
+            </span>
+            {peminjaman.user_name && (
+              <span className={styles.infoValueSub}>{peminjaman.user_id}</span>
+            )}
           </div>
         </div>
         <div className={styles.infoCard}>
-          <Users size={20} className={styles.infoIcon} />
+          <Users size={18} className={styles.infoIcon} />
           <div>
             <span className={styles.infoLabel}>Jumlah Peserta</span>
-            <span className={styles.infoValue}>{peminjaman.jumlah_peserta} orang</span>
+            <span className={`${styles.infoValue} ${isOverCapacity ? styles.overCapacity : ''}`}>
+              {peminjaman.jumlah_peserta} orang
+            </span>
+            {peminjaman.room_kapasitas && (
+              <span className={`${styles.infoValueSub} ${isOverCapacity ? styles.overCapacityText : ''}`}>
+                {isOverCapacity ? '⚠ ' : ''}Kapasitas: {peminjaman.room_kapasitas}
+              </span>
+            )}
           </div>
         </div>
         <div className={styles.infoCard}>
-          <Calendar size={20} className={styles.infoIcon} />
+          <Calendar size={18} className={styles.infoIcon} />
           <div>
             <span className={styles.infoLabel}>Waktu</span>
             <span className={styles.infoValue}>
@@ -104,33 +126,38 @@ export default async function DetailPeminjamanPage({ params }: { params: Promise
       {/* Deskripsi */}
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>
-          <FileText size={18} /> Deskripsi Kegiatan
+          <FileText size={16} /> Deskripsi Kegiatan
         </h2>
         <p className={styles.sectionContent}>
           {peminjaman.deskripsi || 'Tidak ada deskripsi.'}
         </p>
       </div>
 
-      {/* Dokumen */}
-      {peminjaman.dokumen && (
-        <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            <FileText size={18} /> Dokumen
-          </h2>
-          {peminjaman.dokumen.startsWith('http') ? (
-            <a 
-              href={peminjaman.dokumen} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className={styles.documentLink}
-            >
-              {peminjaman.dokumen}
-            </a>
-          ) : (
-            <p className={styles.sectionContent}>{peminjaman.dokumen}</p>
-          )}
-        </div>
-      )}
+      {/* Dokumen — sebagai button */}
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>
+          <FileText size={16} /> Dokumen Pendukung
+        </h2>
+        {isDocumentUrl ? (
+          <a 
+            href={peminjaman.dokumen} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className={styles.documentButton}
+          >
+            <ExternalLink size={16} />
+            <span>Buka Dokumen</span>
+          </a>
+        ) : (
+          <button 
+            className={styles.documentButtonDisabled}
+            disabled
+          >
+            <ExternalLink size={16} />
+            <span>{peminjaman.dokumen ? peminjaman.dokumen : 'Tidak ada dokumen'}</span>
+          </button>
+        )}
+      </div>
 
       {/* Action Buttons */}
       <DetailPeminjamanActions

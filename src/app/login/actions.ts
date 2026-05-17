@@ -22,7 +22,7 @@ export async function loginAction(
 
   // Redirect berdasarkan role
   const role = result.user?.role;
-  if (role === 'admin_fakultas') {
+  if (role === 'admin_fakultas' || role === 'super_admin') {
     redirect('/admin');
   } else {
     redirect('/');
