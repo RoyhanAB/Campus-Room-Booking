@@ -2,7 +2,12 @@
    USER HOME — Clean Corporate
    ============================================= */
 
-.page { min-height: 100vh; background: var(--surface-raised); padding: 0 0 100px 0; }
+.page {
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, #fff 0%, var(--surface-raised) 42%, #fff 100%);
+  padding: 0 0 100px 0;
+}
 
 /* ---- Hero ---- */
 .hero { position: relative; overflow: hidden; }
@@ -10,17 +15,34 @@
 .heroBgImg { object-fit: cover; }
 .heroBgOverlay {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(15,23,42,0.82) 0%, rgba(15,23,42,0.65) 50%, rgba(15,23,42,0.88) 100%);
+  background:
+    linear-gradient(90deg, rgba(2,6,23,0.86), rgba(15,23,42,0.62) 58%, rgba(2,6,23,0.82)),
+    linear-gradient(180deg, rgba(15,23,42,0.72) 0%, rgba(15,23,42,0.58) 50%, rgba(15,23,42,0.9) 100%);
 }
 .heroContent {
   position: relative; z-index: 1; max-width: 1100px; margin: 0 auto;
   padding: 36px 20px 72px;
+  display: grid;
+  gap: 28px;
+  align-items: center;
 }
 .heroText {
   display: flex; flex-direction: column; gap: 12px;
   max-width: 540px; animation: slideUp 0.4s ease both;
 }
-.greeting { font-size: 14px; color: rgba(255,255,255,0.5); margin: 0; font-weight: 500; }
+.greeting {
+  display: inline-flex;
+  width: fit-content;
+  padding: 7px 12px;
+  border: 1px solid rgba(251,191,36,0.22);
+  border-radius: 999px;
+  background: rgba(251,191,36,0.1);
+  font-size: 13px;
+  color: rgba(255,255,255,0.72);
+  margin: 0;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+}
 .userName { color: var(--amber-400); font-weight: 600; }
 .title {
   font-size: clamp(26px, 5vw, 40px); font-weight: 700; color: #fff;
@@ -28,9 +50,118 @@
 }
 .titleAccent {
   color: var(--amber-400);
+  background: linear-gradient(120deg, var(--amber-300, #fcd34d), var(--amber-500));
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 .subtitle { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.45); max-width: 460px; margin: 0; }
 .ctaGroup { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.heroHighlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  animation: slideUp 0.45s ease 0.18s both;
+}
+.heroHighlights span {
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.68);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(10px);
+}
+.heroPreview {
+  display: none;
+  position: relative;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.11);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 70px rgba(2,6,23,0.28);
+  animation: slideInRight 0.55s ease 0.16s both;
+}
+.previewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.previewHeader span {
+  color: rgba(255,255,255,0.58);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.previewHeader strong {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(34,197,94,0.15);
+  color: #bbf7d0;
+  border: 1px solid rgba(134,239,172,0.22);
+  font-size: 11px;
+}
+.previewRoom {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  margin-bottom: 12px;
+}
+.previewRoom span {
+  display: block;
+  color: rgba(255,255,255,0.5);
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.previewTimeline {
+  display: grid;
+  gap: 8px;
+}
+.previewTimeline div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(15,23,42,0.22);
+  border-left: 3px solid rgba(255,255,255,0.18);
+}
+.previewTimeline span {
+  color: rgba(255,255,255,0.52);
+  font-size: 12px;
+  font-weight: 800;
+}
+.previewTimeline strong {
+  color: rgba(255,255,255,0.82);
+  font-size: 12px;
+}
+.previewTimeline .previewOpen {
+  border-left-color: var(--amber-400);
+  background: rgba(251,191,36,0.14);
+}
+.previewFooter {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  color: rgba(255,255,255,0.64);
+  font-size: 12px;
+  font-weight: 600;
+}
+.previewFooter svg { color: var(--green-400); }
 .btnPrimary {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 11px 22px; background: var(--amber-500); color: #fff;
@@ -38,7 +169,7 @@
   font-weight: 600; font-size: 13px;
   transition: background 0.2s;
 }
-.btnPrimary:hover { background: var(--amber-600); }
+.btnPrimary:hover { background: var(--amber-600); transform: translateY(-2px); box-shadow: var(--shadow-glow); }
 .btnSecondary {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 11px 22px; background: rgba(255,255,255,0.08);
@@ -47,8 +178,18 @@
   border: 1px solid rgba(255,255,255,0.12);
   transition: border-color 0.2s, background 0.2s;
 }
-.btnSecondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); }
-@media (min-width: 768px) { .heroContent { padding: 48px 28px 88px; } }
+.btnSecondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+.btnPrimary,
+.btnSecondary { transition: transform 0.2s, background 0.2s, box-shadow 0.2s, border-color 0.2s; }
+.btnPrimary:active,
+.btnSecondary:active { transform: scale(0.98); }
+@media (min-width: 768px) {
+  .heroContent {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    padding: 56px 28px 96px;
+  }
+  .heroPreview { display: block; }
+}
 
 /* ---- Actions Section ---- */
 .actionsSection {
@@ -61,19 +202,26 @@
   display: flex; align-items: center; gap: 14px;
   text-decoration: none; color: inherit;
   border: 1px solid var(--border);
-  transition: border-color 0.2s;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.22s ease, border-color 0.2s, box-shadow 0.2s;
   animation: slideUp 0.3s ease both;
 }
 .actionCard:nth-child(2) { animation-delay: 50ms; }
 .actionCard:nth-child(3) { animation-delay: 100ms; }
-.actionCard:hover { border-color: var(--amber-400); }
+.actionCard:hover {
+  border-color: var(--amber-400);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
 .actionIcon {
   width: 44px; height: 44px; border-radius: var(--radius-md);
   background: var(--amber-50);
   border: 1px solid var(--amber-100);
   display: flex; align-items: center; justify-content: center;
   color: var(--amber-600); flex-shrink: 0;
+  transition: transform 0.22s ease;
 }
+.actionCard:hover .actionIcon { transform: scale(1.08) rotate(-3deg); }
 .actionIconBlue { background: var(--blue-50); border-color: var(--blue-100); color: var(--blue-600); }
 .actionIconGreen { background: var(--green-50); border-color: var(--green-100); color: var(--green-600); }
 .actionContent { flex: 1; min-width: 0; }
@@ -90,7 +238,14 @@
 .infoCard {
   background: #fff; border-radius: var(--radius-lg); padding: 20px;
   border: 1px solid var(--border);
+  box-shadow: var(--shadow-xs);
   animation: slideUp 0.3s ease 0.1s both;
+  transition: transform 0.22s ease, border-color 0.2s, box-shadow 0.2s;
+}
+.infoCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--amber-200);
+  box-shadow: var(--shadow-md);
 }
 .infoHeader { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 .infoIconWrap {
@@ -109,6 +264,7 @@
   background: var(--amber-500); color: #fff;
   display: flex; align-items: center; justify-content: center;
   font-weight: 700; font-size: 11px; flex-shrink: 0; margin-top: 1px;
+  box-shadow: 0 6px 14px rgba(245,158,11,0.2);
 }
 
 /* Process */
@@ -120,6 +276,7 @@
   background: var(--amber-500);
   color: #fff; display: flex; align-items: center; justify-content: center;
   font-weight: 700; font-size: 12px; flex-shrink: 0;
+  box-shadow: 0 6px 14px rgba(245,158,11,0.2);
 }
 .stepContent h4 { font-size: 13px; font-weight: 600; color: var(--ink); margin: 0 0 2px; }
 .stepContent p { font-size: 12px; color: var(--ink-muted); margin: 0; line-height: 1.5; }

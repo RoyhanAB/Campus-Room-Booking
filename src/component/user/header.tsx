@@ -37,15 +37,21 @@ export default function Header({ userName }: { userName?: string }) {
         </Link>
 
         <nav className={styles.desktopNav}>
-          {navItems.map((item) => (
-            <Link 
-              key={item.name} 
-              href={item.path}
-              className={`${styles.navLink} ${pathname === item.path ? styles.activeLink : ''}`}
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.path || (item.path !== '/' && pathname.startsWith(item.path));
+
+            return (
+              <Link
+                key={item.name}
+                href={item.path}
+                className={`${styles.navLink} ${isActive ? styles.activeLink : ''}`}
+              >
+                <Icon size={15} strokeWidth={isActive ? 2.5 : 2} />
+                <span>{item.name}</span>
+              </Link>
+            );
+          })}
 
           <div className={styles.userSection}>
             {userName && (
@@ -64,7 +70,7 @@ export default function Header({ userName }: { userName?: string }) {
       <nav className={styles.mobileNav}>
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.path;
+          const isActive = pathname === item.path || (item.path !== '/' && pathname.startsWith(item.path));
           return (
             <Link
               key={item.name}

@@ -4,7 +4,7 @@
 
 .page {
   min-height: 100vh;
-  background: var(--surface-raised);
+  background: linear-gradient(180deg, #fff 0%, var(--surface-raised) 44%, #fff 100%);
   padding: 20px 16px 120px;
 }
 
@@ -25,9 +25,10 @@
   display: flex; flex-direction: column; align-items: center;
   padding: 12px 18px; background: #fff; border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  transition: border-color 0.2s;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
-.statItem:hover { border-color: var(--amber-400); }
+.statItem:hover { border-color: var(--amber-400); transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .statValue { font-size: 22px; font-weight: 700; color: var(--ink); line-height: 1; }
 .statLabel { font-size: 10px; color: var(--ink-faint); margin-top: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
 
@@ -39,6 +40,7 @@
   background: var(--amber-50);
   border: 1px solid var(--amber-100);
   display: flex; align-items: center; justify-content: center; color: var(--amber-600);
+  animation: float 3s ease-in-out infinite;
 }
 .emptyState h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin: 0 0 6px; }
 .emptyState p { font-size: 13px; color: var(--ink-muted); margin: 0; }
@@ -50,11 +52,14 @@
 .bookingCard {
   background: #fff; border-radius: var(--radius-lg);
   border: 1px solid var(--border); overflow: hidden;
-  transition: border-color 0.2s;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.22s ease, border-color 0.2s, box-shadow 0.2s;
   animation: slideUp 0.3s ease both;
 }
 .bookingCard:hover {
   border-color: var(--amber-400);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
 }
 
 .cardHeader {
@@ -73,10 +78,10 @@
   font-size: 11px; font-weight: 600; flex-shrink: 0;
 }
 .statusIcon { font-size: 12px; line-height: 1; }
-.statusPending { background: var(--amber-50); color: var(--amber-700); }
-.statusApproved { background: var(--green-50); color: var(--green-700); }
-.statusRejected { background: var(--red-50); color: var(--red-600); }
-.statusCancelled { background: #f3f4f6; color: #6b7280; }
+.statusPending { background: var(--amber-50); color: var(--amber-700); border: 1px solid var(--amber-100); }
+.statusApproved { background: var(--green-50); color: var(--green-700); border: 1px solid var(--green-100); }
+.statusRejected { background: var(--red-50); color: var(--red-600); border: 1px solid var(--red-100); }
+.statusCancelled { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
 
 .cardBody { padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; }
 .infoRow { display: flex; align-items: center; gap: 8px; font-size: 13px; }
@@ -102,9 +107,9 @@
   font-size: 12px; font-weight: 600;
   background: #fff; color: var(--ink-muted);
   border: 1px solid var(--border);
-  cursor: pointer; transition: all 0.2s;
+  cursor: pointer; transition: transform 0.2s, border-color 0.2s, color 0.2s, background 0.2s;
 }
-.filterPill:hover { border-color: var(--amber-300); color: var(--ink); }
+.filterPill:hover { border-color: var(--amber-400); color: var(--ink); transform: translateY(-1px); }
 .filterPillActive {
   background: var(--amber-500); color: #fff;
   border-color: var(--amber-500);
@@ -158,4 +163,3 @@
   .statusBadge { font-size: 10px; padding: 4px 10px; }
   .cardBody { padding: 14px 16px; }
 }
-

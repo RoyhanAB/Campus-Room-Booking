@@ -33,55 +33,75 @@ export default function AdminSidebar({ userName, role }: { userName?: string; ro
 
   const navItems = isSuperAdmin ? superAdminNavItems : baseNavItems;
   return (
-    <aside className={`${styles.sidebar} ${isSuperAdmin ? styles.superSidebar : ''}`}>
-      {/* Brand */}
-      <div className={styles.brand}>
-        <span className={styles.brandLogoWrap}>
-          <Image
-            src="/image/untr.png"
-            alt="Logo UNTIRTA"
-            width={24}
-            height={24}
-            className={styles.brandLogo}
-          />
-        </span>
-        <div className={styles.brandTextWrap}>
-          <span className={styles.brandTitle}>
-            {isSuperAdmin ? 'Super Admin' : 'Admin Panel'}
+    <>
+      <aside className={`${styles.sidebar} ${isSuperAdmin ? styles.superSidebar : ''}`}>
+        {/* Brand */}
+        <div className={styles.brand}>
+          <span className={styles.brandLogoWrap}>
+            <Image
+              src="/image/untr.png"
+              alt="Logo UNTIRTA"
+              width={24}
+              height={24}
+              className={styles.brandLogo}
+            />
           </span>
-          <span className={styles.brandSubtitle}>UNTIRTA</span>
-        </div>
-        {isSuperAdmin && (
-          <button
-            type="button"
-            className={styles.menuButton}
-            onClick={() => setMoreOpen(true)}
-            aria-label="Buka menu super admin"
-          >
-            <Menu size={22} />
-          </button>
-        )}
-      </div>
-
-      {/* Nav */}
-      <nav className={styles.navList}>
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path));
-
-          return (
-            <Link
-              key={item.path}
-              href={item.path}
-              className={`${styles.navItem} ${isActive ? styles.activeItem : ''}`}
-              onClick={() => setMoreOpen(false)}
+          <div className={styles.brandTextWrap}>
+            <span className={styles.brandTitle}>
+              {isSuperAdmin ? 'Super Admin' : 'Admin Panel'}
+            </span>
+            <span className={styles.brandSubtitle}>UNTIRTA</span>
+          </div>
+          {isSuperAdmin && (
+            <button
+              type="button"
+              className={styles.menuButton}
+              onClick={() => setMoreOpen(true)}
+              aria-label="Buka menu super admin"
             >
-              <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className={styles.navIcon} />
-              <span>{item.name}</span>
-            </Link>
-          );
-        })}
-      </nav>
+              <Menu size={22} />
+            </button>
+          )}
+        </div>
+
+        {/* Nav */}
+        <nav className={styles.navList}>
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path));
+
+            return (
+              <Link
+                key={item.path}
+                href={item.path}
+                className={`${styles.navItem} ${isActive ? styles.activeItem : ''}`}
+                onClick={() => setMoreOpen(false)}
+              >
+                <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className={styles.navIcon} />
+                <span>{item.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Footer */}
+        <div className={styles.sidebarFooter}>
+          {userName && (
+            <div className={styles.userInfo}>
+              <div className={styles.userAvatar}>
+                {isSuperAdmin ? <Shield size={14} /> : userName.charAt(0).toUpperCase()}
+              </div>
+              <span className={styles.userNameText}>{userName}</span>
+            </div>
+          )}
+          <form action={logoutAction}>
+            <button type="submit" className={styles.logoutItem}>
+              <LogOut size={20} strokeWidth={2} className={styles.navIcon} />
+              <span>Keluar</span>
+            </button>
+          </form>
+        </div>
+      </aside>
 
       {isSuperAdmin && moreOpen && (
         <div className={styles.moreOverlay} onClick={() => setMoreOpen(false)}>
@@ -118,24 +138,6 @@ export default function AdminSidebar({ userName, role }: { userName?: string; ro
           </div>
         </div>
       )}
-
-      {/* Footer */}
-      <div className={styles.sidebarFooter}>
-        {userName && (
-          <div className={styles.userInfo}>
-            <div className={styles.userAvatar}>
-              {isSuperAdmin ? <Shield size={14} /> : userName.charAt(0).toUpperCase()}
-            </div>
-            <span className={styles.userNameText}>{userName}</span>
-          </div>
-        )}
-        <form action={logoutAction}>
-          <button type="submit" className={styles.logoutItem}>
-            <LogOut size={20} strokeWidth={2} className={styles.navIcon} />
-            <span>Keluar</span>
-          </button>
-        </form>
-      </div>
-    </aside>
+    </>
   );
 }

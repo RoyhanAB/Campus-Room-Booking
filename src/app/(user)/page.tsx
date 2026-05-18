@@ -35,7 +35,7 @@ export default async function Home() {
           <div className={styles.heroText}>
             {userName && (
               <p className={styles.greeting}>
-                {greeting}, <span className={styles.userName}>{userName}</span> 👋
+                {greeting}, <span className={styles.userName}>{userName}</span>
               </p>
             )}
             <h1 className={styles.title}>

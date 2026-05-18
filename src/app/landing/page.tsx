@@ -20,7 +20,7 @@ import type { Metadata } from 'next';
 import styles from './landing.module.css';
 
 export const metadata: Metadata = {
-  title: 'Peminjaman Ruangan UNTIRTA — Portal Resmi Kampus',
+  title: 'Peminjaman Ruangan UNTIRTA - Portal Resmi Kampus',
   description:
     'Sistem peminjaman ruangan Universitas Sultan Ageng Tirtayasa. Cek ketersediaan, ajukan, dan pantau status peminjaman secara online.',
 };
@@ -130,7 +130,7 @@ export default function LandingPage() {
               <span className={styles.heroAccent}>Lebih Cepat & Tertata.</span>
             </h1>
             <p className={styles.heroSubtitle}>
-              Satu portal untuk mahasiswa dan admin fakultas — cek ketersediaan ruangan,
+              Satu portal untuk mahasiswa dan admin fakultas - cek ketersediaan ruangan,
               ajukan peminjaman, dan kelola persetujuan tanpa perlu surat manual.
             </p>
             <div className={styles.heroCtas}>

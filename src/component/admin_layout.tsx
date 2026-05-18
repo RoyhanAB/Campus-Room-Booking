@@ -8,7 +8,7 @@ export function AdminLayout({ children, userName, role }: { children: React.Reac
 
     return (
         <>
-            <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f9fafb' }}>
+            <div style={{ display: 'flex', minHeight: '100vh', background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 44%, #ffffff 100%)' }}>
                 <AdminSidebar userName={userName} role={role} />
                 <main
                     style={{
@@ -30,7 +30,7 @@ export function AdminLayout({ children, userName, role }: { children: React.Reac
                     }
                     @media (min-width: 768px) {
                     .admin-content-wrapper {
-                        margin-left: 240px;
+                        margin-left: 216px;
                         padding-top: 0 !important;
                         padding-bottom: 0 !important;
                     }

@@ -5,9 +5,10 @@
   right: 0;
   bottom: 0;
   z-index: 100;
-  background: #fff;
-  border-top: 1px solid var(--border);
-  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.04);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(18px) saturate(160%);
+  border-top: 1px solid rgba(226,232,240,0.82);
+  box-shadow: 0 -14px 38px rgba(15,23,42,0.09);
   display: flex;
   align-items: stretch;
 }
@@ -21,7 +22,7 @@
   align-items: stretch;
   justify-content: space-around;
   flex: 1;
-  padding: 8px;
+  padding: 8px 10px;
   padding-bottom: calc(8px + env(safe-area-inset-bottom));
 }
 
@@ -31,11 +32,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  min-width: 56px;
-  padding: 4px;
+  gap: 4px;
+  min-width: 58px;
+  min-height: 46px;
+  padding: 5px 7px;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 14px;
   background: none;
   color: var(--ink-faint);
   cursor: pointer;
@@ -43,7 +45,8 @@
   font-size: 10px;
   font-weight: 600;
   text-decoration: none;
-  transition: color 0.2s, background 0.2s;
+  position: relative;
+  transition: color 0.2s, background 0.2s, transform 0.2s;
 }
 
 .navItem:active,
@@ -52,7 +55,9 @@
 }
 
 .activeItem {
-  color: var(--amber-600);
+  color: var(--navy-950);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
 }
 
 .navIcon {
@@ -62,7 +67,7 @@
 .sidebarFooter {
   display: flex;
   align-items: stretch;
-  padding: 8px 8px 8px 0;
+  padding: 8px 10px 8px 0;
   padding-bottom: calc(8px + env(safe-area-inset-bottom));
 }
 
@@ -75,11 +80,11 @@
   bottom: auto;
   display: flex;
   align-items: center;
-  height: 58px;
-  padding: 8px 12px;
+  height: 62px;
+  padding: 9px 14px;
   border-top: none;
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid rgba(226,232,240,0.82);
+  box-shadow: 0 12px 34px rgba(15,23,42,0.05);
 }
 
 .superSidebar .brand {
@@ -98,11 +103,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  background: var(--amber-50);
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #fff7d6, var(--amber-100));
+  border: 1px solid rgba(245,158,11,0.2);
   flex-shrink: 0;
+  box-shadow: var(--shadow-xs);
 }
 
 .brandLogo {
@@ -136,15 +143,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   margin-left: auto;
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: 999px;
   background: #fff;
   color: var(--ink);
   cursor: pointer;
   flex-shrink: 0;
+}
+.menuButton:hover {
+  border-color: var(--amber-200);
+  color: var(--amber-700);
+  box-shadow: var(--shadow-sm);
 }
 
 .moreOverlay {
@@ -153,14 +165,16 @@
   z-index: 200;
   display: flex;
   justify-content: flex-end;
-  background: rgba(15, 23, 42, 0.42);
+  background: rgba(15, 23, 42, 0.38);
+  backdrop-filter: blur(2px);
 }
 
 .moreSheet {
   width: min(320px, 86vw);
   height: 100%;
   overflow-y: auto;
-  background: #fff;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(18px);
   padding: 18px 14px;
   box-shadow: -16px 0 40px rgba(15, 23, 42, 0.18);
 }
@@ -198,9 +212,9 @@
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 12px 10px;
+  padding: 11px 10px;
   border: 1px solid transparent;
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   background: transparent;
   color: var(--ink-light);
   cursor: pointer;
@@ -223,16 +237,16 @@
     top: 0;
     bottom: auto;
     right: auto;
-    width: 220px;
+    width: 216px;
     height: 100vh;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    padding: 18px 12px;
+    padding: 16px 12px;
     border-top: none;
     border-bottom: none;
-    border-right: 1px solid var(--border);
-    box-shadow: none;
+    border-right: 1px solid rgba(226,232,240,0.82);
+    box-shadow: 10px 0 36px rgba(15,23,42,0.045);
   }
 
   .brand,
@@ -241,8 +255,11 @@
     align-items: center;
     gap: 10px;
     width: auto;
-    margin-bottom: 18px;
-    padding: 0 6px;
+    margin-bottom: 16px;
+    padding: 6px;
+    border-radius: 16px;
+    background: rgba(248,250,252,0.72);
+    border: 1px solid rgba(226,232,240,0.72);
   }
 
   .menuButton,
@@ -256,36 +273,51 @@
     flex-direction: column;
     justify-content: flex-start;
     flex: 0 0 auto;
-    gap: 1px;
-    padding: 0;
+    gap: 4px;
+    padding: 4px 0;
   }
 
   .navItem,
   .logoutItem {
     flex-direction: row;
     justify-content: flex-start;
-    gap: 8px;
+    gap: 9px;
     width: 100%;
     min-width: auto;
-    padding: 8px 10px;
-    border-radius: var(--radius-md);
+    min-height: 40px;
+    padding: 9px 10px;
+    border-radius: 12px;
     font-size: 13px;
     font-weight: 500;
   }
 
   .navItem:hover {
-    background: var(--surface-hover);
+    background: rgba(248,250,252,0.95);
     color: var(--ink);
+    transform: translateX(3px);
   }
 
   .activeItem {
-    background: var(--amber-50);
-    color: var(--amber-700);
+    background: #fff;
+    color: var(--navy-950);
     font-weight: 600;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .navItem.activeItem::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 9px;
+    bottom: 9px;
+    width: 3px;
+    border-radius: 999px;
+    background: var(--amber-500);
+    animation: scaleIn 0.2s ease both;
   }
 
   .activeItem:hover {
-    background: var(--amber-100);
+    background: #fff;
   }
 
   .sidebarFooter,
@@ -294,16 +326,18 @@
     flex-direction: column;
     width: 100%;
     margin-top: auto;
-    padding-top: 14px;
-    border-top: 1px solid var(--border);
-    gap: 6px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(226,232,240,0.82);
+    gap: 7px;
   }
 
   .userInfo {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 6px 8px;
+    padding: 7px 8px;
+    border-radius: 12px;
+    background: rgba(248,250,252,0.72);
   }
 
   .userAvatar {
@@ -312,8 +346,8 @@
     justify-content: center;
     width: 30px;
     height: 30px;
-    border-radius: 8px;
-    background: var(--amber-500);
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--amber-400), var(--amber-600));
     color: #fff;
     flex-shrink: 0;
     font-size: 13px;
@@ -336,5 +370,6 @@
   .logoutItem:hover {
     background: var(--red-50);
     color: var(--red-600);
+    transform: translateX(2px);
   }
 }

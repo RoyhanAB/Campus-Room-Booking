@@ -4,7 +4,7 @@
 
 .container {
   min-height: 100vh;
-  background: var(--surface-raised);
+  background: linear-gradient(180deg, #fff 0%, var(--surface-raised) 44%, #fff 100%);
   padding: 20px 16px 100px;
   width: 100%;
 }
@@ -25,10 +25,10 @@
   width: 100%; padding: 10px 14px 10px 40px;
   border: 1px solid var(--border); border-radius: var(--radius-md);
   font-size: 13px; font-weight: 500; color: var(--ink);
-  background: #fff; transition: border-color 0.2s;
+  background: #fff; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   font-family: inherit;
 }
-.searchInput:focus { outline: none; border-color: var(--amber-500); }
+.searchInput:focus { outline: none; border-color: var(--amber-500); box-shadow: var(--focus-ring); }
 .searchInput::placeholder { color: var(--ink-faint); font-size: 12px; }
 .searchIcon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink-faint); pointer-events: none; }
 .filterGroup { display: flex; gap: 6px; width: 100%; }
@@ -39,7 +39,7 @@
   color: var(--ink); cursor: pointer; transition: all 0.2s;
   white-space: nowrap; font-family: inherit;
 }
-.filterButton:hover { border-color: var(--amber-400); }
+.filterButton:hover { border-color: var(--amber-400); transform: translateY(-1px); }
 .filterButton.active {
   background: var(--amber-500);
   border-color: var(--amber-500); color: #fff; font-weight: 600;
@@ -54,7 +54,7 @@
   background-repeat: no-repeat; background-position: right 10px center;
   padding-right: 28px;
 }
-.filterSelect:focus { outline: none; border-color: var(--amber-500); }
+.filterSelect:focus { outline: none; border-color: var(--amber-500); box-shadow: var(--focus-ring); }
 
 /* Grid */
 .gridContainer {
@@ -66,13 +66,16 @@
 .card {
   background: #fff; border-radius: var(--radius-lg);
   overflow: hidden; border: 1px solid var(--border);
-  transition: border-color 0.2s;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.24s ease, border-color 0.2s, box-shadow 0.2s;
   text-decoration: none; color: inherit;
   display: flex; flex-direction: column;
   animation: slideUp 0.3s ease both;
 }
 .card:hover {
   border-color: var(--amber-400);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 .roomImageWrapper {
   position: relative; width: 100%; height: 180px;
@@ -83,7 +86,7 @@
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.4s ease;
 }
-.card:hover .roomImage { transform: scale(1.03); }
+.card:hover .roomImage { transform: scale(1.06); }
 .roomBadge {
   position: absolute; top: 10px; right: 10px;
   padding: 4px 10px; background: rgba(255,255,255,0.95);
@@ -121,6 +124,7 @@
   background: var(--amber-50);
   border: 1px solid var(--amber-100);
   display: flex; align-items: center; justify-content: center; color: var(--amber-600);
+  animation: float 3s ease-in-out infinite;
 }
 .emptyState h3 { font-size: 16px; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
 .emptyState p { font-size: 13px; color: var(--ink-muted); margin: 0; line-height: 1.5; }

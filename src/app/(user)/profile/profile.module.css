@@ -1,4 +1,4 @@
-.page { min-height: 100vh; background: var(--surface-raised); padding: 20px 16px 120px; }
+.page { min-height: 100vh; background: linear-gradient(180deg, #fff 0%, var(--surface-raised) 44%, #fff 100%); padding: 20px 16px 120px; }
 .container { max-width: 640px; margin: 0 auto; }
 .title { font-size: 22px; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
 .subtitle { font-size: 13px; color: var(--ink-muted); margin: 0 0 24px; }
@@ -6,7 +6,11 @@
 .card {
   background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg);
   padding: 24px; margin-bottom: 16px;
+  box-shadow: var(--shadow-xs);
+  animation: slideUp 0.3s ease both;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
+.card:hover { transform: translateY(-3px); border-color: var(--amber-200); box-shadow: var(--shadow-md); }
 .cardTitle { font-size: 15px; font-weight: 700; color: var(--ink); margin: 0 0 16px; display: flex; align-items: center; gap: 8px; }
 
 .avatarSection { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light); }
@@ -15,6 +19,7 @@
   background: linear-gradient(135deg, var(--amber-400), var(--amber-600));
   color: #fff; font-size: 22px; font-weight: 700;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  box-shadow: 0 10px 24px rgba(245,158,11,0.22);
 }
 .userName { font-size: 18px; font-weight: 700; color: var(--ink); margin: 0 0 6px; }
 .metaRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -28,9 +33,9 @@
 .input {
   width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-md);
   font-size: 13px; font-family: inherit; color: var(--ink); background: #fff;
-  transition: border-color 0.2s; box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box;
 }
-.input:focus { outline: none; border-color: var(--amber-500); }
+.input:focus { outline: none; border-color: var(--amber-500); box-shadow: var(--focus-ring); }
 
 .errorBox {
   padding: 10px 14px; background: var(--red-50); border: 1px solid var(--red-100);
@@ -45,9 +50,9 @@
 .btnSubmit {
   padding: 10px 20px; border: none; background: var(--amber-500); color: #fff;
   border-radius: var(--radius-md); font-size: 13px; font-weight: 600;
-  cursor: pointer; transition: background 0.2s; font-family: inherit; align-self: flex-start;
+  cursor: pointer; transition: transform 0.2s, background 0.2s, box-shadow 0.2s; font-family: inherit; align-self: flex-start;
 }
-.btnSubmit:hover { background: var(--amber-600); }
+.btnSubmit:hover { background: var(--amber-600); transform: translateY(-1px); box-shadow: var(--shadow-glow); }
 .btnSubmit:disabled { opacity: 0.6; cursor: not-allowed; }
 
 @media (max-width: 640px) {

@@ -7,6 +7,7 @@
   max-width: 800px;
   margin: 0 auto;
   padding-bottom: 100px;
+  animation: slideUp 0.35s ease both;
 }
 
 .notFound {
@@ -35,10 +36,11 @@
   color: var(--ink-muted);
   font-size: 13px;
   font-weight: 500;
-  transition: color 0.2s;
+  transition: transform 0.2s, color 0.2s;
 }
 .backLink:hover {
   color: var(--ink);
+  transform: translateX(-3px);
 }
 .statusBadge {
   padding: 5px 14px;
@@ -46,10 +48,11 @@
   font-size: 12px;
   font-weight: 600;
   text-transform: capitalize;
+  box-shadow: var(--shadow-xs);
 }
 .title {
-  font-size: 1.35rem;
-  font-weight: 700;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  font-weight: 800;
   color: var(--ink);
   margin: 0 0 4px;
   line-height: 1.3;
@@ -75,6 +78,13 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 14px;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.infoCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--amber-200);
+  box-shadow: var(--shadow-md);
 }
 .infoIcon {
   color: var(--amber-500);
@@ -119,6 +129,13 @@
   border-radius: var(--radius-lg);
   padding: 16px;
   margin-bottom: 10px;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.section:hover {
+  transform: translateY(-2px);
+  border-color: #dbe3ee;
+  box-shadow: var(--shadow-md);
 }
 .sectionTitle {
   display: flex;
@@ -153,12 +170,14 @@
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
+  transition: transform 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
   font-family: inherit;
 }
 .documentButton:hover {
   border-color: var(--amber-400);
   background: var(--amber-100);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow);
 }
 .documentButton span,
 .documentButtonDisabled span {
@@ -197,13 +216,15 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
   background-color: #22c55e;
   color: #ffffff;
   font-family: inherit;
 }
 .btnApprove:hover:not(:disabled) {
   background-color: #16a34a;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(34,197,94,0.18);
 }
 .btnApprove:disabled {
   opacity: 0.5;
@@ -221,13 +242,15 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
   background-color: #ef4444;
   color: #ffffff;
   font-family: inherit;
 }
 .btnReject:hover:not(:disabled) {
   background-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(239,68,68,0.18);
 }
 .btnReject:disabled {
   opacity: 0.5;
@@ -278,6 +301,7 @@
   box-shadow: var(--shadow-xl);
   max-height: 90vh;
   overflow-y: auto;
+  animation: scaleIn 0.22s ease both;
 }
 .modalTitle {
   font-size: 18px;
@@ -340,11 +364,12 @@
   color: var(--ink);
   resize: vertical;
   margin-bottom: 16px;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 .customAlasanInput:focus {
   outline: none;
   border-color: var(--amber-500);
+  box-shadow: var(--focus-ring);
 }
 .modalActions {
   display: flex;
@@ -360,11 +385,12 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.2s, background 0.2s;
   font-family: inherit;
 }
 .modalBtnCancel:hover {
   background: var(--surface-raised);
+  transform: translateY(-1px);
 }
 .modalBtnConfirm {
   padding: 10px 20px;
@@ -375,11 +401,13 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
   font-family: inherit;
 }
 .modalBtnConfirm:hover {
   background: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(239,68,68,0.18);
 }
 .modalBtnConfirm:disabled,
 .modalBtnCancel:disabled {

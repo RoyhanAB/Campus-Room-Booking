@@ -4,7 +4,7 @@
 
 .page {
   min-height: 100vh;
-  background: var(--surface-raised);
+  background: linear-gradient(180deg, #fff 0%, var(--surface-raised) 46%, #fff 100%);
   padding: 0 0 100px 0;
 }
 
@@ -27,10 +27,13 @@
   font-weight: 500;
   font-size: 13px;
   margin-bottom: 20px;
-  transition: border-color 0.2s;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 .backButton:hover {
   border-color: var(--amber-400);
+  transform: translateX(-3px);
+  box-shadow: var(--shadow-md);
 }
 
 /* Hero Section */
@@ -40,6 +43,14 @@
   overflow: hidden;
   border: 1px solid var(--border);
   margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  animation: slideUp 0.35s ease both;
+  transition: transform 0.24s ease, box-shadow 0.2s, border-color 0.2s;
+}
+.heroSection:hover {
+  transform: translateY(-3px);
+  border-color: var(--amber-200);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 
 .imageWrapper {
@@ -47,10 +58,13 @@
   width: 100%;
   height: 240px;
   background: var(--surface-raised);
+  overflow: hidden;
 }
 .heroImage {
   object-fit: cover;
+  transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
 }
+.heroSection:hover .heroImage { transform: scale(1.05); }
 .imageBadge {
   position: absolute;
   top: 14px;
@@ -96,6 +110,12 @@
   background: var(--surface-raised);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-light);
+  transition: transform 0.2s, border-color 0.2s, background 0.2s;
+}
+.statCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--amber-200);
+  background: #fff;
 }
 .statIcon {
   color: var(--amber-500);
@@ -130,6 +150,8 @@
   padding: 24px;
   border: 1px solid var(--border);
   margin-bottom: 16px;
+  box-shadow: var(--shadow-xs);
+  animation: slideUp 0.35s ease 0.08s both;
 }
 .scheduleHeader {
   display: flex;
@@ -178,6 +200,7 @@
   color: var(--ink);
   font: inherit;
   font-size: 13px;
+  transition: transform 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
 .scheduleDateInput {
@@ -194,6 +217,12 @@
 .scheduleFilterButton:hover {
   border-color: var(--amber-400);
   background: var(--amber-50);
+  transform: translateY(-1px);
+}
+.scheduleDateInput:focus {
+  outline: none;
+  border-color: var(--amber-500);
+  box-shadow: var(--focus-ring);
 }
 
 /* Schedule List */
@@ -207,10 +236,12 @@
   background: var(--surface-raised);
   border-radius: var(--radius-md);
   border-left: 3px solid var(--amber-400);
-  transition: background 0.2s;
+  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
 }
 .scheduleCard:hover {
   background: var(--amber-50);
+  transform: translateX(3px);
+  box-shadow: var(--shadow-xs);
 }
 .scheduleTime {
   display: flex;
@@ -272,11 +303,13 @@
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
   font-family: inherit;
 }
 .btnEdit:hover {
   background: var(--amber-600);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow);
 }
 .btnDelete {
   flex: 1;
@@ -292,11 +325,13 @@
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
   font-family: inherit;
 }
 .btnDelete:hover {
   background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(239,68,68,0.18);
 }
 
 /* Responsive */
