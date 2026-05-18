@@ -163,6 +163,40 @@
   flex-shrink: 0;
 }
 
+.scheduleFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.scheduleDateInput,
+.scheduleFilterButton {
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+}
+
+.scheduleDateInput {
+  padding: 0 10px;
+  min-width: 160px;
+}
+
+.scheduleFilterButton {
+  padding: 0 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.scheduleFilterButton:hover {
+  border-color: var(--amber-400);
+  background: var(--amber-50);
+}
+
 /* Schedule List */
 .scheduleList {
   display: flex;

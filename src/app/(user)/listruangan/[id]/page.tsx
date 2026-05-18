@@ -1,15 +1,15 @@
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link'; 
-import { ArrowLeft, Users, CalendarDays, Clock, Building2, Layers } from 'lucide-react';
+import { ArrowLeft, Users, Clock, Building2, Layers } from 'lucide-react';
 import styles from './roomdetail.module.css';
 import { detailroom } from '@/lib/ruangan';
 import { getScheduleByRoomId } from '@/lib/schedule';
 import { getAllBuildings } from '@/lib/ruangan';
 import { getSession } from '@/lib/auth';
 import { FormPeminjamanInline } from './FormPeminjamanInline';
-import { formatLocalDateWithWeekday, formatLocalTime, isSameLocalDate, nowInJakartaLocal } from '@/lib/datetime';
 import { getSettingObject, getSystemSettings } from '@/lib/settings';
+import ScheduleListClient from './ScheduleListClient';
 
 export const revalidate = 0;
 
@@ -27,11 +27,6 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
 
   const building = buildings.find(b => b.building_id === room.building_id);
   const maxDurasi = getSettingObject(settings, 'max_durasi_booking', { jam: 8 });
-
-  const todayDate = nowInJakartaLocal();
-  const todaySchedules = schedules.filter(schedule => {
-    return isSameLocalDate(schedule.tanggal_dimulai, todayDate);
-  });
 
   const getImageUrl = (fileName: string) => {
     if (!fileName) return '/placeholder.jpg';
@@ -101,35 +96,15 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
         <div className={styles.scheduleSection}>
           <div className={styles.scheduleHeader}>
             <div>
-              <h2 className={styles.scheduleTitle}>Jadwal Hari Ini</h2>
-              <p className={styles.scheduleDate}>{formatLocalDateWithWeekday(nowInJakartaLocal())}</p>
+              <h2 className={styles.scheduleTitle}>Jadwal Ruangan</h2>
+              <p className={styles.scheduleDate}>Filter jadwal berdasarkan hari</p>
             </div>
             <div className={styles.scheduleIcon}>
               <Clock size={24} />
             </div>
           </div>
 
-          <div className={styles.scheduleList}>
-            {todaySchedules && todaySchedules.length > 0 ? (
-              todaySchedules.map((schedule, index) => (
-                <div key={schedule.schedule_id || index} className={styles.scheduleCard}>
-                  <div className={styles.scheduleTime}>
-                    <Clock size={16} />
-                    <span>
-                      {formatLocalTime(schedule.tanggal_dimulai)} - {formatLocalTime(schedule.tanggal_selesai)}
-                    </span>
-                  </div>
-                  <h3 className={styles.scheduleEventName}>{schedule.schedule_name}</h3>
-                </div>
-              ))
-            ) : (
-              <div className={styles.emptySchedule}>
-                <CalendarDays size={48} />
-                <p>Tidak ada jadwal untuk hari ini</p>
-                <span>Ruangan tersedia untuk dipinjam</span>
-              </div>
-            )}
-          </div>
+          <ScheduleListClient schedules={schedules ?? []} />
         </div>
 
         {/* Form Peminjaman Inline */}

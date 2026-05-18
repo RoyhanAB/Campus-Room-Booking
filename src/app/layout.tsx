@@ -20,10 +20,9 @@ export const metadata: Metadata = {
   description: "Sistem peminjaman ruangan Universitas Sultan Ageng Tirtayasa",
   icons: {
     icon: [
-      { url: '/image/untr.png', type: 'image/png' },
+      { url: '/logo.ico', type: 'image/x-icon' },
     ],
-    shortcut: '/image/untr.png',
-    apple: '/image/untr.png',
+    shortcut: '/logo.ico',
   },
 };
 

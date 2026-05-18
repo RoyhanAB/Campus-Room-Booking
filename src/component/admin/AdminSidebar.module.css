@@ -223,12 +223,12 @@
     top: 0;
     bottom: auto;
     right: auto;
-    width: 240px;
+    width: 220px;
     height: 100vh;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    padding: 20px 14px;
+    padding: 18px 12px;
     border-top: none;
     border-bottom: none;
     border-right: 1px solid var(--border);
@@ -241,8 +241,8 @@
     align-items: center;
     gap: 10px;
     width: auto;
-    margin-bottom: 24px;
-    padding: 0 8px;
+    margin-bottom: 18px;
+    padding: 0 6px;
   }
 
   .menuButton,
@@ -254,7 +254,9 @@
   .superSidebar .navList {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    justify-content: flex-start;
+    flex: 0 0 auto;
+    gap: 1px;
     padding: 0;
   }
 
@@ -262,10 +264,10 @@
   .logoutItem {
     flex-direction: row;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
     min-width: auto;
-    padding: 9px 12px;
+    padding: 8px 10px;
     border-radius: var(--radius-md);
     font-size: 13px;
     font-weight: 500;

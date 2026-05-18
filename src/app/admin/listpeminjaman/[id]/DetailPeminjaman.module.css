@@ -143,20 +143,26 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
-  background: var(--amber-500);
-  color: #fff;
-  border: none;
+  max-width: 100%;
+  padding: 10px 14px;
+  background: var(--amber-50);
+  color: var(--amber-700);
+  border: 1px solid var(--amber-100);
   border-radius: var(--radius-md);
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: border-color 0.2s, background 0.2s;
   font-family: inherit;
 }
 .documentButton:hover {
-  background: var(--amber-600);
+  border-color: var(--amber-400);
+  background: var(--amber-100);
+}
+.documentButton span,
+.documentButtonDisabled span {
+  overflow-wrap: anywhere;
 }
 .documentButtonDisabled {
   display: inline-flex;

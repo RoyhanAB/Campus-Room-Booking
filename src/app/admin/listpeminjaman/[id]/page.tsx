@@ -159,7 +159,6 @@ export default async function DetailPeminjamanPage({ params }: { params: Promise
         </p>
       </div>
 
-      {/* Dokumen — sebagai button */}
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>
           <FileText size={16} /> Dokumen Pendukung
@@ -172,16 +171,15 @@ export default async function DetailPeminjamanPage({ params }: { params: Promise
             className={styles.documentButton}
           >
             <ExternalLink size={16} />
-            <span>Buka Dokumen</span>
+            <span>{peminjaman.dokumen}</span>
           </a>
         ) : (
-          <button 
+          <span
             className={styles.documentButtonDisabled}
-            disabled
           >
             <ExternalLink size={16} />
-            <span>{peminjaman.dokumen ? peminjaman.dokumen : 'Tidak ada dokumen'}</span>
-          </button>
+            <span>Tidak ada dokumen</span>
+          </span>
         )}
       </div>
 
