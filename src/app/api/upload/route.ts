@@ -1,14 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { getSession } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getSession();
+    if (!session || (session.role !== 'admin_fakultas' && session.role !== 'super_admin')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
     const folder = (formData.get('folder') as string) || 'Foto';
 
     if (!file) {
       return NextResponse.json({ error: 'File tidak ditemukan' }, { status: 400 });
+    }
+
+    if (folder !== 'Foto') {
+      return NextResponse.json({ error: 'Folder upload tidak diizinkan' }, { status: 400 });
     }
 
     // Validate file type

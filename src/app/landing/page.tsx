@@ -13,7 +13,6 @@ import {
   Mail,
   Phone,
   MapPin,
-  Calendar,
   Clock,
   ChevronDown,
 } from 'lucide-react';

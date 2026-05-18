@@ -18,9 +18,13 @@ export const getAllBuildingsWithFakultas = async (): Promise<(Building & { fakul
     throw new Error(error.message);
   }
 
-  return (data ?? []).map((b: any) => ({
+  type BuildingJoined = Building & {
+    fakultas?: { fakultas_name?: string | null } | null;
+  };
+
+  return ((data ?? []) as BuildingJoined[]).map((b) => ({
     ...b,
-    fakultas_name: b.fakultas?.fakultas_name || null,
+    fakultas_name: b.fakultas?.fakultas_name || undefined,
     fakultas: undefined,
   }));
 };

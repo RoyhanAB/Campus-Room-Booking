@@ -1,10 +1,11 @@
 'use server';
 
 import { updatePeminjamanStatus, getPeminjamanById } from '@/lib/peminjaman';
-import { createRoom, updateRoom, deleteRoomById, getAllBuildings } from '@/lib/ruangan';
+import { createRoom, updateRoom, deleteRoomById, getAllBuildings, detailroom } from '@/lib/ruangan';
 import { createScheduleFromPeminjaman, checkScheduleConflict, deleteScheduleByDetails } from '@/lib/schedule';
 import { PeminjamanStatus } from '@/types/peminjaman';
 import { getSession } from '@/lib/auth';
+import { getAdminInfo } from '@/lib/admin_fakultas';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -17,6 +18,35 @@ async function requireAdmin() {
   return session;
 }
 
+async function requireRoomAccess(roomId: string, userId: string, role: string) {
+  if (role === 'super_admin') return;
+
+  const [adminInfo, buildings] = await Promise.all([
+    getAdminInfo(userId),
+    getAllBuildings(),
+  ]);
+  const room = await detailroom(roomId);
+  const building = buildings.find((item) => item.building_id === room.building_id);
+
+  if (!adminInfo?.fakultas_id || building?.fakultas_id !== adminInfo.fakultas_id) {
+    throw new Error('Unauthorized: Ruangan bukan dalam fakultas Anda.');
+  }
+}
+
+async function requireBuildingAccess(buildingId: number, userId: string, role: string) {
+  if (role === 'super_admin') return;
+
+  const [adminInfo, buildings] = await Promise.all([
+    getAdminInfo(userId),
+    getAllBuildings(),
+  ]);
+  const building = buildings.find((item) => item.building_id === buildingId);
+
+  if (!adminInfo?.fakultas_id || building?.fakultas_id !== adminInfo.fakultas_id) {
+    throw new Error('Unauthorized: Gedung bukan dalam fakultas Anda.');
+  }
+}
+
 // ===================== PEMINJAMAN ACTIONS =====================
 
 export async function approvePeminjamanAction(id: number): Promise<{ success: boolean; error?: string }> {
@@ -27,6 +57,8 @@ export async function approvePeminjamanAction(id: number): Promise<{ success: bo
   if (!peminjaman) {
     return { success: false, error: 'Peminjaman tidak ditemukan.' };
   }
+
+  await requireRoomAccess(peminjaman.room_id, session.user_id, session.role);
 
   // Cek jadwal conflict sebelum approve
   const { hasConflict, conflictingSchedules } = await checkScheduleConflict(
@@ -69,6 +101,10 @@ export async function rejectPeminjamanAction(id: number, alasanPenolakan?: strin
   
   // Ambil data peminjaman untuk hapus schedule jika ada
   const peminjaman = await getPeminjamanById(id);
+
+  if (peminjaman) {
+    await requireRoomAccess(peminjaman.room_id, session.user_id, session.role);
+  }
   
   await updatePeminjamanStatus(id, 'ditolak' as PeminjamanStatus, alasanPenolakan, session.user_id);
   
@@ -94,7 +130,7 @@ export async function createRoomAction(
   _prevState: { error: string; success: boolean } | null,
   formData: FormData
 ): Promise<{ error: string; success: boolean }> {
-  await requireAdmin();
+  const session = await requireAdmin();
   
   const roomId = formData.get('room_id') as string;
   const buildingId = Number(formData.get('building_id'));
@@ -107,6 +143,8 @@ export async function createRoomAction(
   if (!roomId || !buildingId || !floor || !kapasitas) {
     return { error: 'Semua field wajib harus diisi.', success: false };
   }
+
+  await requireBuildingAccess(buildingId, session.user_id, session.role);
 
   try {
     const buildings = await getAllBuildings();
@@ -143,7 +181,7 @@ export async function updateRoomAction(
   _prevState: { error: string; success: boolean } | null,
   formData: FormData
 ): Promise<{ error: string; success: boolean }> {
-  await requireAdmin();
+  const session = await requireAdmin();
   
   const roomId = formData.get('room_id') as string;
   const buildingId = Number(formData.get('building_id'));
@@ -156,6 +194,9 @@ export async function updateRoomAction(
   if (!roomId || !buildingId || !kapasitas) {
     return { error: 'Semua field wajib harus diisi.', success: false };
   }
+
+  await requireRoomAccess(roomId, session.user_id, session.role);
+  await requireBuildingAccess(buildingId, session.user_id, session.role);
 
   try {
     const buildings = await getAllBuildings();
@@ -188,7 +229,8 @@ export async function updateRoomAction(
 }
 
 export async function deleteRoomAction(roomId: string) {
-  await requireAdmin();
+  const session = await requireAdmin();
+  await requireRoomAccess(roomId, session.user_id, session.role);
   await deleteRoomById(roomId);
   revalidatePath('/admin/listruangan');
   redirect('/admin/listruangan');

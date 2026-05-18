@@ -65,6 +65,16 @@ export default function KelolaUserClient({
     });
   };
 
+  const openEdit = (user: UserWithProfile) => {
+    if (user.role === 'super_admin') {
+      setError('Akun super admin tidak bisa diubah dari halaman ini.');
+      return;
+    }
+    setEditUser(user);
+    setError('');
+    setSuccess('');
+  };
+
   const handleAddSubmit = async (formData: FormData) => {
     setError(''); setSuccess('');
     startTransition(async () => {
@@ -175,16 +185,18 @@ export default function KelolaUserClient({
                 <td>{u.angkatan || '-'}</td>
                 <td>
                   <div className={styles.actionCell}>
-                    <button className={styles.btnEdit} onClick={() => { setEditUser(u); setError(''); setSuccess(''); }}>
-                      <Pencil size={12} /> Edit
-                    </button>
-                    <button className={styles.btnEdit} onClick={() => { setResetUser(u); setError(''); setSuccess(''); setNewPassword(''); }} style={{ background: '#fef3c7', color: '#92400e' }}>
-                      <KeyRound size={12} /> Reset
-                    </button>
                     {u.role !== 'super_admin' && (
-                      <button className={styles.btnDelete} onClick={() => handleDelete(u.user_id, u.user_name)} disabled={isPending}>
-                        <Trash2 size={12} /> Hapus
-                      </button>
+                      <>
+                        <button className={styles.btnEdit} onClick={() => openEdit(u)}>
+                          <Pencil size={12} /> Edit
+                        </button>
+                        <button className={styles.btnEdit} onClick={() => { setResetUser(u); setError(''); setSuccess(''); setNewPassword(''); }} style={{ background: '#fef3c7', color: '#92400e' }}>
+                          <KeyRound size={12} /> Reset
+                        </button>
+                        <button className={styles.btnDelete} onClick={() => handleDelete(u.user_id, u.user_name)} disabled={isPending}>
+                          <Trash2 size={12} /> Hapus
+                        </button>
+                      </>
                     )}
                   </div>
                 </td>
@@ -221,10 +233,12 @@ export default function KelolaUserClient({
               <span className={styles.cardValue}>{u.jurusan || '-'}</span>
             </div>
             <div className={styles.cardActions}>
-              <button className={styles.btnEdit} onClick={() => { setEditUser(u); setError(''); setSuccess(''); }}>Edit</button>
-              <button className={styles.btnEdit} onClick={() => { setResetUser(u); setError(''); setSuccess(''); setNewPassword(''); }} style={{ background: '#fef3c7', color: '#92400e' }}>Reset PW</button>
               {u.role !== 'super_admin' && (
-                <button className={styles.btnDelete} onClick={() => handleDelete(u.user_id, u.user_name)} disabled={isPending}>Hapus</button>
+                <>
+                  <button className={styles.btnEdit} onClick={() => openEdit(u)}>Edit</button>
+                  <button className={styles.btnEdit} onClick={() => { setResetUser(u); setError(''); setSuccess(''); setNewPassword(''); }} style={{ background: '#fef3c7', color: '#92400e' }}>Reset PW</button>
+                  <button className={styles.btnDelete} onClick={() => handleDelete(u.user_id, u.user_name)} disabled={isPending}>Hapus</button>
+                </>
               )}
             </div>
           </div>

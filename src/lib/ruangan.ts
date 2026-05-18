@@ -9,7 +9,7 @@ export const getRoomsLimit15 = async (): Promise<Room[]> => {
   const { data, error } = await supabase
     .from('rooms')
     .select('*')
-    .limit(15);
+    .order('room_id', { ascending: true });
   
   if (error) {
     console.error('Error fetching rooms:', error);

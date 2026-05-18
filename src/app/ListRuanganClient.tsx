@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useCallback, useTransition } from 'react';
+import { useState, useCallback, useMemo, useTransition } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { Search, Building2, Layers, Users } from 'lucide-react';
+import { Search, Building2, Layers, Users, Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Room } from '@/types/room';
@@ -36,6 +36,15 @@ export default function ListRuanganClient({
   const [selectedBuilding, setSelectedBuilding] = useState(initialBuilding);
   const [selectedFakultas, setSelectedFakultas] = useState(initialFakultas);
   const [isPending, startTransition] = useTransition();
+  const showAddRoomAction = basePath.startsWith('/admin');
+
+  const uniqueFakultas = useMemo(() => {
+    return Array.from(new Map(fakultas.map((item) => [item.fakultas_name.trim().toLowerCase(), item])).values());
+  }, [fakultas]);
+
+  const uniqueBuildings = useMemo(() => {
+    return Array.from(new Map(buildings.map((item) => [`${item.fakultas_id}:${item.building_name.trim().toLowerCase()}`, item])).values());
+  }, [buildings]);
 
   const updateFilters = useCallback(
     (search: string, building: string, fakultasId: string) => {
@@ -74,8 +83,8 @@ export default function ListRuanganClient({
 
   // Filter buildings berdasarkan fakultas yang dipilih
   const filteredBuildings = selectedFakultas
-    ? buildings.filter(b => b.fakultas_id.toString() === selectedFakultas)
-    : buildings;
+    ? uniqueBuildings.filter(b => b.fakultas_id.toString() === selectedFakultas)
+    : uniqueBuildings;
 
   const filteredRooms = rooms?.filter((room) => {
     const matchesSearch = !searchTerm || 
@@ -86,7 +95,7 @@ export default function ListRuanganClient({
       room.building_id.toString() === selectedBuilding;
 
     // Filter by fakultas
-    const roomBuilding = buildings.find(b => b.building_id === room.building_id);
+    const roomBuilding = uniqueBuildings.find(b => b.building_id === room.building_id);
     const matchesFakultas = !selectedFakultas || 
       roomBuilding?.fakultas_id.toString() === selectedFakultas;
 
@@ -102,6 +111,12 @@ export default function ListRuanganClient({
             Pilih ruangan yang sesuai untuk kegiatan Anda
           </p>
         </div>
+        {showAddRoomAction && (
+          <Link href="/admin/tambahruangan" className={styles.addRoomButton}>
+            <Plus size={16} />
+            <span>Tambah Ruangan</span>
+          </Link>
+        )}
 
         <div className={styles.actionRow}>
           <div className={styles.searchWrapper}>
@@ -122,7 +137,7 @@ export default function ListRuanganClient({
               onChange={(e) => handleFakultasChange(e.target.value)}
             >
               <option value="">Semua Fakultas</option>
-              {fakultas.map((fak) => (
+              {uniqueFakultas.map((fak) => (
                 <option key={fak.fakultas_id} value={fak.fakultas_id}>
                   {fak.fakultas_name}
                 </option>
@@ -151,7 +166,7 @@ export default function ListRuanganClient({
       >
         {filteredRooms && filteredRooms.length > 0 ? (
           filteredRooms.map((room) => {
-            const building = buildings.find(b => b.building_id === room.building_id);
+            const building = uniqueBuildings.find(b => b.building_id === room.building_id);
             
             return (
               <Link

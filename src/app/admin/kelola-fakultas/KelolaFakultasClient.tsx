@@ -87,9 +87,9 @@ export default function KelolaFakultasClient({ fakultas }: { fakultas: Fakultas[
             </tr>
           </thead>
           <tbody>
-            {fakultas.length > 0 ? fakultas.map((f) => (
+            {fakultas.length > 0 ? fakultas.map((f, index) => (
               <tr key={f.fakultas_id}>
-                <td>{f.fakultas_id}</td>
+                <td>{index + 1}</td>
                 <td style={{ fontWeight: 600 }}>{f.fakultas_name}</td>
                 <td>{f.lokasi || '-'}</td>
                 <td>

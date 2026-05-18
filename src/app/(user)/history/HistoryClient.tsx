@@ -5,20 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Calendar, Clock, MapPin, FileText, XCircle } from 'lucide-react';
 import { cancelBookingAction } from './cancel-action';
 import { Peminjaman } from '@/types/peminjaman';
+import { formatLocalDate, formatLocalTime } from '@/lib/datetime';
 import styles from './history.module.css';
-
-const formatDate = (value: string) =>
-  new Date(value).toLocaleDateString('id-ID', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-
-const formatTime = (value: string) =>
-  new Date(value).toLocaleTimeString('id-ID', {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
 
 const getStatusConfig = (status: string) => {
   switch (status?.toLowerCase()) {
@@ -141,7 +129,7 @@ export default function HistoryClient({ peminjamanList }: { peminjamanList: Pemi
                     <Calendar size={16} />
                     <span className={styles.infoLabel}>Tanggal:</span>
                     <span className={styles.infoValue}>
-                      {formatDate(item.tanggal_dimulai)}
+                      {formatLocalDate(item.tanggal_dimulai)}
                     </span>
                   </div>
 
@@ -149,7 +137,7 @@ export default function HistoryClient({ peminjamanList }: { peminjamanList: Pemi
                     <Clock size={16} />
                     <span className={styles.infoLabel}>Waktu:</span>
                     <span className={styles.infoValue}>
-                      {formatTime(item.tanggal_dimulai)} - {formatTime(item.tanggal_selesai)}
+                      {formatLocalTime(item.tanggal_dimulai)} - {formatLocalTime(item.tanggal_selesai)}
                     </span>
                   </div>
 

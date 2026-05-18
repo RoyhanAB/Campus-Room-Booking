@@ -25,6 +25,18 @@ export interface UserWithProfile extends User {
   fakultas_name?: string;
 }
 
+type ProfileRow = {
+  user_id: string;
+  jurusan?: string | null;
+  angkatan?: string | null;
+};
+
+type AdminAssignmentRow = {
+  user_id: string;
+  fakultas_id?: number | null;
+  fakultas?: { fakultas_name?: string | null } | null;
+};
+
 export const getAllUsersWithProfiles = async (): Promise<UserWithProfile[]> => {
   // Fetch users
   const { data: users, error } = await supabase
@@ -43,7 +55,7 @@ export const getAllUsersWithProfiles = async (): Promise<UserWithProfile[]> => {
     .select('user_id, jurusan, angkatan');
 
   const profileMap = new Map<string, { jurusan: string; angkatan: string }>();
-  (profiles ?? []).forEach((p: any) => {
+  ((profiles ?? []) as ProfileRow[]).forEach((p) => {
     profileMap.set(p.user_id, { jurusan: p.jurusan || '', angkatan: p.angkatan || '' });
   });
 
@@ -56,11 +68,11 @@ export const getAllUsersWithProfiles = async (): Promise<UserWithProfile[]> => {
     `);
 
   const fakultasMap = new Map<string, string>();
-  (assignments ?? []).forEach((a: any) => {
+  ((assignments ?? []) as AdminAssignmentRow[]).forEach((a) => {
     fakultasMap.set(a.user_id, a.fakultas?.fakultas_name || '');
   });
 
-  return (users as any[]).map(u => {
+  return (users as User[]).map(u => {
     const profile = profileMap.get(u.user_id);
     return {
       user_id: u.user_id,
@@ -121,7 +133,8 @@ export const getAdminsWithFakultas = async (): Promise<AdminWithFakultas[]> => {
   }
 
   const assignmentMap = new Map<string, { fakultas_id: number; fakultas_name: string }>();
-  (assignments ?? []).forEach((a: any) => {
+  ((assignments ?? []) as AdminAssignmentRow[]).forEach((a) => {
+    if (typeof a.fakultas_id !== 'number') return;
     assignmentMap.set(a.user_id, {
       fakultas_id: a.fakultas_id,
       fakultas_name: a.fakultas?.fakultas_name || '',

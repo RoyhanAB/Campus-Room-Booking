@@ -1,11 +1,14 @@
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link'; 
-import { MapPin, Users, CalendarDays, Clock, Building2, Layers, ArrowLeft } from 'lucide-react';
+import { Users, Clock, Building2, Layers, ArrowLeft } from 'lucide-react';
 import styles from './roomdetail.module.css';
 import { detailroom, getAllBuildings } from '@/lib/ruangan';
 import { getScheduleByRoomId } from '@/lib/schedule';
 import RoomDetailActions from './RoomDetailActions';
+import { getSession } from '@/lib/auth';
+import { getAdminInfo } from '@/lib/admin_fakultas';
+import ScheduleListClient from './ScheduleListClient';
 
 export const revalidate = 0;
 
@@ -13,33 +16,38 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
   const resolvedParams = await params;
   const roomId = resolvedParams.id;
 
-  const [room, schedules, buildings] = await Promise.all([
+  const [room, schedules, buildings, session] = await Promise.all([
     detailroom(roomId),
     getScheduleByRoomId(roomId),
     getAllBuildings(),
+    getSession(),
   ]);
 
   const building = buildings.find(b => b.building_id === room.building_id);
+
+  if (session?.role === 'admin_fakultas') {
+    const adminInfo = await getAdminInfo(session.user_id);
+    if (!adminInfo?.fakultas_id || building?.fakultas_id !== adminInfo.fakultas_id) {
+      return (
+        <div className={styles.page}>
+          <div className={styles.container}>
+            <Link href="/admin/listruangan" className={styles.backButton}>
+              <ArrowLeft size={18} />
+              <span>Kembali</span>
+            </Link>
+            <div className={styles.emptySchedule}>
+              <p>Akses ditolak. Ruangan ini bukan bagian dari fakultas Anda.</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  }
 
   const getImageUrl = (fileName: string) => {
     if (!fileName) return '/placeholder.jpg';
     const { data } = supabase.storage.from('Foto').getPublicUrl(fileName);
     return data.publicUrl;
-  };
-
-  const formatTime = (isoString: string) => {
-    return new Date(isoString).toLocaleTimeString('id-ID', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
-  const formatDate = (isoString: string) => {
-    return new Date(isoString).toLocaleDateString('id-ID', {
-      weekday: 'short',
-      day: 'numeric',
-      month: 'short',
-    });
   };
 
   return (
@@ -114,26 +122,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
             </div>
           </div>
 
-          <div className={styles.scheduleList}>
-            {schedules && schedules.length > 0 ? (
-              schedules.map((schedule, index) => (
-                <div key={schedule.schedule_id || index} className={styles.scheduleCard}>
-                  <div className={styles.scheduleTime}>
-                    <Clock size={14} />
-                    <span>
-                      {formatDate(schedule.tanggal_dimulai)} · {formatTime(schedule.tanggal_dimulai)} - {formatTime(schedule.tanggal_selesai)}
-                    </span>
-                  </div>
-                  <h3 className={styles.scheduleEventName}>{schedule.schedule_name}</h3>
-                </div>
-              ))
-            ) : (
-              <div className={styles.emptySchedule}>
-                <CalendarDays size={36} />
-                <p>Belum ada jadwal untuk ruangan ini</p>
-              </div>
-            )}
-          </div>
+          <ScheduleListClient schedules={schedules ?? []} />
         </div>
 
         {/* Action Buttons */}

@@ -2,6 +2,7 @@
 
 import { getSession } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { getSystemSettings, JsonValue } from '@/lib/settings';
 import { revalidatePath } from 'next/cache';
 
 async function requireSuperAdmin() {
@@ -12,21 +13,9 @@ async function requireSuperAdmin() {
   return session;
 }
 
-export async function getSystemSettings(): Promise<Record<string, any>> {
-  const { data, error } = await supabaseAdmin
-    .from('system_settings')
-    .select('*');
+export { getSystemSettings };
 
-  if (error) return {};
-
-  const settings: Record<string, any> = {};
-  (data ?? []).forEach((row: any) => {
-    settings[row.key] = row.value;
-  });
-  return settings;
-}
-
-export async function updateSettingAction(key: string, value: any): Promise<{ success: boolean; error?: string }> {
+export async function updateSettingAction(key: string, value: JsonValue): Promise<{ success: boolean; error?: string }> {
   await requireSuperAdmin();
 
   const { error } = await supabaseAdmin

@@ -1,13 +1,15 @@
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link'; 
-import { MapPin, ArrowLeft, Users, CalendarDays, Clock, Building2, Layers, ClipboardList, FileText, Link as LinkIcon, Send } from 'lucide-react';
+import { ArrowLeft, Users, CalendarDays, Clock, Building2, Layers } from 'lucide-react';
 import styles from './roomdetail.module.css';
 import { detailroom } from '@/lib/ruangan';
 import { getScheduleByRoomId } from '@/lib/schedule';
 import { getAllBuildings } from '@/lib/ruangan';
 import { getSession } from '@/lib/auth';
 import { FormPeminjamanInline } from './FormPeminjamanInline';
+import { formatLocalDateWithWeekday, formatLocalTime, isSameLocalDate, nowInJakartaLocal } from '@/lib/datetime';
+import { getSettingObject, getSystemSettings } from '@/lib/settings';
 
 export const revalidate = 0;
 
@@ -15,46 +17,26 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
   const resolvedParams = await params;
   const roomId = resolvedParams.id;
 
-  const [room, schedules, buildings, session] = await Promise.all([
+  const [room, schedules, buildings, session, settings] = await Promise.all([
     detailroom(roomId),
     getScheduleByRoomId(roomId),
     getAllBuildings(),
-    getSession()
+    getSession(),
+    getSystemSettings(),
   ]);
 
   const building = buildings.find(b => b.building_id === room.building_id);
+  const maxDurasi = getSettingObject(settings, 'max_durasi_booking', { jam: 8 });
 
-  // Filter jadwal hari ini saja
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-
+  const todayDate = nowInJakartaLocal();
   const todaySchedules = schedules.filter(schedule => {
-    const scheduleDate = new Date(schedule.tanggal_dimulai);
-    return scheduleDate >= today && scheduleDate < tomorrow;
+    return isSameLocalDate(schedule.tanggal_dimulai, todayDate);
   });
 
   const getImageUrl = (fileName: string) => {
     if (!fileName) return '/placeholder.jpg';
     const { data } = supabase.storage.from('Foto').getPublicUrl(fileName);
     return data.publicUrl;
-  };
-
-  const formatTime = (isoString: string) => {
-    return new Date(isoString).toLocaleTimeString('id-ID', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
-  const formatDate = (isoString: string) => {
-    return new Date(isoString).toLocaleDateString('id-ID', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
   };
 
   return (
@@ -120,7 +102,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
           <div className={styles.scheduleHeader}>
             <div>
               <h2 className={styles.scheduleTitle}>Jadwal Hari Ini</h2>
-              <p className={styles.scheduleDate}>{formatDate(new Date().toISOString())}</p>
+              <p className={styles.scheduleDate}>{formatLocalDateWithWeekday(nowInJakartaLocal())}</p>
             </div>
             <div className={styles.scheduleIcon}>
               <Clock size={24} />
@@ -134,7 +116,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
                   <div className={styles.scheduleTime}>
                     <Clock size={16} />
                     <span>
-                      {formatTime(schedule.tanggal_dimulai)} - {formatTime(schedule.tanggal_selesai)}
+                      {formatLocalTime(schedule.tanggal_dimulai)} - {formatLocalTime(schedule.tanggal_selesai)}
                     </span>
                   </div>
                   <h3 className={styles.scheduleEventName}>{schedule.schedule_name}</h3>
@@ -156,6 +138,7 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
           userId={session?.user_id || ''}
           userName={session?.user_name || ''}
           kapasitas={room.kapasitas}
+          maxBookingHours={Number(maxDurasi.jam || 8)}
         />
       </div>
     </div>

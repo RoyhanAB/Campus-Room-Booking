@@ -4,8 +4,6 @@ import {
   ArrowRight,
   Building,
   Calendar,
-  CheckCircle,
-  Clock,
   FileText,
   History,
   Zap,

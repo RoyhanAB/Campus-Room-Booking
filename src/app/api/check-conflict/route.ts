@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { checkScheduleConflict } from '@/lib/schedule';
+import { normalizeDateTimeLocal } from '@/lib/datetime';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -11,7 +12,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ hasConflict: false, names: '' });
   }
 
-  const { hasConflict, conflictingSchedules } = await checkScheduleConflict(roomId, start, end);
+  let normalizedStart: string;
+  let normalizedEnd: string;
+  try {
+    normalizedStart = normalizeDateTimeLocal(start);
+    normalizedEnd = normalizeDateTimeLocal(end);
+  } catch {
+    return NextResponse.json({ hasConflict: false, names: '' }, { status: 400 });
+  }
+
+  const { hasConflict, conflictingSchedules } = await checkScheduleConflict(roomId, normalizedStart, normalizedEnd);
 
   return NextResponse.json({
     hasConflict,

@@ -2,10 +2,11 @@
 
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createPeminjaman } from '@/lib/peminjaman';
 import { ArrowLeft, Users, FileText, Link as LinkIcon, Send, Building2, ClipboardList, Clock, Layers } from 'lucide-react';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
+import { diffMinutes, normalizeDateTimeLocal, toDatetimeLocal } from '@/lib/datetime';
+import { submitPeminjamanAction } from './actions';
 import styles from './formpeminjaman.module.css';
 
 interface Room {
@@ -16,11 +17,6 @@ interface Room {
   deskripsi: string;
   foto: string;
 }
-
-const toDatetimeLocal = (date: Date) => {
-  const offset = date.getTimezoneOffset() * 60000;
-  return new Date(date.getTime() - offset).toISOString().slice(0, 16);
-};
 
 const defaultDateRange = (() => {
   const now = new Date();
@@ -39,12 +35,14 @@ export function FormPeminjamanClient({
   userName,
   room,
   buildingName,
+  maxBookingHours,
 }: {
   defaultRoomId: string;
   userId: string;
   userName: string;
   room: Room;
   buildingName: string;
+  maxBookingHours: number;
 }) {
   const router = useRouter();
   const [roomId] = useState(defaultRoomId);
@@ -100,6 +98,19 @@ export function FormPeminjamanClient({
       return;
     }
 
+    try {
+      const durationMinutes = diffMinutes(tanggalMulai, tanggalSelesai);
+      if (durationMinutes > maxBookingHours * 60) {
+        setStatus('error');
+        setMessage(`Durasi peminjaman maksimal ${maxBookingHours} jam.`);
+        return;
+      }
+    } catch {
+      setStatus('error');
+      setMessage('Format tanggal tidak valid.');
+      return;
+    }
+
     // Validasi: tidak boleh booking di masa lalu
     if (new Date(tanggalMulai) < new Date()) {
       setStatus('error');
@@ -111,7 +122,9 @@ export function FormPeminjamanClient({
     try {
       setStatus('loading');
       setMessage('Memeriksa ketersediaan jadwal...');
-      const res = await fetch(`/api/check-conflict?room_id=${roomId.trim().toUpperCase()}&start=${new Date(tanggalMulai).toISOString()}&end=${new Date(tanggalSelesai).toISOString()}`);
+      const start = normalizeDateTimeLocal(tanggalMulai);
+      const end = normalizeDateTimeLocal(tanggalSelesai);
+      const res = await fetch(`/api/check-conflict?room_id=${roomId.trim().toUpperCase()}&start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`);
       const conflictData = await res.json();
       if (conflictData.hasConflict) {
         setStatus('error');
@@ -126,16 +139,19 @@ export function FormPeminjamanClient({
       setStatus('loading');
       setMessage('Menyimpan pengajuan...');
 
-      await createPeminjaman({
+      const result = await submitPeminjamanAction({
         room_id: roomId.trim().toUpperCase(),
-        user_id: userId,
         nama_kegiatan: namaKegiatan.trim(),
-        tanggal_dimulai: new Date(tanggalMulai).toISOString(),
-        tanggal_selesai: new Date(tanggalSelesai).toISOString(),
+        tanggal_dimulai: tanggalMulai,
+        tanggal_selesai: tanggalSelesai,
         deskripsi: deskripsi.trim(),
         jumlah_peserta: pesertaNum,
         dokumen: dokumen.trim(),
       });
+
+      if (!result.success) {
+        throw new Error(result.error || 'Gagal mengirim pengajuan.');
+      }
 
       setStatus('success');
       setMessage('✓ Pengajuan berhasil dikirim! Mengalihkan ke riwayat...');

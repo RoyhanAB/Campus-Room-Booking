@@ -2,7 +2,7 @@
 
 import { createBuilding, updateBuilding, deleteBuilding } from '@/lib/building';
 import { createFakultas, updateFakultas, deleteFakultas } from '@/lib/fakultas';
-import { createUser, updateUser, deleteUser, assignAdminToFakultas, removeAdminFromFakultas } from '@/lib/user';
+import { createUser, deleteUser, assignAdminToFakultas, removeAdminFromFakultas } from '@/lib/user';
 import { getSession, hashPassword } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { revalidatePath } from 'next/cache';
@@ -14,6 +14,22 @@ async function requireSuperAdmin() {
     throw new Error('Unauthorized: Hanya super admin yang bisa melakukan aksi ini.');
   }
   return session;
+}
+
+const editableRoles = new Set(['mahasiswa', 'dosen', 'admin_fakultas']);
+
+async function getUserRole(userId: string) {
+  const { data, error } = await supabaseAdmin
+    .from('users')
+    .select('role')
+    .eq('user_id', userId)
+    .single();
+
+  if (error || !data) {
+    throw new Error('User tidak ditemukan.');
+  }
+
+  return data.role as string;
 }
 
 // ===================== BUILDING ACTIONS =====================
@@ -179,7 +195,11 @@ export async function reassignAdminFakultasAction(userId: string, fakultasId: nu
 }
 
 export async function deleteAdminAction(userId: string) {
-  await requireSuperAdmin();
+  const session = await requireSuperAdmin();
+  const role = await getUserRole(userId);
+  if (role === 'super_admin' || userId === session.user_id) {
+    throw new Error('Akun super admin aktif tidak boleh dihapus.');
+  }
   await removeAdminFromFakultas(userId);
   await deleteUser(userId);
   revalidatePath('/admin/kelola-admin');
@@ -200,6 +220,10 @@ export async function createUserAction(
 
   if (!userId || !password || !userName || !role) {
     return { error: 'Semua field wajib diisi.', success: false };
+  }
+
+  if (!editableRoles.has(role)) {
+    return { error: 'Role tidak valid.', success: false };
   }
 
   if (password.length < 6) {
@@ -256,7 +280,16 @@ export async function updateUserAction(
     return { error: 'Semua field wajib diisi.', success: false };
   }
 
+  if (!editableRoles.has(role)) {
+    return { error: 'Role tidak valid.', success: false };
+  }
+
   try {
+    const currentRole = await getUserRole(userId);
+    if (currentRole === 'super_admin') {
+      return { error: 'Akun super admin tidak boleh diubah menjadi role lain.', success: false };
+    }
+
     await supabaseAdmin
       .from('users')
       .update({ user_name: userName.trim(), role })
@@ -283,10 +316,15 @@ export async function updateUserAction(
 }
 
 export async function resetPasswordAction(userId: string, newPassword: string) {
-  await requireSuperAdmin();
+  const session = await requireSuperAdmin();
 
   if (!newPassword || newPassword.length < 6) {
     throw new Error('Password minimal 6 karakter.');
+  }
+
+  const currentRole = await getUserRole(userId);
+  if (currentRole === 'super_admin' && userId !== session.user_id) {
+    throw new Error('Password super admin hanya boleh direset oleh pemilik akun.');
   }
 
   const hashedPassword = await hashPassword(newPassword);
@@ -302,7 +340,11 @@ export async function resetPasswordAction(userId: string, newPassword: string) {
 }
 
 export async function deleteUserAction(userId: string) {
-  await requireSuperAdmin();
+  const session = await requireSuperAdmin();
+  const role = await getUserRole(userId);
+  if (role === 'super_admin' || userId === session.user_id) {
+    throw new Error('Akun super admin aktif tidak boleh dihapus.');
+  }
   await deleteUser(userId);
   revalidatePath('/admin/kelola-user');
 }

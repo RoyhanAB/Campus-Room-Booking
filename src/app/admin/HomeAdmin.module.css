@@ -374,3 +374,39 @@
 .actionItem:hover .actionArrow {
   color: var(--amber-600);
 }
+
+@media (max-width: 480px) {
+  .page {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .welcome {
+    padding: 20px 16px;
+  }
+
+  .welcomeActions {
+    flex-direction: column;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    width: 100%;
+    justify-content: center;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .recentItem {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .recentStatus {
+    align-self: flex-start;
+  }
+}

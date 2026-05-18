@@ -1,23 +1,15 @@
-/* =============================================
-   ADMIN SIDEBAR — Mobile Bottom Nav + Desktop Sidebar
-   Clean Corporate Style
-   ============================================= */
-
-/* ---- Mobile (Bottom Nav) ---- */
+/* Mobile admin uses bottom nav; super admin uses hamburger drawer. */
 .sidebar {
   position: fixed;
-  bottom: 0;
   left: 0;
-  width: 100%;
-  background: #ffffff;
-  display: flex;
-  justify-content: space-around;
-  align-items: stretch;
-  padding: 6px 4px;
-  padding-bottom: calc(6px + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--border);
+  right: 0;
+  bottom: 0;
   z-index: 100;
+  background: #fff;
+  border-top: 1px solid var(--border);
   box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: stretch;
 }
 
 .brand {
@@ -25,81 +17,212 @@
 }
 
 .navList {
-  display: contents;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  flex: 1;
+  padding: 8px;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
 }
 
-.navItem {
+.navItem,
+.logoutItem {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  text-decoration: none;
-  color: var(--ink-faint);
-  font-size: 10px;
-  font-weight: 500;
-  min-width: 0;
-  flex: 1;
-  padding: 6px 2px;
-  transition: color 0.2s;
+  gap: 3px;
+  min-width: 56px;
+  padding: 4px;
+  border: none;
   border-radius: var(--radius-sm);
+  background: none;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
 }
 
-.navItem:active {
-  background: var(--surface-raised);
-}
-
-.navIcon {
-  transition: color 0.2s;
+.navItem:active,
+.logoutItem:active {
+  transform: scale(0.95);
 }
 
 .activeItem {
   color: var(--amber-600);
-  font-weight: 600;
 }
 
-/* Mobile footer */
+.navIcon {
+  flex-shrink: 0;
+}
+
 .sidebarFooter {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  min-width: 0;
+  align-items: stretch;
+  padding: 8px 8px 8px 0;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
 }
 
 .userInfo {
   display: none;
 }
 
-.logoutItem {
+.superSidebar {
+  top: 0;
+  bottom: auto;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  height: 58px;
+  padding: 8px 12px;
+  border-top: none;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.superSidebar .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.superSidebar .navList,
+.superSidebar .sidebarFooter {
+  display: none;
+}
+
+.brandLogoWrap {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  text-decoration: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--amber-50);
+  flex-shrink: 0;
+}
+
+.brandLogo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.brandTextWrap {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brandTitle {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.brandSubtitle {
   color: var(--ink-faint);
   font-size: 10px;
-  font-weight: 500;
-  min-width: 0;
-  width: 100%;
-  background: none;
-  border: none;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.menuButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin-left: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  color: var(--ink);
   cursor: pointer;
-  padding: 6px 2px;
+  flex-shrink: 0;
+}
+
+.moreOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(15, 23, 42, 0.42);
+}
+
+.moreSheet {
+  width: min(320px, 86vw);
+  height: 100%;
+  overflow-y: auto;
+  background: #fff;
+  padding: 18px 14px;
+  box-shadow: -16px 0 40px rgba(15, 23, 42, 0.18);
+}
+
+.moreHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px 12px;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.moreClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  color: var(--ink-muted);
+  cursor: pointer;
+}
+
+.moreList {
+  display: grid;
+  gap: 6px;
+}
+
+.moreItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--ink-light);
+  cursor: pointer;
   font-family: inherit;
-  transition: color 0.2s;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
 }
 
-.logoutItem:active {
-  color: var(--red-600);
+.moreItem:hover,
+.moreItem.activeItem {
+  border-color: var(--amber-100);
+  background: var(--amber-50);
+  color: var(--amber-700);
 }
 
-/* ---- Desktop (Left Sidebar) ---- */
 @media (min-width: 768px) {
-  .sidebar {
+  .sidebar,
+  .superSidebar {
     top: 0;
     bottom: auto;
+    right: auto;
     width: 240px;
     height: 100vh;
     flex-direction: column;
@@ -107,71 +230,45 @@
     align-items: stretch;
     padding: 20px 14px;
     border-top: none;
+    border-bottom: none;
     border-right: 1px solid var(--border);
     box-shadow: none;
   }
 
-  .brand {
+  .brand,
+  .superSidebar .brand {
     display: flex;
     align-items: center;
     gap: 10px;
+    width: auto;
     margin-bottom: 24px;
     padding: 0 8px;
   }
 
-  .brandLogoWrap {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
-    background: var(--amber-50);
-    flex-shrink: 0;
+  .menuButton,
+  .moreOverlay {
+    display: none;
   }
 
-  .brandLogo {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-  }
-
-  .brandTextWrap {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .brandTitle {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-  }
-
-  .brandSubtitle {
-    font-size: 10px;
-    font-weight: 500;
-    color: var(--ink-faint);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .navList {
+  .navList,
+  .superSidebar .navList {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    padding: 0;
   }
 
-  .navItem {
+  .navItem,
+  .logoutItem {
     flex-direction: row;
+    justify-content: flex-start;
     gap: 10px;
     width: 100%;
-    padding: 9px 12px;
-    font-size: 13px;
-    border-radius: var(--radius-md);
     min-width: auto;
-    flex: none;
-    justify-content: flex-start;
+    padding: 9px 12px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 500;
   }
 
   .navItem:hover {
@@ -189,59 +286,49 @@
     background: var(--amber-100);
   }
 
-  /* Footer */
-  .sidebarFooter {
+  .sidebarFooter,
+  .superSidebar .sidebarFooter {
+    display: flex;
     flex-direction: column;
     width: 100%;
     margin-top: auto;
     padding-top: 14px;
     border-top: 1px solid var(--border);
     gap: 6px;
-    align-items: stretch;
-    flex: none;
   }
 
   .userInfo {
-    display: flex !important;
+    display: flex;
     align-items: center;
     gap: 10px;
     padding: 6px 8px;
   }
 
   .userAvatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 30px;
     height: 30px;
     border-radius: 8px;
     background: var(--amber-500);
     color: #fff;
-    font-weight: 600;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 600;
   }
 
   .userNameText {
+    overflow: hidden;
+    color: var(--ink-light);
     font-size: 13px;
     font-weight: 500;
-    color: var(--ink-light);
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   .logoutItem {
-    flex-direction: row;
-    gap: 10px;
-    width: 100%;
-    padding: 9px 12px;
-    font-size: 13px;
-    border-radius: var(--radius-md);
     color: var(--ink-muted);
-    min-width: auto;
-    text-align: left;
-    justify-content: flex-start;
   }
 
   .logoutItem:hover {

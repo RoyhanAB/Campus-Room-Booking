@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useMemo, useState, useTransition } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
-import { Plus, Pencil, Trash2, Shield } from 'lucide-react';
+import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { createAdminAction, reassignAdminFakultasAction, deleteAdminAction } from '../super-actions';
 import { AdminWithFakultas } from '@/lib/user';
 import { Fakultas } from '@/types/fakultas';
@@ -22,6 +22,10 @@ export default function KelolaAdminClient({
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const router = useRouter();
+  const uniqueFakultas = useMemo(
+    () => Array.from(new Map(fakultas.map((item) => [item.fakultas_name.trim().toLowerCase(), item])).values()),
+    [fakultas],
+  );
 
   const handleAdd = () => {
     setError('');
@@ -184,7 +188,7 @@ export default function KelolaAdminClient({
                 <label className={styles.label}>Fakultas *</label>
                 <select name="fakultas_id" className={styles.select} required>
                   <option value="">Pilih Fakultas</option>
-                  {fakultas.map((f) => (
+                  {uniqueFakultas.map((f) => (
                     <option key={f.fakultas_id} value={f.fakultas_id}>{f.fakultas_name}</option>
                   ))}
                 </select>
@@ -216,7 +220,7 @@ export default function KelolaAdminClient({
                 <label className={styles.label}>Fakultas Baru *</label>
                 <select name="fakultas_id" className={styles.select} defaultValue={reassignAdmin.fakultas_id || ''} required>
                   <option value="">Pilih Fakultas</option>
-                  {fakultas.map((f) => (
+                  {uniqueFakultas.map((f) => (
                     <option key={f.fakultas_id} value={f.fakultas_id}>{f.fakultas_name}</option>
                   ))}
                 </select>

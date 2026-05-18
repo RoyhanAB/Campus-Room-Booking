@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useMemo, useState, useTransition } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
-import { Plus, Pencil, Trash2, Building2 } from 'lucide-react';
+import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { createBuildingAction, updateBuildingAction, deleteBuildingAction } from '../super-actions';
 import { Building } from '@/types/building';
 import { Fakultas } from '@/types/fakultas';
@@ -26,6 +26,10 @@ export default function KelolaGedungClient({
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const router = useRouter();
+  const uniqueFakultas = useMemo(
+    () => Array.from(new Map(fakultas.map((item) => [item.fakultas_name.trim().toLowerCase(), item])).values()),
+    [fakultas],
+  );
 
   const handleAdd = () => {
     setEditData(null);
@@ -99,9 +103,9 @@ export default function KelolaGedungClient({
             </tr>
           </thead>
           <tbody>
-            {buildings.length > 0 ? buildings.map((b) => (
+            {buildings.length > 0 ? buildings.map((b, index) => (
               <tr key={b.building_id}>
-                <td>{b.building_id}</td>
+                <td>{index + 1}</td>
                 <td style={{ fontWeight: 600 }}>{b.building_name}</td>
                 <td><span className={styles.badgeAmber}>{b.fakultas_name || '-'}</span></td>
                 <td>{b.floor} lantai</td>
@@ -170,7 +174,7 @@ export default function KelolaGedungClient({
                 <label className={styles.label}>Fakultas *</label>
                 <select name="fakultas_id" className={styles.select} defaultValue={editData?.fakultas_id || ''} required>
                   <option value="">Pilih Fakultas</option>
-                  {fakultas.map((f) => (
+                  {uniqueFakultas.map((f) => (
                     <option key={f.fakultas_id} value={f.fakultas_id}>{f.fakultas_name}</option>
                   ))}
                 </select>

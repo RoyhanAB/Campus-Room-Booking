@@ -3,11 +3,19 @@
 import { useState, useTransition } from 'react';
 import { Settings, Clock, Calendar, Shield, CheckCircle } from 'lucide-react';
 import { updateSettingAction } from './actions';
+import type { JsonValue, SystemSettings } from '@/lib/settings';
 import styles from '../kelola.module.css';
 
 interface SettingsProps {
-  settings: Record<string, any>;
+  settings: SystemSettings;
 }
+
+const getObjectSetting = <T extends Record<string, JsonValue>>(settings: SystemSettings, key: string, fallback: T) => {
+  const value = settings[key];
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? ({ ...fallback, ...value } as T)
+    : fallback;
+};
 
 export default function SettingsClient({ settings }: SettingsProps) {
   const [isPending, startTransition] = useTransition();
@@ -15,14 +23,19 @@ export default function SettingsClient({ settings }: SettingsProps) {
   const [success, setSuccess] = useState(false);
 
   // Local state for settings
-  const [jamBuka, setJamBuka] = useState(settings.jam_operasional?.buka || '07:00');
-  const [jamTutup, setJamTutup] = useState(settings.jam_operasional?.tutup || '21:00');
-  const [maxDurasi, setMaxDurasi] = useState(settings.max_durasi_booking?.jam || 8);
-  const [maxPerMinggu, setMaxPerMinggu] = useState(settings.max_booking_per_minggu?.limit || 5);
-  const [maintenance, setMaintenance] = useState(settings.maintenance_mode?.active || false);
-  const [maintMsg, setMaintMsg] = useState(settings.maintenance_mode?.message || '');
+  const jam = getObjectSetting(settings, 'jam_operasional', { buka: '07:00', tutup: '21:00' });
+  const durasi = getObjectSetting(settings, 'max_durasi_booking', { jam: 8 });
+  const perMinggu = getObjectSetting(settings, 'max_booking_per_minggu', { limit: 5 });
+  const maintenanceSetting = getObjectSetting(settings, 'maintenance_mode', { active: false, message: '' });
 
-  const saveSetting = (key: string, value: any) => {
+  const [jamBuka, setJamBuka] = useState(String(jam.buka));
+  const [jamTutup, setJamTutup] = useState(String(jam.tutup));
+  const [maxDurasi, setMaxDurasi] = useState(Number(durasi.jam));
+  const [maxPerMinggu, setMaxPerMinggu] = useState(Number(perMinggu.limit));
+  const [maintenance, setMaintenance] = useState(Boolean(maintenanceSetting.active));
+  const [maintMsg, setMaintMsg] = useState(String(maintenanceSetting.message || ''));
+
+  const saveSetting = (key: string, value: JsonValue) => {
     setMsg(''); setSuccess(false);
     startTransition(async () => {
       const result = await updateSettingAction(key, value);

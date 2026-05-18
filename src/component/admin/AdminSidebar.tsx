@@ -1,20 +1,21 @@
 "use client";
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Building, PlusSquare, ClipboardList, LogOut, GraduationCap, Users, Shield, Settings, Activity } from 'lucide-react';
+import { Home, Building, ClipboardList, LogOut, GraduationCap, Users, Shield, Settings, Activity, Menu, X } from 'lucide-react';
 import { logoutAction } from '@/app/login/actions';
 import styles from './AdminSidebar.module.css';
 
 export default function AdminSidebar({ userName, role }: { userName?: string; role?: string }) {
   const pathname = usePathname();
   const isSuperAdmin = role === 'super_admin';
+  const [moreOpen, setMoreOpen] = useState(false);
 
   const baseNavItems = [
     { name: 'Home', path: '/admin', icon: Home },
     { name: 'Ruangan', path: '/admin/listruangan', icon: Building },
-    { name: 'Tambah Ruangan', path: '/admin/tambahruangan', icon: PlusSquare },
     { name: 'Peminjaman', path: '/admin/listpeminjaman', icon: ClipboardList },
   ];
 
@@ -31,9 +32,8 @@ export default function AdminSidebar({ userName, role }: { userName?: string; ro
   ];
 
   const navItems = isSuperAdmin ? superAdminNavItems : baseNavItems;
-
   return (
-    <aside className={styles.sidebar}>
+    <aside className={`${styles.sidebar} ${isSuperAdmin ? styles.superSidebar : ''}`}>
       {/* Brand */}
       <div className={styles.brand}>
         <span className={styles.brandLogoWrap}>
@@ -51,6 +51,16 @@ export default function AdminSidebar({ userName, role }: { userName?: string; ro
           </span>
           <span className={styles.brandSubtitle}>UNTIRTA</span>
         </div>
+        {isSuperAdmin && (
+          <button
+            type="button"
+            className={styles.menuButton}
+            onClick={() => setMoreOpen(true)}
+            aria-label="Buka menu super admin"
+          >
+            <Menu size={22} />
+          </button>
+        )}
       </div>
 
       {/* Nav */}
@@ -64,6 +74,7 @@ export default function AdminSidebar({ userName, role }: { userName?: string; ro
               key={item.path}
               href={item.path}
               className={`${styles.navItem} ${isActive ? styles.activeItem : ''}`}
+              onClick={() => setMoreOpen(false)}
             >
               <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className={styles.navIcon} />
               <span>{item.name}</span>
@@ -71,6 +82,42 @@ export default function AdminSidebar({ userName, role }: { userName?: string; ro
           );
         })}
       </nav>
+
+      {isSuperAdmin && moreOpen && (
+        <div className={styles.moreOverlay} onClick={() => setMoreOpen(false)}>
+          <div className={styles.moreSheet} onClick={(event) => event.stopPropagation()}>
+            <div className={styles.moreHeader}>
+              <span>{isSuperAdmin ? 'Menu Super Admin' : 'Menu Admin'}</span>
+              <button type="button" className={styles.moreClose} onClick={() => setMoreOpen(false)}>
+                <X size={18} />
+              </button>
+            </div>
+            <div className={styles.moreList}>
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path));
+                return (
+                  <Link
+                    key={item.path}
+                    href={item.path}
+                    className={`${styles.moreItem} ${isActive ? styles.activeItem : ''}`}
+                    onClick={() => setMoreOpen(false)}
+                  >
+                    <Icon size={18} />
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
+              <form action={logoutAction}>
+                <button type="submit" className={styles.moreItem}>
+                  <LogOut size={18} />
+                  <span>Keluar</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <div className={styles.sidebarFooter}>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition, useState, useEffect } from 'react';
+import { useTransition, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { Check, X } from 'lucide-react';
@@ -27,13 +27,8 @@ export default function DetailPeminjamanActions({
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [selectedAlasan, setSelectedAlasan] = useState('');
   const [customAlasan, setCustomAlasan] = useState('');
-  const [mounted, setMounted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const handleApprove = () => {
     setErrorMessage('');
@@ -72,7 +67,7 @@ export default function DetailPeminjamanActions({
     setCustomAlasan('');
   };
 
-  const modalContent = showRejectModal && mounted ? (
+  const modalContent = showRejectModal ? (
     <div className={styles.modalOverlay} onClick={handleRejectCancel}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <h3 className={styles.modalTitle}>Alasan Penolakan</h3>
@@ -157,7 +152,7 @@ export default function DetailPeminjamanActions({
       )}
 
       {/* Modal Alasan Penolakan - Rendered via Portal */}
-      {mounted && modalContent && createPortal(modalContent, document.body)}
+      {modalContent && createPortal(modalContent, document.body)}
     </>
   );
 }

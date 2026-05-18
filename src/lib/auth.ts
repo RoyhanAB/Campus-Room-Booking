@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { supabase } from './supabase';
 import { User } from '../types/user';
 import bcrypt from 'bcryptjs';
+import { parseSessionCookie, serializeSession } from './session-cookie';
 
 export interface SessionData {
   user_id: string;
@@ -48,7 +49,7 @@ export async function login(userId: string, password: string): Promise<{ success
   };
 
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE_NAME, JSON.stringify(session), {
+  cookieStore.set(SESSION_COOKIE_NAME, serializeSession(session), {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -79,7 +80,26 @@ export async function getSession(): Promise<SessionData | null> {
   }
 
   try {
-    return JSON.parse(sessionCookie.value) as SessionData;
+    const parsed = parseSessionCookie(sessionCookie.value);
+    if (!parsed) {
+      return null;
+    }
+
+    const { data, error } = await supabase
+      .from('users')
+      .select('user_id, user_name, role')
+      .eq('user_id', parsed.user_id)
+      .single();
+
+    if (error || !data) {
+      return null;
+    }
+
+    return {
+      user_id: data.user_id,
+      user_name: data.user_name,
+      role: data.role,
+    };
   } catch {
     return null;
   }

@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     icon: [
       { url: '/image/untr.png', type: 'image/png' },
     ],
+    shortcut: '/image/untr.png',
     apple: '/image/untr.png',
   },
 };

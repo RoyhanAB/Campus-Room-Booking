@@ -1,9 +1,8 @@
-import { supabase } from './supabase';
 import { supabaseAdmin } from './supabaseAdmin';
 import { Schedule } from '../types/schedule';
 
 export const getScheduleByRoomId = async (roomId: string): Promise<Schedule[]> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('schedules')
     .select('*')
     .eq('room_id', roomId)
@@ -23,7 +22,7 @@ export const checkScheduleConflict = async (
   startTime: string,
   endTime: string
 ): Promise<{ hasConflict: boolean; conflictingSchedules: Schedule[] }> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('schedules')
     .select('*')
     .eq('room_id', roomId)
@@ -48,7 +47,7 @@ export const createScheduleFromPeminjaman = async (
   tanggalDimulai: string,
   tanggalSelesai: string
 ): Promise<Schedule> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('schedules')
     .insert({
       room_id: roomId,

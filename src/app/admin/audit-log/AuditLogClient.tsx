@@ -17,7 +17,27 @@ const statusIcon = (status: string) => {
   }
 };
 
-export default function AuditLogClient({ logs, recentActivity }: { logs: any[]; recentActivity: any[] }) {
+type AuditLog = {
+  id: number;
+  created_at: string;
+  user_id: string;
+  action: string;
+  entity_type: string;
+  entity_id: string;
+  details?: unknown;
+};
+
+type RecentActivity = {
+  peminjaman_id: number;
+  created_at: string;
+  user_id: string;
+  nama_kegiatan: string;
+  room_id: string;
+  status: string;
+  approved_by?: string | null;
+};
+
+export default function AuditLogClient({ logs, recentActivity }: { logs: AuditLog[]; recentActivity: RecentActivity[] }) {
   const [tab, setTab] = useState<'activity' | 'logs'>('activity');
 
   return (
@@ -58,83 +78,114 @@ export default function AuditLogClient({ logs, recentActivity }: { logs: any[]; 
       </div>
 
       {tab === 'activity' ? (
-        <div className={styles.tableCard}>
-          {recentActivity.length === 0 ? (
-            <div style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--ink-muted)', fontSize: 13 }}>
-              Belum ada aktivitas.
-            </div>
-          ) : (
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Waktu</th>
-                  <th>User</th>
-                  <th>Kegiatan</th>
-                  <th>Ruangan</th>
-                  <th>Status</th>
-                  <th>Ditangani</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentActivity.map((item) => (
-                  <tr key={item.peminjaman_id}>
-                    <td style={{ fontSize: 12, whiteSpace: 'nowrap' }}>{formatDateTime(item.created_at)}</td>
-                    <td>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12 }}>
-                        <User size={12} /> {item.user_id}
-                      </span>
-                    </td>
-                    <td style={{ fontSize: 13, fontWeight: 500 }}>{item.nama_kegiatan}</td>
-                    <td>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12 }}>
-                        <MapPin size={12} /> {item.room_id}
-                      </span>
-                    </td>
-                    <td>
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 600 }}>
-                        {statusIcon(item.status)} {item.status || 'menunggu'}
-                      </span>
-                    </td>
-                    <td style={{ fontSize: 12, color: 'var(--ink-muted)' }}>{item.approved_by || '-'}</td>
+        <>
+          <div className={styles.tableCard}>
+            {recentActivity.length === 0 ? (
+              <div style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--ink-muted)', fontSize: 13 }}>
+                Belum ada aktivitas.
+              </div>
+            ) : (
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>Waktu</th>
+                    <th>User</th>
+                    <th>Kegiatan</th>
+                    <th>Ruangan</th>
+                    <th>Status</th>
+                    <th>Ditangani</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
+                </thead>
+                <tbody>
+                  {recentActivity.map((item) => (
+                    <tr key={item.peminjaman_id}>
+                      <td style={{ fontSize: 12, whiteSpace: 'nowrap' }}>{formatDateTime(item.created_at)}</td>
+                      <td>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12 }}>
+                          <User size={12} /> {item.user_id}
+                        </span>
+                      </td>
+                      <td style={{ fontSize: 13, fontWeight: 500 }}>{item.nama_kegiatan}</td>
+                      <td>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12 }}>
+                          <MapPin size={12} /> {item.room_id}
+                        </span>
+                      </td>
+                      <td>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 600 }}>
+                          {statusIcon(item.status)} {item.status || 'menunggu'}
+                        </span>
+                      </td>
+                      <td style={{ fontSize: 12, color: 'var(--ink-muted)' }}>{item.approved_by || '-'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+          <div className={styles.mobileCards}>
+            {recentActivity.length === 0 ? (
+              <div className={styles.emptyState}>Belum ada aktivitas.</div>
+            ) : recentActivity.map((item) => (
+              <div key={item.peminjaman_id} className={styles.card}>
+                <div className={styles.cardRow}><span className={styles.cardLabel}>Waktu</span><span className={styles.cardValue}>{formatDateTime(item.created_at)}</span></div>
+                <div className={styles.cardRow}><span className={styles.cardLabel}>User</span><span className={styles.cardValue}>{item.user_id}</span></div>
+                <div className={styles.cardRow}><span className={styles.cardLabel}>Kegiatan</span><span className={styles.cardValue}>{item.nama_kegiatan}</span></div>
+                <div className={styles.cardRow}><span className={styles.cardLabel}>Ruangan</span><span className={styles.cardValue}>{item.room_id}</span></div>
+                <div className={styles.cardRow}><span className={styles.cardLabel}>Status</span><span className={styles.cardValue} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>{statusIcon(item.status)} {item.status || 'menunggu'}</span></div>
+                <div className={styles.cardRow}><span className={styles.cardLabel}>Ditangani</span><span className={styles.cardValue}>{item.approved_by || '-'}</span></div>
+              </div>
+            ))}
+          </div>
+        </>
       ) : (
-        <div className={styles.tableCard}>
-          {logs.length === 0 ? (
-            <div style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--ink-muted)', fontSize: 13 }}>
-              Belum ada system logs. Tabel <code>audit_logs</code> perlu dibuat di Supabase.
-            </div>
-          ) : (
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Waktu</th>
-                  <th>User</th>
-                  <th>Aksi</th>
-                  <th>Entity</th>
-                  <th>Detail</th>
-                </tr>
-              </thead>
-              <tbody>
-                {logs.map((log) => (
-                  <tr key={log.id}>
-                    <td style={{ fontSize: 12, whiteSpace: 'nowrap' }}>{formatDateTime(log.created_at)}</td>
-                    <td style={{ fontSize: 12 }}>{log.user_id}</td>
-                    <td><span style={{ fontSize: 12, fontWeight: 600 }}>{log.action}</span></td>
-                    <td style={{ fontSize: 12 }}>{log.entity_type}:{log.entity_id}</td>
-                    <td style={{ fontSize: 11, color: 'var(--ink-muted)', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {log.details ? JSON.stringify(log.details).substring(0, 80) : '-'}
-                    </td>
+        <>
+          <div className={styles.tableCard}>
+            {logs.length === 0 ? (
+              <div style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--ink-muted)', fontSize: 13 }}>
+                Belum ada system logs.
+              </div>
+            ) : (
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>Waktu</th>
+                    <th>User</th>
+                    <th>Aksi</th>
+                    <th>Entity</th>
+                    <th>Detail</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
+                </thead>
+                <tbody>
+                  {logs.map((log) => (
+                    <tr key={log.id}>
+                      <td style={{ fontSize: 12, whiteSpace: 'nowrap' }}>{formatDateTime(log.created_at)}</td>
+                      <td style={{ fontSize: 12 }}>{log.user_id}</td>
+                      <td><span style={{ fontSize: 12, fontWeight: 600 }}>{log.action}</span></td>
+                      <td style={{ fontSize: 12 }}>{log.entity_type}:{log.entity_id}</td>
+                      <td style={{ fontSize: 11, color: 'var(--ink-muted)', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {log.details ? JSON.stringify(log.details).substring(0, 80) : '-'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+          <div className={styles.mobileCards}>
+            {logs.length === 0 ? (
+              <div className={styles.emptyState}>Belum ada system logs.</div>
+            ) : logs.map((log) => (
+              <div key={log.id} className={styles.card}>
+                <div className={styles.cardRow}><span className={styles.cardLabel}>Waktu</span><span className={styles.cardValue}>{formatDateTime(log.created_at)}</span></div>
+                <div className={styles.cardRow}><span className={styles.cardLabel}>User</span><span className={styles.cardValue}>{log.user_id}</span></div>
+                <div className={styles.cardRow}><span className={styles.cardLabel}>Aksi</span><span className={styles.cardValue}>{log.action}</span></div>
+                <div className={styles.cardRow}><span className={styles.cardLabel}>Entity</span><span className={styles.cardValue}>{log.entity_type}:{log.entity_id}</span></div>
+                <div className={styles.cardRow}><span className={styles.cardLabel}>Detail</span><span className={styles.cardValue}>{log.details ? JSON.stringify(log.details).substring(0, 80) : '-'}</span></div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

@@ -3,6 +3,7 @@ import { getSession } from '@/lib/auth';
 import { detailroom } from '@/lib/ruangan';
 import { getAllBuildings } from '@/lib/ruangan';
 import { redirect } from 'next/navigation';
+import { getSettingObject, getSystemSettings } from '@/lib/settings';
 
 type SearchParams = Promise<{ roomId?: string | string[] }>;
 
@@ -19,12 +20,14 @@ export default async function FormPeminjamanPage({ searchParams }: { searchParam
 
   const session = await getSession();
 
-  const [room, buildings] = await Promise.all([
+  const [room, buildings, settings] = await Promise.all([
     detailroom(defaultRoomId),
-    getAllBuildings()
+    getAllBuildings(),
+    getSystemSettings(),
   ]);
 
   const building = buildings.find(b => b.building_id === room.building_id);
+  const maxDurasi = getSettingObject(settings, 'max_durasi_booking', { jam: 8 });
 
   return (
     <FormPeminjamanClient
@@ -33,6 +36,7 @@ export default async function FormPeminjamanPage({ searchParams }: { searchParam
       userName={session?.user_name || ''}
       room={room}
       buildingName={building?.building_name || ''}
+      maxBookingHours={Number(maxDurasi.jam || 8)}
     />
   );
 }

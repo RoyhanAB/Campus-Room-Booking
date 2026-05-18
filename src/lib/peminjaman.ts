@@ -1,10 +1,16 @@
 import { supabase } from './supabase';
+import { supabaseAdmin } from './supabaseAdmin';
 import { Peminjaman, PeminjamanInput, PeminjamanStatus } from '../types/peminjaman';
+
+type PeminjamanJoined = Peminjaman & {
+  users?: { user_name?: string | null } | null;
+  rooms?: { kapasitas?: number | null } | null;
+};
 
 // ===================== CREATE =====================
 
 export const createPeminjaman = async (payload: PeminjamanInput): Promise<Peminjaman> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('peminjaman')
     .insert({
       ...payload,
@@ -25,7 +31,7 @@ export const createPeminjaman = async (payload: PeminjamanInput): Promise<Peminj
 // ===================== READ =====================
 
 export const getRecentPeminjaman = async (limit = 30): Promise<Peminjaman[]> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('peminjaman')
     .select('*')
     .order('created_at', { ascending: false })
@@ -41,7 +47,7 @@ export const getRecentPeminjaman = async (limit = 30): Promise<Peminjaman[]> => 
 
 // Get recent peminjaman filtered by admin's fakultas
 export const getRecentPeminjamanByFakultas = async (fakultasId: number, limit = 5): Promise<Peminjaman[]> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('peminjaman')
     .select(`
       *,
@@ -61,7 +67,7 @@ export const getRecentPeminjamanByFakultas = async (fakultasId: number, limit = 
     return [];
   }
 
-  return (data ?? []).map((item: any) => ({
+  return ((data ?? []) as Peminjaman[]).map((item) => ({
     peminjaman_id: item.peminjaman_id,
     room_id: item.room_id,
     user_id: item.user_id,
@@ -140,7 +146,7 @@ export const getPeminjamanByFakultas = async (fakultasId: number): Promise<Pemin
   }
 
   // Sort in memory: menunggu first, then by created_at desc
-  const sorted = (data as any[]).map(item => ({
+  const sorted = ((data ?? []) as Peminjaman[]).map(item => ({
     peminjaman_id: item.peminjaman_id,
     room_id: item.room_id,
     user_id: item.user_id,
@@ -184,7 +190,7 @@ export const getPeminjamanById = async (id: number): Promise<Peminjaman | null> 
     return null;
   }
 
-  const item = data as any;
+  const item = data as PeminjamanJoined;
   return {
     ...item,
     user_name: item.users?.user_name || null,
@@ -292,7 +298,7 @@ export const updatePeminjamanStatus = async (
 // Cancel peminjaman (only if status is 'menunggu')
 export const cancelPeminjaman = async (id: number, userId: string): Promise<void> => {
   // Verify ownership
-  const { data: existing, error: fetchError } = await supabase
+  const { data: existing, error: fetchError } = await supabaseAdmin
     .from('peminjaman')
     .select('user_id, status')
     .eq('peminjaman_id', id)
@@ -310,7 +316,7 @@ export const cancelPeminjaman = async (id: number, userId: string): Promise<void
     throw new Error('Hanya peminjaman dengan status menunggu yang bisa dibatalkan.');
   }
 
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from('peminjaman')
     .update({ status: 'dibatalkan' })
     .eq('peminjaman_id', id);

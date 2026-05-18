@@ -3,8 +3,22 @@ import Link from 'next/link';
 import { ArrowLeft, Calendar, Users, FileText, MapPin, ExternalLink, User } from 'lucide-react';
 import styles from './DetailPeminjaman.module.css';
 import DetailPeminjamanActions from './DetailPeminjamanActions';
+import { formatLocalDateTime } from '@/lib/datetime';
+import { getSession } from '@/lib/auth';
+import { getAdminInfo } from '@/lib/admin_fakultas';
+import { detailroom, getAllBuildings } from '@/lib/ruangan';
 
 export const revalidate = 0;
+
+function getDocumentHref(value: string | null | undefined) {
+  const trimmed = value?.trim();
+  if (!trimmed) return null;
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (/^(www\.|drive\.google\.com|docs\.google\.com)/i.test(trimmed)) {
+    return `https://${trimmed}`;
+  }
+  return trimmed;
+}
 
 export default async function DetailPeminjamanPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -26,14 +40,29 @@ export default async function DetailPeminjamanPage({ params }: { params: Promise
     );
   }
 
-  const formatDateTime = (value: string) =>
-    new Date(value).toLocaleString('id-ID', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+  const session = await getSession();
+  if (session?.role === 'admin_fakultas') {
+    const [adminInfo, room, buildings] = await Promise.all([
+      getAdminInfo(session.user_id),
+      detailroom(peminjaman.room_id),
+      getAllBuildings(),
+    ]);
+    const building = buildings.find((item) => item.building_id === room.building_id);
+
+    if (!adminInfo?.fakultas_id || building?.fakultas_id !== adminInfo.fakultas_id) {
+      return (
+        <div className={styles.container}>
+          <div className={styles.notFound}>
+            <h1>Akses Ditolak</h1>
+            <p>Peminjaman ini bukan bagian dari fakultas Anda.</p>
+            <Link href="/admin/listpeminjaman" className={styles.backLink}>
+              <ArrowLeft size={18} /> Kembali ke List
+            </Link>
+          </div>
+        </div>
+      );
+    }
+  }
 
   const getStatusStyle = (status: string) => {
     switch (status?.toLowerCase()) {
@@ -46,11 +75,8 @@ export default async function DetailPeminjamanPage({ params }: { params: Promise
 
   const statusStyle = getStatusStyle(peminjaman.status);
 
-  // Check if dokumen is a valid URL
-  const isDocumentUrl = peminjaman.dokumen && (
-    peminjaman.dokumen.startsWith('http://') || 
-    peminjaman.dokumen.startsWith('https://')
-  );
+  const documentHref = getDocumentHref(peminjaman.dokumen);
+  const isExternalDocument = Boolean(documentHref && /^https?:\/\//i.test(documentHref));
 
   // Check capacity warning
   const isOverCapacity = peminjaman.room_kapasitas && 
@@ -114,10 +140,10 @@ export default async function DetailPeminjamanPage({ params }: { params: Promise
           <div>
             <span className={styles.infoLabel}>Waktu</span>
             <span className={styles.infoValue}>
-              {formatDateTime(peminjaman.tanggal_dimulai)}
+              {formatLocalDateTime(peminjaman.tanggal_dimulai)}
             </span>
             <span className={styles.infoValueSub}>
-              s/d {formatDateTime(peminjaman.tanggal_selesai)}
+              s/d {formatLocalDateTime(peminjaman.tanggal_selesai)}
             </span>
           </div>
         </div>
@@ -138,11 +164,11 @@ export default async function DetailPeminjamanPage({ params }: { params: Promise
         <h2 className={styles.sectionTitle}>
           <FileText size={16} /> Dokumen Pendukung
         </h2>
-        {isDocumentUrl ? (
+        {documentHref ? (
           <a 
-            href={peminjaman.dokumen} 
-            target="_blank" 
-            rel="noopener noreferrer"
+            href={documentHref}
+            target={isExternalDocument ? '_blank' : undefined}
+            rel={isExternalDocument ? 'noopener noreferrer' : undefined}
             className={styles.documentButton}
           >
             <ExternalLink size={16} />

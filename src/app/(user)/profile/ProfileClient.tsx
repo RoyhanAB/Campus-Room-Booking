@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { User, KeyRound, GraduationCap, Calendar, Shield, CheckCircle } from 'lucide-react';
+import { KeyRound, GraduationCap, Calendar, Shield, CheckCircle } from 'lucide-react';
 import { updateProfileAction, changePasswordAction } from './actions';
 import styles from './profile.module.css';
 

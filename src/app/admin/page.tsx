@@ -13,17 +13,9 @@ import styles from './HomeAdmin.module.css';
 import { getAdminInfo } from '@/lib/admin_fakultas';
 import { getSession } from '@/lib/auth';
 import { getRecentPeminjamanByFakultas, getRecentPeminjaman, countPeminjamanByStatus, countRoomsByFakultas } from '@/lib/peminjaman';
-import type { Peminjaman } from '@/types/peminjaman';
+import { formatLocalDateTime } from '@/lib/datetime';
 
 export const revalidate = 0;
-
-const formatDateTime = (value: string) =>
-  new Date(value).toLocaleString('id-ID', {
-    day: '2-digit',
-    month: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
 
 const statusLookup = (status: string | null | undefined) => {
   const value = (status || 'menunggu').toLowerCase();
@@ -182,7 +174,7 @@ export default async function AdminHomePage() {
                         {item.nama_kegiatan || 'Tanpa nama kegiatan'}
                       </span>
                       <span className={styles.recentMeta}>
-                        {item.room_id} · {formatDateTime(item.tanggal_dimulai)}
+                        {item.room_id} - {formatLocalDateTime(item.tanggal_dimulai)}
                       </span>
                     </div>
                     <span className={`${styles.recentStatus} ${status.className}`}>
@@ -231,7 +223,7 @@ export default async function AdminHomePage() {
           <h2 className={styles.panelTitle}>Statistik Peminjaman</h2>
         </div>
         <div style={{ padding: '16px 20px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(86px, 1fr))', gap: 12 }}>
             <ChartBar label="Menunggu" count={pendingCount} total={pendingCount + approvedCount + rejectedCount} color="var(--amber-500)" />
             <ChartBar label="Disetujui" count={approvedCount} total={pendingCount + approvedCount + rejectedCount} color="var(--green-500)" />
             <ChartBar label="Ditolak" count={rejectedCount} total={pendingCount + approvedCount + rejectedCount} color="var(--red-500)" />

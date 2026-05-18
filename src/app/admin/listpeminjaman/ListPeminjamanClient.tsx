@@ -6,14 +6,9 @@ import Link from 'next/link';
 import { Search, Eye, Download } from 'lucide-react';
 import styles from './ListPeminjaman.module.css';
 import { Peminjaman } from '@/types/peminjaman';
+import { formatLocalDate } from '@/lib/datetime';
 
-const formatDate = (isoString: string) => {
-  return new Date(isoString).toLocaleDateString('id-ID', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
-};
+const formatDate = (value: string) => formatLocalDate(value, true);
 
 const getStatusColor = (status: string) => {
   switch (status?.toLowerCase()) {
